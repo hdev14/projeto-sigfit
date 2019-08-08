@@ -44,6 +44,82 @@ class PessoaController extends Controller
         ]);
     }
 
+    #### Create, Read e Update para Usuários Alunos. ####
+
+    public function actionCreateAluno()
+    {
+        $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_USUARIO]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-aluno', 'id' => $model->id]);
+        }
+
+        return $this->render('aluno/create', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionUpdateAluno($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-aluno', 'id' => $model->id]);
+        }
+
+        return $this->render('aluno/update', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionViewAluno($id)
+    {
+        return $this->render('aluno/view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    # ------------------------------------------------------ #
+
+    #### Create, Read e Update para Usuários Servidores. ####
+
+    public function actionCreateServidor()
+    {
+        $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_SERVIDOR]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-servidor', 'id' => $model->id]);
+        }
+
+        return $this->render('servidor/create', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionUpdateServidor($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-servidor', 'id' => $model->id]);
+        }
+
+        return $this->render('servidor/update', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionViewServidor($id)
+    {
+        return $this->render('servidor/view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    # ------------------------------------------------------ #
+
     /**
      * Displays a single Pessoa model.
      * @param integer $id
@@ -90,7 +166,7 @@ class PessoaController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->render('aluno/update', [
             'model' => $model,
         ]);
     }
@@ -124,4 +200,5 @@ class PessoaController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+
 }

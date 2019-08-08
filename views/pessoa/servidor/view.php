@@ -33,8 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'matricula',
             'nome',
             'email:email',
-            'curso',
-            'periodo_curso',
             'horario_treino',
             'problema_saude:ntext',
             'faltas',
@@ -44,3 +42,4 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+

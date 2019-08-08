@@ -18,19 +18,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'curso')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'periodo_curso')->textInput() ?>
-
-    <?= $form->field($model, 'horario_treino')->dropDownList([ 'nenhum' => 'Nenhum', '7h às 8h' => '7h às 8h', '8h às 9h' => '8h às 9h', '9h às 10h' => '9h às 10h', '10h às 11h' => '10h às 11h', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'problema_saude')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'faltas')->textInput() ?>
-
-    <?= $form->field($model, 'espera')->textInput() ?>
+    <?= $form->field($model, 'horario_treino')->dropDownList([
+            'nenhum' => 'Nenhum',
+            '7h às 8h' => '7h às 8h',
+            '8h às 9h' => '8h às 9h',
+            '9h às 10h' => '9h às 10h',
+            '10h às 11h' => '10h às 11h',
+        ], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'telefone')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'problema_saude')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
