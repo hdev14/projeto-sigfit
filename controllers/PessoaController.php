@@ -14,6 +14,8 @@ use yii\filters\VerbFilter;
  */
 class PessoaController extends Controller
 {
+    public $layout = 'admin_layout';
+
     /**
      * {@inheritdoc}
      */
