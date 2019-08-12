@@ -10,6 +10,7 @@ class AppAdminAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'css/modal_registro.css',
     ];
     public $js = [
     ];
