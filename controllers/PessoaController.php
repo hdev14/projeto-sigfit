@@ -48,6 +48,10 @@ class PessoaController extends Controller
 
     public function actionCreateAluno()
     {
+        # Verificar se o usuário(instrutor) está autenticado.
+        # Se o usuário estiver autenticado, então pegar a matrícula e
+        # relacionar com o usuário comun(aluno) que será registrado.
+
         $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_USUARIO]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -86,6 +90,10 @@ class PessoaController extends Controller
 
     public function actionCreateServidor()
     {
+        # Verificar se o usuário(instrutor) está autenticado.
+        # Se o usuário estiver autenticado, então pegar a matrícula e
+        # relacionar com o usuário comun(servidor) que será registrado.
+
         $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_SERVIDOR]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
