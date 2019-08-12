@@ -119,10 +119,10 @@ class Pessoa extends \yii\db\ActiveRecord
             'curso' => Yii::t('app', 'Curso'),
             'periodo_curso' => Yii::t('app', 'Período do Curso'),
             'horario_treino' => Yii::t('app', 'Horário do Treino'),
-            'problema_saude' => Yii::t('app', 'Problema de Saúde'),
+            'problema_saude' => Yii::t('app', 'Problema de Saúde (opcional)'),
             'faltas' => Yii::t('app', 'Faltas'),
             'espera' => Yii::t('app', 'Espera'),
-            'telefone' => Yii::t('app', 'Telefone'),
+            'telefone' => Yii::t('app', 'Telefone (opcional)'),
         ];
     }
 

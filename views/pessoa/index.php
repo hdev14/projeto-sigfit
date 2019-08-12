@@ -32,27 +32,26 @@ $this->registerJs("
 <div id="modal-registro" class="modal-registro">
     <div class="modal-conteudo panel panel-default">
         <div class="panel-body">
-            <p>Aluno ou Servidor?</p>
+            <p>Aluno ou Servidor ?</p>
             <div>
                 <?= Html::a('Aluno', ['create-aluno'], [
-                    'class' => 'btn btn-primary btn-sm'
+                    'class' => 'btn btn-default btn-sm btn-flat'
                 ]) ?>
                 <?= Html::a('Servidor', ['create-servidor'], [
-                    'class' => 'btn bg-navy btn-sm'
+                    'class' => 'btn btn-primary btn-sm btn-flat'
                 ]) ?>
             </div>
         </div>
     </div>
 </div>
 <!--    model registro usuário-->
+
 <div class="pessoa-index">
 
-    <!--    <h1>Html::encode($this->title)</h1>-->
-
-    <p>
+    <p class="text-right">
         <?= Html::button('Registrar Usuário', [
             'id' => 'registro-aluno',
-            'class' => 'btn btn-success'
+            'class' => 'btn btn-success btn-sm btn-flat'
         ]) ?>
     </p>
 
