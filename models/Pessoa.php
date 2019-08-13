@@ -18,6 +18,7 @@ use Yii;
  * @property int $faltas
  * @property int $espera
  * @property string $telefone
+ * @property string $foto
  *
  * @property Avaliacao[] $avaliacaos
  * @property Frequencia[] $frequencias
@@ -32,6 +33,7 @@ class Pessoa extends \yii\db\ActiveRecord
 {
     const SCENARIO_REGISTRO_USUARIO = 'registro_aluno';
     const SCENARIO_REGISTRO_SERVIDOR = 'registro_servidor';
+    const SCENARIO_REGISTRO_INSTRUTOR = 'registro_instrutor';
 
     /**
      * {@inheritdoc}
@@ -63,6 +65,7 @@ class Pessoa extends \yii\db\ActiveRecord
                 'required',
                 'on' => Pessoa::SCENARIO_REGISTRO_USUARIO
             ],
+            ['email', 'required', 'on' => Pessoa::SCENARIO_REGISTRO_INSTRUTOR],
             [
                 'espera',
                 'boolean',
@@ -71,6 +74,12 @@ class Pessoa extends \yii\db\ActiveRecord
                 'strict' => true
             ],
             [['telefone'], 'string', 'max' => 20],
+            # Validador de arquivo para a foto.
+            [
+                'foto',
+                'file','extensions' => ['png', 'jpeg', 'jpg'],
+                'maxSize' => 1024*1024
+            ],
             # Valores defautls
             ['problema_saude', 'default', 'value' => 'Nenhum problema de saúde.'],
             ['telefone', 'default', 'value' => 'Sem telefone.']
@@ -103,6 +112,13 @@ class Pessoa extends \yii\db\ActiveRecord
             'espera'
         ];
 
+        $scenarios['registro_instrutor'] = [
+            'matricula',
+            'nome',
+            'email',
+            'foto'
+        ];
+
         return $scenarios;
     }
 
@@ -123,6 +139,7 @@ class Pessoa extends \yii\db\ActiveRecord
             'faltas' => Yii::t('app', 'Faltas'),
             'espera' => Yii::t('app', 'Espera'),
             'telefone' => Yii::t('app', 'Telefone (opcional)'),
+            'foto' => Yii::t('app', 'Adicionar Foto'),
         ];
     }
 
