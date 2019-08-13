@@ -1,0 +1,13 @@
+div.pessoa-form {
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+div.box {
+    margin-top: 10vh;
+}
+
+.box-body form textarea {
+    resize: none;
+}
