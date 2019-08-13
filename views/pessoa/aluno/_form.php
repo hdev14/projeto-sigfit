@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
     </div>
     <div class="box-body">
 
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
         <div class="row">
             <div class="col-xs-6">

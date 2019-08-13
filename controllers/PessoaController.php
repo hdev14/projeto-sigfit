@@ -53,6 +53,7 @@ class PessoaController extends Controller
         # Verificar se o usuário(instrutor) está autenticado.
         # Se o usuário estiver autenticado, então pegar a matrícula e
         # relacionar com o usuário comun(aluno) que será registrado.
+        # Também verificar se o usuário tem permissão de acessar essa ação.
 
         $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_USUARIO]);
 
@@ -95,6 +96,7 @@ class PessoaController extends Controller
         # Verificar se o usuário(instrutor) está autenticado.
         # Se o usuário estiver autenticado, então pegar a matrícula e
         # relacionar com o usuário comun(servidor) que será registrado.
+        # Também verificar se o usuário tem permissão de acessar essa ação.
 
         $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_SERVIDOR]);
 
@@ -130,6 +132,50 @@ class PessoaController extends Controller
 
     # ------------------------------------------------------ #
 
+    #### Create, Read e Update para Usuários Instrutores. ####
+
+    public function actionCreateInstrutor()
+    {
+        # Verificar se o usuário(admin) está autenticado.
+        # Se o usuário estiver autenticado, então pegar a matrícula e
+        # relacionar com o usuário instrutor que será registrado.
+        # Também verificar se o usuário tem permissão de acessar essa ação.
+
+        $model = new Pessoa([
+            'scenario' => Pessoa::SCENARIO_REGISTRO_INSTRUTOR
+        ]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-instrutor', 'id' => $model->id]);
+        }
+
+        return $this->render('instrutor/create', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionUpdateInstrutor($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_INSTRUTOR;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-instrutor', 'id' => $model->id]);
+        }
+
+        return $this->render('instrutor/update', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionViewInstrutor($id)
+    {
+        return $this->render('instrutor/view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    # -----------------------------------------------
     /**
      * Displays a single Pessoa model.
      * @param integer $id
