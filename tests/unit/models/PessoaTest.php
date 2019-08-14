@@ -82,15 +82,11 @@ class PessoaTest extends Unit
      */
     public function VerificarSeEstaSalvandoAImagem()
     {
-        $img = fopen(__DIR__ .'/../../_data/imgs/perfil.jpeg', 'r');
-        $img
-        $this->markTestIncomplete('Ainda será refeito ' .);
 
+        $this->markTestIncomplete('Ainda será refeito ');
 
         // Criar o teste para verificar se a função upload está funcionando
         // corretamente.
-
-        $upload = new UploadedFile();
 
         $this->assertEquals(true, false);
     }
