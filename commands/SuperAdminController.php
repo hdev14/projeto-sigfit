@@ -16,14 +16,17 @@ class SuperAdminController extends  Controller
         echo "super-admin/perms - Define as regras e permissões do sistema. \n";
     }
 
-    public function actionPerms()
+    public function actionPerms($matricula, $nome, $email)
     {
+        $admin = new Pessoa();
+        $admin->matricula = $matricula;
+        $admin->nome = $nome;
+        $admin->email = $email;
 
-    }
+        if ($admin->save()) {
+            return;
+        }
 
-    public function actionCreate($matricula, $nome, $email)
-    {
-        echo "Criar administrador\n";
-        ExitCode::OK;
+        echo "Não salvo !";
     }
 }
