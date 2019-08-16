@@ -21,6 +21,7 @@ use yii\web\UploadedFile;
  * @property int $espera
  * @property string $telefone
  * @property string $foto
+ * @property string $servidor
  *
  * @property Avaliacao[] $avaliacaos
  * @property Frequencia[] $frequencias
@@ -89,7 +90,8 @@ class Pessoa extends \yii\db\ActiveRecord
             ],
             # Valores defautls
             ['problema_saude', 'default', 'value' => 'Nenhum problema de saúde.'],
-            ['telefone', 'default', 'value' => 'Sem telefone.']
+            ['telefone', 'default', 'value' => 'Sem telefone.'],
+            ['servidor', 'default', 'value' => false ],
         ];
     }
 

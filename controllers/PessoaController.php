@@ -46,137 +46,7 @@ class PessoaController extends Controller
         ]);
     }
 
-    #### Create, Read e Update para Usuários Alunos. ####
-
-    public function actionCreateAluno()
-    {
-        # Verificar se o usuário(instrutor) está autenticado.
-        # Se o usuário estiver autenticado, então pegar a matrícula e
-        # relacionar com o usuário comun(aluno) que será registrado.
-        # Também verificar se o usuário tem permissão de acessar essa ação.
-
-        $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_USUARIO]);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-aluno', 'id' => $model->id]);
-        }
-
-        return $this->render('aluno/create', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionUpdateAluno($id)
-    {
-        $model = $this->findModel($id);
-        $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-aluno', 'id' => $model->id]);
-        }
-
-        return $this->render('aluno/update', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionViewAluno($id)
-    {
-        return $this->render('aluno/view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    # ------------------------------------------------------ #
-
-    #### Create, Read e Update para Usuários Servidores. ####
-
-    public function actionCreateServidor()
-    {
-        # Verificar se o usuário(instrutor) está autenticado.
-        # Se o usuário estiver autenticado, então pegar a matrícula e
-        # relacionar com o usuário comun(servidor) que será registrado.
-        # Também verificar se o usuário tem permissão de acessar essa ação.
-
-        $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_SERVIDOR]);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-servidor', 'id' => $model->id]);
-        }
-
-        return $this->render('servidor/create', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionUpdateServidor($id)
-    {
-        $model = $this->findModel($id);
-        $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-servidor', 'id' => $model->id]);
-        }
-
-        return $this->render('servidor/update', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionViewServidor($id)
-    {
-        return $this->render('servidor/view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    # ------------------------------------------------------ #
-
-    #### Create, Read e Update para Usuários Instrutores. ####
-
-    public function actionCreateInstrutor()
-    {
-        # Verificar se o usuário(admin) está autenticado.
-        # Se o usuário estiver autenticado, então pegar a matrícula e
-        # relacionar com o usuário instrutor que será registrado.
-        # Também verificar se o usuário tem permissão de acessar essa ação.
-
-        $model = new Pessoa([
-            'scenario' => Pessoa::SCENARIO_REGISTRO_INSTRUTOR
-        ]);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-instrutor', 'id' => $model->id]);
-        }
-
-        return $this->render('instrutor/create', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionUpdateInstrutor($id)
-    {
-        $model = $this->findModel($id);
-        $model->scenario = Pessoa::SCENARIO_REGISTRO_INSTRUTOR;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-instrutor', 'id' => $model->id]);
-        }
-
-        return $this->render('instrutor/update', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionViewInstrutor($id)
-    {
-        return $this->render('instrutor/view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    # -----------------------------------------------
-    /**
+     /**
      * Displays a single Pessoa model.
      * @param integer $id
      * @return mixed
@@ -184,9 +54,16 @@ class PessoaController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        $model = $this->findModel($id);
+
+        if ($model->servidor) {
+            return $this->render('servidor/view', [ 'model' => $model]);
+        }
+
+        return $this->render('aluno/view', [
+            'model' => $model,
         ]);
+
     }
 
     /**
@@ -222,6 +99,12 @@ class PessoaController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        if ($model->servidor) {
+            return $this->render('servidor/update', [
+                'model' => $model
+            ]);
+        }
+
         return $this->render('aluno/update', [
             'model' => $model,
         ]);
@@ -239,6 +122,149 @@ class PessoaController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Criar um usuário aluno
+     * @return string|\yii\web\Response
+     */
+    public function actionCreateAluno()
+    {
+        # Verificar se o usuário(instrutor) está autenticado.
+        # Se o usuário estiver autenticado, então pegar a matrícula e
+        # relacionar com o usuário comun(aluno) que será registrado.
+        # Também verificar se o usuário tem permissão de acessar essa ação.
+
+        $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_USUARIO]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-aluno', 'id' => $model->id]);
+        }
+
+        return $this->render('aluno/create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Cria um usuário servidor
+     * @return string|\yii\web\Response
+     */
+    public function actionCreateServidor()
+    {
+        # Verificar se o usuário(instrutor) está autenticado.
+        # Se o usuário estiver autenticado, então pegar a matrícula e
+        # relacionar com o usuário comun(servidor) que será registrado.
+        # Também verificar se o usuário tem permissão de acessar essa ação.
+
+        $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_SERVIDOR]);
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->servidor = true;
+            if ($model->save()) {
+                return $this->redirect(['view-servidor', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('servidor/create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Criar um usuário instrutor
+     * @return string|\yii\web\Response
+     */
+    public function actionCreateInstrutor()
+    {
+        # Verificar se o usuário(admin) está autenticado.
+        # Se o usuário estiver autenticado, então pegar a matrícula e
+        # relacionar com o usuário instrutor que será registrado.
+        # Também verificar se o usuário tem permissão de acessar essa ação.
+
+        $model = new Pessoa([
+            'scenario' => Pessoa::SCENARIO_REGISTRO_INSTRUTOR
+        ]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-instrutor', 'id' => $model->id]);
+        }
+
+        return $this->render('instrutor/create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Edita um usuário instrutor
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdateInstrutor($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_INSTRUTOR;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-instrutor', 'id' => $model->id]);
+        }
+
+        return $this->render('instrutor/update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Visão de um Instrutor
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionViewInstrutor($id)
+    {
+        return $this->render('instrutor/view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    protected function updateAluno($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-aluno', 'id' => $model->id]);
+        }
+
+        return $this->render('aluno/update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Edita um servidor
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    protected function updateServidor($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-servidor', 'id' => $model->id]);
+        }
+
+        return $this->render('servidor/update', [
+            'model' => $model,
+        ]);
     }
 
     /**
