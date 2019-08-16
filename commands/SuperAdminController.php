@@ -4,7 +4,6 @@
 namespace app\commands;
 
 use yii\console\Controller;
-use yii\console\ExitCode;
 use app\models\Pessoa;
 use \Exception;
 
@@ -63,8 +62,7 @@ class SuperAdminController extends  Controller
             echo "Não foi possível editar o administrador. Por favor, tente novamente.\n";
 
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n";
-            ExitCode::UNSPECIFIED_ERROR;
+            echo $e->getMessage() . " - " . $e->getLine() . "\n";
         }
     }
 
@@ -83,8 +81,7 @@ class SuperAdminController extends  Controller
             echo "Não foi possível excluir o administrador. Por favor, tente novamente.\n";
 
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n";
-            ExitCode::UNSPECIFIED_ERROR;
+            echo $e->getMessage() . " - " . $e->getLine() . "\n";
         }
     }
 
@@ -102,13 +99,12 @@ class SuperAdminController extends  Controller
             return;
 
         } catch (Exception $e) {
-            echo $e->getMessage() . "\n";
-            ExitCode::UNSPECIFIED_ERROR;
+            echo $e->getMessage() . " - " . $e->getLine() . "\n";
         }
     }
 
     protected function findModel($id) {
-        if ($model = Pessoa::findOne($id) !== null) {
+        if (($model = Pessoa::findOne($id)) !== null) {
             return $model;
         }
         throw new Exception("Admin não encontrado");
