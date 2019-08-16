@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -9,6 +10,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\LoginSuapForm;
 
 class SiteController extends Controller
 {
@@ -71,16 +73,19 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->layout = 'login';
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        $model = new LoginForm();
+        $model = new LoginSuapForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
 
-        $model->password = '';
+        //$model->password = '';
+        $model->senha = '';
         return $this->render('login', [
             'model' => $model,
         ]);
