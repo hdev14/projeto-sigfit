@@ -10,8 +10,12 @@ use yii\bootstrap\ActiveForm;
     </div>
     <div class="login-box-body">
 
-        <p class="login-box-msg">Digite sua matrícula e senha do
-            <strong>SUAP</strong></p>
+        <p class="login-box-msg">
+            Digite sua matrícula e senha do
+            <a href="suap.ifrn.edu.br">
+                <strong>SUAP</strong>
+            </a>
+        </p>
 
         <?php $form = ActiveForm::begin(); ?>
 
@@ -26,6 +30,11 @@ use yii\bootstrap\ActiveForm;
         <?php ActiveForm::end(); ?>
 
     </div>
-
 </div>
+
+
+<a id="freepik" href="https://br.freepik
+        .com/fotos-vetores-gratis/fundo">Fundo
+            foto criado por freepik - br.freepik.com</a>
+
 

@@ -1,0 +1,23 @@
+
+.login-page {
+    background-image: url("imgs/bg2.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    object-fit: cover;
+}
+
+.login-logo a{
+    color: #f0f0f0;
+}
+
+.login-box-msg a {
+    color: #2d2f39;
+}
+
+#freepik {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 7px;
+    color: rgba(0, 0, 0, 0.1);
+}
