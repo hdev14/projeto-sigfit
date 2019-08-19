@@ -43,4 +43,20 @@ class Suap extends Component
 
     }
 
+    public function validarToken($token) {
+
+        $resposta = $this->client->post('autenticacao/token/verify/', [
+            'json' => [
+                'token' => $token
+            ]
+        ]);
+
+        if ($resposta->getStatusCode() == 200) {
+            $dados = json_decode($resposta->getBody(), true);
+            return $dados['token'];
+        }
+
+        return false;
+    }
+
 }
