@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\LoginSuapForm;
+use app\models\Pessoa;
 
 class SiteController extends Controller
 {
@@ -71,25 +72,56 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
+//    public function actionLogin()
+//    {
+//        $this->layout = 'login';
+//
+//        if (!Yii::$app->user->isGuest) {
+//            return $this->goHome();
+//        }
+//
+//        $model = new LoginSuapForm();
+//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+//            return $this->goBack();
+//        }
+//
+//        //$model->password = '';
+//        $model->senha = '';
+//        return $this->render('login', [
+//            'model' => $model,
+//        ]);
+//    }
+
     public function actionLogin()
     {
         $this->layout = 'login';
 
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['pessoa/index']);
         }
 
-        $model = new LoginSuapForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        $login_suap = new LoginSuapForm();
+
+        if ($login_suap->load(Yii::$app->request->post())
+            && $login_suap->validate()) {
+
+            $token = $login_suap->autenticarUser();
+
+            if (!$token) {
+                // USUÁRIO NÃO AUTENTICADO VIA SUAP
+                // CRIAR UMA SESSION FLASH PARA NOTIFICAR O USUÁRIO.
+            } else if ($this->saveToken($token, $login_suap->matricula)
+                        && $login_suap->login()) {
+                return $this->redirect(['pessoa/index']);
+            }
         }
 
-        //$model->password = '';
-        $model->senha = '';
         return $this->render('login', [
-            'model' => $model,
+            'model' => $login_suap,
         ]);
+
     }
+
 
     /**
      * Logout action.
@@ -130,4 +162,15 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    protected function saveToken($token, $matricula) {
+
+        if (($user = Pessoa::findByMatricula($matricula)) != null) {
+            $user->token = $token;
+            $user->save();
+        }
+
+        return false;
+    }
+
 }
