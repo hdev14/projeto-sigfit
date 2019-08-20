@@ -167,7 +167,7 @@ class SiteController extends Controller
 
         if (($user = Pessoa::findByMatricula($matricula)) != null) {
             $user->token = $token;
-            $user->save();
+            return $user->save();
         }
 
         return false;
