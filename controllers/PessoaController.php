@@ -8,6 +8,7 @@ use app\models\PessoaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\filters\AuthSuap;
 
 /**
  * PessoaController implements the CRUD actions for Pessoa model.
@@ -28,6 +29,9 @@ class PessoaController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'auth-suap' => [
+                'class' => AuthSuap::className(),
+            ],
         ];
     }
 
@@ -46,7 +50,7 @@ class PessoaController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Displays a single Pessoa model.
      * @param integer $id
      * @return mixed
