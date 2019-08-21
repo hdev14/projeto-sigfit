@@ -16,6 +16,7 @@ class LoginSuapForm extends Model
     {
         return [
             [['matricula', 'senha'], 'required'],
+            ['matricula', 'number'],
         ];
     }
 
@@ -27,12 +28,12 @@ class LoginSuapForm extends Model
         ];
     }
 
-    public function login()
+    public function login($token)
     {
-        return Yii::$app->user->loginByAccessToken();
+        return Yii::$app->user->loginByAccessToken($token);
     }
 
-    public function autenticarUser()
+    public function autenticarUsuario()
     {
         return Yii::$app->suap->autenticar($this->matricula, $this->senha);
     }

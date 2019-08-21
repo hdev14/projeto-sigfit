@@ -100,18 +100,29 @@ class SiteController extends Controller
             return $this->redirect(['pessoa/index']);
         }
 
+        $post = Yii::$app->request->post();
+
         $login_suap = new LoginSuapForm();
 
-        if ($login_suap->load(Yii::$app->request->post())
-            && $login_suap->validate()) {
+        if ($login_suap->load($post) && $login_suap->validate()) {
 
-            $token = $login_suap->autenticarUser();
+            $token = $login_suap->autenticarUsuario();
 
             if (!$token) {
-                // USUÁRIO NÃO AUTENTICADO VIA SUAP
-                // CRIAR UMA SESSION FLASH PARA NOTIFICAR O USUÁRIO.
-            } else if ($this->saveToken($token, $login_suap->matricula)
-                        && $login_suap->login()) {
+
+                Yii::trace('TOKEN FALSE');
+
+                $session = Yii::$app->session;
+
+                $session->addFlash(
+                    'autenticacao_error',
+                    'Matrícula ou senha inválida.'
+                );
+
+            } else if ($this->salvarToken($token, $login_suap->matricula)
+                        && $login_suap->login($token)) {
+
+                Yii::trace('TOKEN VALIDO E USUÁRIO AUTENTICADO');
                 return $this->redirect(['pessoa/index']);
             }
         }
@@ -143,7 +154,9 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+        $post = Yii::$app->request->post();
+
+        if ($model->load($post) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
 
             return $this->refresh();
@@ -163,14 +176,18 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-    protected function saveToken($token, $matricula) {
+    protected function salvarToken($token, $matricula)
+    {
+        $usuario = Pessoa::findByMatricula($matricula);
 
-        if (($user = Pessoa::findByMatricula($matricula)) != null) {
-            $user->token = $token;
-            return $user->save();
+        if (is_null($usuario)) {
+            return false;
         }
 
-        return false;
+        $usuario->token = $token;
+        $usuario->save();
+
+        return $usuario;
     }
 
 }

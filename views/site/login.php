@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Alert;
 
 ?>
 <div class="login-box">
@@ -17,6 +18,13 @@ use yii\bootstrap\ActiveForm;
             </a>
         </p>
 
+        <?php if ($error = Yii::$app->session->getFlash('autenticacao_error')) {
+            echo Alert::widget([
+                'options' => ['class' => 'alert-danger'],
+                'body' => $error[0],
+            ]);
+        } ?>
+
         <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'matricula') ?>
@@ -30,11 +38,12 @@ use yii\bootstrap\ActiveForm;
         <?php ActiveForm::end(); ?>
 
     </div>
+
 </div>
 
 
 <a id="freepik" href="https://br.freepik
         .com/fotos-vetores-gratis/fundo">Fundo
-            foto criado por freepik - br.freepik.com</a>
+    foto criado por freepik - br.freepik.com</a>
 
 

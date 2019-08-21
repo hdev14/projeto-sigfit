@@ -138,7 +138,7 @@ class PessoaController extends Controller
         $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_USUARIO]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-aluno', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('aluno/create', [

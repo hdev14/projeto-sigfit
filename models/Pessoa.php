@@ -201,7 +201,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 
     public static function findByMatricula($matricula)
     {
-        return static::findOne(['matricula' => 'matricula']);
+        return static::findOne(['matricula' => $matricula]);
     }
 
     /**

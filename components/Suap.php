@@ -4,10 +4,10 @@
 namespace app\components;
 
 
-use GuzzleHttp\Exception\ClientException;
 use yii\base\Component;
-use GuzzleHttp\Client;
 use yii\helpers\Json;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class Suap extends Component
 {
@@ -34,38 +34,39 @@ class Suap extends Component
     public function autenticar($matricula, $senha)
     {
 
-       $resposta = $this->client->post('autenticacao/token/', [
-           'json' => [
-               'username' => $matricula,
-               'password' => $senha,
-           ]
-       ]);
+        try {
 
-       try {
-           if ($resposta->getStatusCode() == 200) {
+            $resposta = $this->client->post('autenticacao/token/', [
+                'json' => [
+                    'username' => $matricula,
+                    'password' => $senha
+                ]
+            ]);
+
+            if ($resposta->getStatusCode() == 200) {
                 $dados = Json::decode($resposta->getBody());
                 return $dados['token'];
-           }
-       } catch(ClientException $e) {
-           return false;
-       }
+            }
 
-       return false;
+        } catch(ClientException $e) {
+            return false;
+        }
+
     }
 
     /**
      * @param $token
      * @return bool
      */
-    public function validarToken($token) {
-
-        $resposta = $this->client->post('autenticacao/token/verify/', [
-            'json' => [
-                'token' => $token
-            ]
-        ]);
-
+    public function validarToken($token)
+    {
         try {
+            $resposta = $this->client->post('autenticacao/token/verify/', [
+                'json' => [
+                    'token' => $token
+                ]
+            ]);
+
             if ($resposta->getStatusCode() == 200) {
                 $dados = Json::decode($resposta->getBody());
                 return $dados['token'];
