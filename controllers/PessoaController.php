@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\UsuarioInstrutor;
 use Yii;
 use app\models\Pessoa;
 use app\models\PessoaSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,7 +32,47 @@ class PessoaController extends Controller
                 ],
             ],
             'auth-suap' => [
+                /* VERIFICA SE O USUÁRIO ESTÀ AUTENTICADO */
                 'class' => AuthSuap::className(),
+            ],
+
+            'access' => [
+                [
+                    'class' => AccessControl::className(),
+                    'only' => ['create-aluno'],
+                    'rules' => [
+                        [
+                            /* REGRA PARA O USUÁRIO QUE TEM PERMISSÃO DE INSTRUTOR */
+                            'allow' => true,
+                            'actions' => [
+                                'create-aluno',
+                                'update-aluno',
+                                'create-servidor',
+                                'update-servidor',
+                                'view',
+                            ],
+                            'roles' => ['@'],
+                            'permissions' => ['crud-all'],
+                        ],
+                        [
+                            /* REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE ADMIN */
+                            'allow' => true,
+                            'actions' => [
+                                'create-instrutor',
+                                'update-instrutor',
+                                'view-instrutor',
+                            ],
+                            'roles' => ['@'],
+                            'permissions' => ['crud-all', 'crud-instrutor'],
+                        ],
+                        /*
+                        [   REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE SUPER-ADMIN
+                            'allow' => true,
+                            'roles' => ['@'],
+                            'permissions' => ['super']
+                        ],*/
+                    ],
+                ],
             ],
         ];
     }
@@ -115,11 +157,11 @@ class PessoaController extends Controller
     }
 
     /**
-     * Deletes an existing Pessoa model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -129,51 +171,144 @@ class PessoaController extends Controller
     }
 
     /**
+     * Lista todos os usuários Alunos e Servidores
+     * @return string
+     */
+    public function actionUsuarios()
+    {
+         $pessoa_search = new PessoaSearch();
+        $dataProvider = $pessoa_search->searchUsuarios(Yii::$app->user->getId());
+
+        return $this->render('aluno/alunos', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+     # ---- ALUNO ---- #
+
+    /**
+     * Lista todos os Alunos
+     * @return string
+     */
+    public function actionAlunos() {
+
+        $pessoa_search = new PessoaSearch();
+        $dataProvider = $pessoa_search->searchAlunos(Yii::$app->user->getId());
+
+        return $this->render('aluno/alunos', [
+            'dataProvider' => $dataProvider,
+        ]);
+
+    }
+
+    /**
      * Criar um usuário aluno
      * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionCreateAluno()
     {
-        # Verificar se o usuário(instrutor) está autenticado.
-        # Se o usuário estiver autenticado, então pegar a matrícula e
-        # relacionar com o usuário comun(aluno) que será registrado.
-        # Também verificar se o usuário tem permissão de acessar essa ação.
+        $usuario_model = new Pessoa([
+            'scenario' => Pessoa::SCENARIO_REGISTRO_USUARIO
+        ]);
 
-        $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_USUARIO]);
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ( $usuario_model->load($post) && $usuario_model->save()
+            && $this->relacionarUsuarioInstrutor($usuario_model) ) {
+
+            return $this->redirect(['view', 'id' => $usuario_model->id]);
+
         }
 
         return $this->render('aluno/create', [
+            'model' => $usuario_model,
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    protected function updateAluno($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-aluno', 'id' => $model->id]);
+        }
+
+        return $this->render('aluno/update', [
             'model' => $model,
+        ]);
+    }
+
+    # ---- SERVIDOR ---- #
+
+    /**
+     * Lista todos os servidores
+     * @return string
+     */
+    public function actionServidores()
+    {
+        $pessoa_search = new PessoaSearch();
+
+        $dataProvider =
+            $pessoa_search->searchServidores(Yii::$app->user->getId());
+
+        return $this->render('servidor/servidores', [
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
      * Cria um usuário servidor
      * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionCreateServidor()
     {
-        # Verificar se o usuário(instrutor) está autenticado.
-        # Se o usuário estiver autenticado, então pegar a matrícula e
-        # relacionar com o usuário comun(servidor) que será registrado.
-        # Também verificar se o usuário tem permissão de acessar essa ação.
+        $usuario_model = new Pessoa([
+            'scenario' => Pessoa::SCENARIO_REGISTRO_SERVIDOR
+        ]);
 
-        $model = new Pessoa(['scenario' => Pessoa::SCENARIO_REGISTRO_SERVIDOR]);
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->servidor = true;
-            if ($model->save()) {
-                return $this->redirect(['view-servidor', 'id' => $model->id]);
-            }
+        if ( $usuario_model->load($post) && $usuario_model->save()
+            && $this->relacionarUsuarioInstrutor($usuario_model) ) {
+
+            return $this->redirect(['view', 'id' => $usuario_model->id]);
+
         }
 
         return $this->render('servidor/create', [
+            'model' => $usuario_model,
+        ]);
+    }
+
+    /**
+     * Edita um servidor
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    protected function updateServidor($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-servidor', 'id' => $model->id]);
+        }
+
+        return $this->render('servidor/update', [
             'model' => $model,
         ]);
     }
+
+     # ---- INSTRUTOR ---- #
 
     /**
      * Criar um usuário instrutor
@@ -181,11 +316,6 @@ class PessoaController extends Controller
      */
     public function actionCreateInstrutor()
     {
-        # Verificar se o usuário(admin) está autenticado.
-        # Se o usuário estiver autenticado, então pegar a matrícula e
-        # relacionar com o usuário instrutor que será registrado.
-        # Também verificar se o usuário tem permissão de acessar essa ação.
-
         $model = new Pessoa([
             'scenario' => Pessoa::SCENARIO_REGISTRO_INSTRUTOR
         ]);
@@ -232,51 +362,32 @@ class PessoaController extends Controller
         ]);
     }
 
+
+    # ---- MÉTODOS AUXILIARES ---- #
+
     /**
-     * @param $id
-     * @return string|\yii\web\Response
+     * @param $usuario_model \app\models\Pessoa
+     * @return bool
      * @throws NotFoundHttpException
      */
-    protected function updateAluno($id)
+    protected function relacionarUsuarioInstrutor($usuario_model)
     {
-        $model = $this->findModel($id);
-        $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
+        $instrutor = $this->findModel(Yii::$app->user->getId());
+        $usuario_instrutor_model = new UsuarioInstrutor();
+        $usuario_instrutor_model->usuario_id = $usuario_model->id;
+        $usuario_instrutor_model->instrutor_id = $instrutor->id;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-aluno', 'id' => $model->id]);
-        }
+        if ($usuario_instrutor_model->save())
+            return true;
 
-        return $this->render('aluno/update', [
-            'model' => $model,
-        ]);
+        return false;
+
     }
 
     /**
-     * Edita um servidor
      * @param $id
-     * @return string|\yii\web\Response
+     * @return Pessoa|null
      * @throws NotFoundHttpException
-     */
-    protected function updateServidor($id)
-    {
-        $model = $this->findModel($id);
-        $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-servidor', 'id' => $model->id]);
-        }
-
-        return $this->render('servidor/update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Finds the Pessoa model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Pessoa the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {

@@ -4,7 +4,6 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Pessoa;
 
 /**
  * PessoaSearch represents the model behind the search form of `app\models\Pessoa`.
@@ -38,7 +37,7 @@ class PessoaSearch extends Pessoa
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $aluno = false)
     {
         $query = Pessoa::find();
 
@@ -74,4 +73,60 @@ class PessoaSearch extends Pessoa
 
         return $dataProvider;
     }
+
+    public function searchUsuarios($matricula_instrutor)
+    {
+        // COLETA TODOS OS USUÁRIO DE ALUNOS E SERVIDORES QUE ESTÃO RELACIONADOS
+        // COM O INSTRUTOR
+
+        $instrutor = Pessoa::findOne(['matricula' => $matricula_instrutor]);
+        $query = $instrutor->getUsuarios();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['nome' => SORT_ASC],
+            ],
+        ]);
+
+        return $dataProvider;
+    }
+
+    public function searchAlunos($matricula_instrutor)
+    {
+        // COLETA TODOS OS USUÁRIO DE ALUNOS QUE ESTA RELACIONADO COM O
+        // INSTRUTOR
+
+        $instrutor = Pessoa::findOne(['matricula' => $matricula_instrutor]);
+        $query = $instrutor->getUsuarios()->where(['servidor' => false]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['nome' => SORT_ASC],
+            ],
+        ]);
+
+        return $dataProvider;
+
+    }
+
+    public function searchServidores($matricula_instrutor)
+    {
+        // COLETA TODOS OS USUÁRIO DE ALUNOS QUE ESTA RELACIONADO COM O
+        // INSTRUTOR
+
+        $instrutor = Pessoa::findOne(['matricula' => $matricula_instrutor]);
+        $query = $instrutor->getUsuarios()->where(['servidor' => true]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['nome' => SORT_ASC],
+            ],
+        ]);
+
+        return $dataProvider;
+    }
+
 }

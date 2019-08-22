@@ -19,10 +19,8 @@ class AuthSuap extends ActionFilter
 
         $usuario_id = Yii::$app->user->getId();
         $usuario = Pessoa::findOne($usuario_id);
-        if (($usuario != null) && $suap->validarToken($usuario->token)) {
-            return true;
-        } else {
-            # Adicionar layout para errors
+
+        if (!(($usuario != null) && $suap->validarToken($usuario->token))) {
             throw new ForbiddenHttpException("Você não tem permissão de acessar está página.");
         }
 

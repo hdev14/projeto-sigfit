@@ -284,7 +284,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioInstrutors()
+    public function getUsuarioInstrutores()
     {
         return $this->hasMany(UsuarioInstrutor::className(), ['instrutor_id' => 'id']);
     }
@@ -292,23 +292,25 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioInstrutors0()
+    public function getInstrutorUsuarios()
     {
         return $this->hasMany(UsuarioInstrutor::className(), ['usuario_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function getUsuarios()
     {
-        return $this->hasMany(Pessoa::className(), ['id' => 'usuario_id'])->viaTable('usuario_instrutor', ['instrutor_id' => 'id']);
+        return $this->hasMany(Pessoa::className(), ['id' => 'usuario_id'])
+            ->viaTable('usuario_instrutor', ['instrutor_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getInstrutors()
+    public function getInstrutores()
     {
         return $this->hasMany(Pessoa::className(), ['id' => 'instrutor_id'])
             ->viaTable('usuario_instrutor', ['usuario_id' => 'id']);
