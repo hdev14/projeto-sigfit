@@ -61,6 +61,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             [['matricula', 'nome'], 'string', 'max' => 45],
             [['matricula', 'nome'], 'required'],
             ['matricula', 'unique'],
+            ['matricula', 'number'],
             ['email', 'email'],
             [['email', 'curso'], 'string', 'max' => 50],
             [['periodo_curso', 'faltas'], 'integer'],

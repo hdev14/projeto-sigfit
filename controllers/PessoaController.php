@@ -6,7 +6,10 @@ use app\models\UsuarioInstrutor;
 use Yii;
 use app\models\Pessoa;
 use app\models\PessoaSearch;
+use yii\data\Pagination;
+use yii\db\QueryInterface;
 use yii\filters\AccessControl;
+use yii\filters\AccessRule;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,27 +38,31 @@ class PessoaController extends Controller
                 /* VERIFICA SE O USUÁRIO ESTÀ AUTENTICADO */
                 'class' => AuthSuap::className(),
             ],
-
+            /*
             'access' => [
                 [
                     'class' => AccessControl::className(),
-                    'only' => ['create-aluno'],
                     'rules' => [
                         [
-                            /* REGRA PARA O USUÁRIO QUE TEM PERMISSÃO DE INSTRUTOR */
+                            REGRA PARA O USUÁRIO QUE TEM PERMISSÃO DE INSTRUTOR
                             'allow' => true,
                             'actions' => [
-                                'create-aluno',
-                                'update-aluno',
-                                'create-servidor',
-                                'update-servidor',
+                                'index',
                                 'view',
+                                'create',
+                                'update',
+                                'delete',
+                                'usuarios',
+                                'alunos',
+                                'create-aluno',
+                                'servidores',
+                                'create-servidor',
                             ],
                             'roles' => ['@'],
                             'permissions' => ['crud-all'],
                         ],
                         [
-                            /* REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE ADMIN */
+                            REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE ADMIN
                             'allow' => true,
                             'actions' => [
                                 'create-instrutor',
@@ -65,15 +72,15 @@ class PessoaController extends Controller
                             'roles' => ['@'],
                             'permissions' => ['crud-all', 'crud-instrutor'],
                         ],
-                        /*
+
                         [   REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE SUPER-ADMIN
                             'allow' => true,
                             'roles' => ['@'],
                             'permissions' => ['super']
-                        ],*/
+                        ],
                     ],
                 ],
-            ],
+            ], */
         ];
     }
 
@@ -174,31 +181,42 @@ class PessoaController extends Controller
      * Lista todos os usuários Alunos e Servidores
      * @return string
      */
-    public function actionUsuarios()
-    {
-         $pessoa_search = new PessoaSearch();
-        $dataProvider = $pessoa_search->searchUsuarios(Yii::$app->user->getId());
+//    public function actionUsuarios()
+//    {
+//        $pessoa_search = new PessoaSearch();
+//        $dataProvider = $pessoa_search->searchUsuarios(Yii::$app->user->getId());
+//
+//        return $this->render('aluno/alunos', [
+//            'dataProvider' => $dataProvider,
+//        ]);
+//    }
 
-        return $this->render('aluno/alunos', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-     # ---- ALUNO ---- #
+    # ---- ALUNO ---- #
 
     /**
      * Lista todos os Alunos
      * @return string
      */
-    public function actionAlunos() {
-
+    public function actionAlunos()
+    {
         $pessoa_search = new PessoaSearch();
-        $dataProvider = $pessoa_search->searchAlunos(Yii::$app->user->getId());
 
-        return $this->render('aluno/alunos', [
-            'dataProvider' => $dataProvider,
+        /** @var $query QueryInterface */
+        $query = $pessoa_search->searchAlunos(Yii::$app->user->getId());
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
         ]);
 
+        $alunos = $query->orderBy('nome')
+                        ->offset($pagination->offset)
+                        ->limit($pagination->limit)
+                        ->all();
+
+        return $this->render('aluno/alunos', [
+            'alunos' => $alunos,
+            'pagination' => $pagination,
+        ]);
     }
 
     /**
@@ -276,11 +294,12 @@ class PessoaController extends Controller
 
         $post = Yii::$app->request->post();
 
-        if ( $usuario_model->load($post) && $usuario_model->save()
-            && $this->relacionarUsuarioInstrutor($usuario_model) ) {
-
-            return $this->redirect(['view', 'id' => $usuario_model->id]);
-
+        if ( $usuario_model->load($post)) {
+            $usuario_model->servidor = true;
+            if ($usuario_model->save()
+                && $this->relacionarUsuarioInstrutor($usuario_model)) {
+                return $this->redirect(['view', 'id' => $usuario_model->id]);
+            }
         }
 
         return $this->render('servidor/create', [
@@ -308,7 +327,7 @@ class PessoaController extends Controller
         ]);
     }
 
-     # ---- INSTRUTOR ---- #
+    # ---- INSTRUTOR ---- #
 
     /**
      * Criar um usuário instrutor

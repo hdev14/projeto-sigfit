@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -74,49 +75,34 @@ class PessoaSearch extends Pessoa
         return $dataProvider;
     }
 
-    public function searchUsuarios($matricula_instrutor)
+    public function searchUsuarios($instrutor_id)
     {
         // COLETA TODOS OS USUÁRIO DE ALUNOS E SERVIDORES QUE ESTÃO RELACIONADOS
         // COM O INSTRUTOR
 
-        $instrutor = Pessoa::findOne(['matricula' => $matricula_instrutor]);
+        $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'defaultOrder' => ['nome' => SORT_ASC],
-            ],
-        ]);
-
-        return $dataProvider;
+        return $query;
     }
 
-    public function searchAlunos($matricula_instrutor)
+    public function searchAlunos($instrutor_id)
     {
         // COLETA TODOS OS USUÁRIO DE ALUNOS QUE ESTA RELACIONADO COM O
         // INSTRUTOR
 
-        $instrutor = Pessoa::findOne(['matricula' => $matricula_instrutor]);
+        $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios()->where(['servidor' => false]);
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'defaultOrder' => ['nome' => SORT_ASC],
-            ],
-        ]);
-
-        return $dataProvider;
-
+        return $query;
     }
 
-    public function searchServidores($matricula_instrutor)
+    public function searchServidores($instrutor_id)
     {
         // COLETA TODOS OS USUÁRIO DE ALUNOS QUE ESTA RELACIONADO COM O
         // INSTRUTOR
 
-        $instrutor = Pessoa::findOne(['matricula' => $matricula_instrutor]);
+        $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios()->where(['servidor' => true]);
 
         $dataProvider = new ActiveDataProvider([

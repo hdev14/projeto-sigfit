@@ -22,7 +22,7 @@ $distPath = $app_admin_asset->baseUrl;
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="hold-transition skin-green sidebar-mini fixed">
+<body class="skin-green sidebar-mini fixed">
 <?php $this->beginBody() ?>
 <div>
 
