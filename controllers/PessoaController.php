@@ -181,15 +181,23 @@ class PessoaController extends Controller
      * Lista todos os usuários Alunos e Servidores
      * @return string
      */
-//    public function actionUsuarios()
-//    {
-//        $pessoa_search = new PessoaSearch();
-//        $dataProvider = $pessoa_search->searchUsuarios(Yii::$app->user->getId());
-//
-//        return $this->render('aluno/alunos', [
-//            'dataProvider' => $dataProvider,
-//        ]);
-//    }
+    public function actionUsuarios()
+    {
+        $pessoa_search = new PessoaSearch();
+        /** @var $query QueryInterface */
+        $query = $pessoa_search->searchUsuarios(Yii::$app->user->getId());
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+        ]);
+
+        $usuarios = $this->paginar($query, $pagination);
+
+        return $this->render('usuarios', [
+            'usuarios' => $usuarios,
+            'pagination' => $pagination,
+        ]);
+    }
 
     # ---- ALUNO ---- #
 
@@ -200,7 +208,6 @@ class PessoaController extends Controller
     public function actionAlunos()
     {
         $pessoa_search = new PessoaSearch();
-
         /** @var $query QueryInterface */
         $query = $pessoa_search->searchAlunos(Yii::$app->user->getId());
 
@@ -208,10 +215,7 @@ class PessoaController extends Controller
             'totalCount' => $query->count(),
         ]);
 
-        $alunos = $query->orderBy('nome')
-                        ->offset($pagination->offset)
-                        ->limit($pagination->limit)
-                        ->all();
+        $alunos = $this->paginar($query, $pagination);
 
         return $this->render('aluno/alunos', [
             'alunos' => $alunos,
@@ -272,12 +276,18 @@ class PessoaController extends Controller
     public function actionServidores()
     {
         $pessoa_search = new PessoaSearch();
+        /** @var $query QueryInterface */
+        $query = $pessoa_search->searchServidores(Yii::$app->user->getId());
 
-        $dataProvider =
-            $pessoa_search->searchServidores(Yii::$app->user->getId());
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+        ]);
+
+        $servidores = $this->paginar($query, $pagination);
 
         return $this->render('servidor/servidores', [
-            'dataProvider' => $dataProvider,
+            'servidores' => $servidores,
+            'pagination' => $pagination,
         ]);
     }
 
@@ -415,6 +425,12 @@ class PessoaController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    protected  function paginar(QueryInterface $query , Pagination $p)
+    {
+        return $query->orderBy('nome')->offset($p->offset)->limit($p->limit)
+            ->all();
     }
 
 }

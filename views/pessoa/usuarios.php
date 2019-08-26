@@ -1,8 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $alunos \yii\db\ActiveQuery */
-/* @var $aluno \app\models\Pessoa */
+/* @var $usuarios \yii\db\ActiveQuery */
+/* @var $usuario \app\models\Pessoa */
+/* @var $pagination \yii\data\Pagination */
 
 use \yii\widgets\LinkPager;
 use \yii\helpers\Url;
@@ -10,17 +11,27 @@ use \yii\helpers\Url;
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
 ?>
+
+<div class="tabs row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <a class="btn btn-default" href="#"> asdasd </a>
+            <a class="btn btn-default" href="#"> asdasd </a>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
-                <h3 class="box-title">Alunos</h3>
+                <h3 class="box-title">Usuários</h3>
             </div>
             <div class="box-body">
                 <table class="table table-bordered table-hover">
                     <tbody>
                     <tr>
                         <th style="width: 150px">Matrícula</th>
+                        <th>Tipo</th>
                         <th>Nome</th>
                         <th>Horário de Treino</th>
                         <th>E-mail</th>
@@ -29,19 +40,27 @@ use \yii\helpers\Url;
                         <th>Telefone</th>
                         <th style="width: 100px">Opções</th>
                     </tr>
-                    <?php foreach ($alunos as $aluno) { ?>
+                    <?php foreach ($usuarios as $usuario) { ?>
                         <tr>
-                            <td><?= $aluno->matricula ?></td>
-                            <td><?= $aluno->nome ?></td>
-                            <td><?= $aluno->horario_treino ?></td>
-                            <td><?= $aluno->email ?></td>
-                            <td><?= $aluno->curso ?></td>
-                            <td><?= $aluno->periodo_curso ?></td>
-                            <td><?= $aluno->telefone ?></td>
+                            <td><?= $usuario->matricula ?></td>
+                            <td>
+                                <?= $usuario->servidor ? 'Servidor' : 'Aluno' ?>
+                            </td>
+                            <td><?= $usuario->nome ?></td>
+                            <td><?= $usuario->horario_treino ?></td>
+                            <td><?= $usuario->email ?></td>
+                            <?php if (!$usuario->servidor): ?>
+                                <td><?= $usuario->curso ?></td>
+                                <td><?= $usuario->periodo_curso ?></td>
+                            <?php else: ?>
+                                <td>Sem curso</td>
+                                <td>Sem período</td>
+                            <?php endif; ?>
+                            <td><?= $usuario->telefone ?></td>
                             <td>
                                 <a href="<?= Url::to([
                                     'pessoa/view',
-                                    'id' => $aluno->id
+                                    'id' => $usuario->id
                                 ]) ?> "
                                    class="btn btn-xs btn-flat btn-default"
                                    title="Visualizar usuário">
@@ -50,7 +69,7 @@ use \yii\helpers\Url;
 
                                 <a href="<?= Url::to([
                                     'pessoa/update',
-                                    'id' => $aluno->id
+                                    'id' => $usuario->id
                                 ]) ?> "
                                    class="btn btn-xs btn-flat btn-info"
                                    title="Editar usuário">

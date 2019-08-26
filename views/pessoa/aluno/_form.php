@@ -25,8 +25,8 @@ use yii\widgets\ActiveForm;
                 ]) ?>
 
                 <?= $form->field($model, 'nome')->textInput([
-                        'placeholder' => "Digite o nome do usuário",
-                        'maxlength' => true
+                    'placeholder' => "Digite o nome do usuário",
+                    'maxlength' => true
                 ]) ?>
 
                 <?= $form->field($model, 'email')->textInput([
@@ -69,7 +69,7 @@ use yii\widgets\ActiveForm;
                 ]) ?>
             </div>
             <div class="col-xs-12 form-group text-right">
-                <?= Html::submitButton('Registrar', [
+                <?= Html::submitButton('Confirmar', [
                     'class' => 'btn btn-success btn-flat'
                 ]) ?>
             </div>

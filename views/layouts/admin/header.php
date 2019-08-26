@@ -11,7 +11,7 @@ use yii\helpers\Html;
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>A</b>LT</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Admin</b>LTE</span>
+        <span class="logo-lg">SIG<b>FIT</b></span>
     </a>
 
     <!-- Header Navbar -->
@@ -44,9 +44,13 @@ use yii\helpers\Html;
                             <div class="pull-left">
                                 <!-- <a href="#" class="btn btn-default btn-flat">Profile</a> -->
                             </div>
-                            <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                            </div>
+                            <?=
+                            Html::beginForm(['/site/logout'], 'post', ['class'=>'pull-right'])
+                            . Html::submitButton(
+                                'Sair',
+                                ['class' => 'btn btn-default btn-flat']
+                            )
+                            . Html::endForm() ?>
                         </li>
                     </ul>
                 </li>

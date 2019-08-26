@@ -105,14 +105,7 @@ class PessoaSearch extends Pessoa
         $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios()->where(['servidor' => true]);
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'defaultOrder' => ['nome' => SORT_ASC],
-            ],
-        ]);
-
-        return $dataProvider;
+        return $query;
     }
 
 }

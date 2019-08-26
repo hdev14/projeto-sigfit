@@ -9,11 +9,10 @@ use yii\web\View;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Usuários Instruídos';
-$this->params['breadcrumbs'][] = $this->title;
 
 $this->registerJs("
-        var elt_modal = document.querySelector('#modal-registro');
-        var elt_btn = document.querySelector('#registro-aluno');
+        const elt_modal = document.querySelector('#modal-registro');
+        const elt_btn = document.querySelector('#registro-aluno');
         
         elt_btn.onclick = function() {
             elt_modal.style.display = 'block';
