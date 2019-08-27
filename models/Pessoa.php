@@ -97,8 +97,10 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 
             # VALIDADOR DE ARQUIVO PARA A FOTO
             [
-                'image_file',
-                'file','extensions' => ['png', 'jpeg', 'jpg'],
+                ['image_file'],
+                'file',
+                'skipOnEmpty' => true,
+                'extensions' => ['png', 'jpeg', 'jpg'],
                 'maxSize' => 1024*1024
             ],
 
@@ -122,6 +124,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'problema_saude',
             'telefone',
             'espera',
+            'foto',
             'image_file'
         ];
 
@@ -133,6 +136,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'problema_saude',
             'telefone',
             'espera',
+            'foto',
             'image_file'
         ];
 
@@ -140,6 +144,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'matricula',
             'nome',
             'email',
+            'foto',
             'image_file'
         ];
 
@@ -152,18 +157,18 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'matricula' => Yii::t('app', 'Matrícula'),
-            'nome' => Yii::t('app', 'Nome'),
-            'email' => Yii::t('app', 'Email'),
-            'curso' => Yii::t('app', 'Curso'),
-            'periodo_curso' => Yii::t('app', 'Período do Curso'),
-            'horario_treino' => Yii::t('app', 'Horário do Treino'),
-            'problema_saude' => Yii::t('app', 'Problema de Saúde (opcional)'),
-            'faltas' => Yii::t('app', 'Faltas'),
-            'espera' => Yii::t('app', 'Espera'),
-            'telefone' => Yii::t('app', 'Telefone (opcional)'),
-            'foto' => Yii::t('app', 'Adicionar Foto'),
+            'id' => 'ID',
+            'matricula' => 'Matrícula',
+            'nome' => 'Nome',
+            'email' => 'Email',
+            'curso' => 'Curso',
+            'periodo_curso' => 'Período do Curso',
+            'horario_treino' => 'Horário do Treino',
+            'problema_saude' => 'Problema de Saúde',
+            'faltas' => 'Faltas',
+            'espera' => 'Espera',
+            'telefone' => 'Telefone',
+            'image_file' => 'Adicionar Foto',
         ];
     }
 
@@ -188,14 +193,22 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function upload()
     {
-
         if ($this->validate()) {
-            $this->image_file->saveAs(
-                'uploads/usuarios/' . $this->image_file->baseName .
-                "." . $this->image_file->extension
-            );
+
+            if (!is_null($this->image_file)) {
+                $this->foto = '/uploads/usuarios/' . $this->image_file->name;
+                $this->image_file->saveAs(
+                    Yii::getAlias('@webroot') .
+                    '/uploads/usuarios/' . $this->image_file->name
+                );
+                $this->image_file = null;
+            } else {
+                $this->foto =  '/uploads/usuarios/default.jpeg';
+            }
+
             return true;
         }
+
         return false;
     }
 

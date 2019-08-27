@@ -50,6 +50,7 @@ use yii\widgets\ActiveForm;
 
             <div class="col-xs-6">
 
+
                 <?= $form->field($model, 'telefone')->textInput([
                     'pattern' => '^\(\d{2}\)\d{5}-\d{4}',
                     'placeholder' => "(99)99999-9999",
@@ -65,8 +66,11 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'problema_saude')->textarea([
                     'placeholder' => "Descrição do problema",
-                    'rows' => 6
+                    'rows' => 4
                 ]) ?>
+
+                <?= $form->field($model, 'image_file')->fileInput() ?>
+
             </div>
             <div class="col-xs-12 form-group text-right">
                 <?= Html::submitButton('Confirmar', [

@@ -54,14 +54,18 @@ use yii\widgets\ActiveForm;
                     'placeholder' => "Descrição do Problema",
                     'rows' => 4
                 ]) ?>
+
+                <?= $form->field($model, 'image_file')->fileInput() ?>
+            </div>
+
+            <div class="col-xs-12 form-group text-right">
+                <?= Html::submitButton('Registrar', [
+                    'class' => 'btn btn-success btn-flat'
+                ]) ?>
             </div>
         </div>
 
-        <div class="col-xs-12 form-group text-right">
-            <?= Html::submitButton('Registrar', [
-                    'class' => 'btn btn-success btn-flat'
-            ]) ?>
-        </div>
+
 
         <?php ActiveForm::end(); ?>
     </div>

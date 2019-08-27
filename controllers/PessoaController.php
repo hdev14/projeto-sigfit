@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\filters\AuthSuap;
+use yii\web\UploadedFile;
 
 /**
  * PessoaController implements the CRUD actions for Pessoa model.
@@ -236,11 +237,13 @@ class PessoaController extends Controller
 
         $post = Yii::$app->request->post();
 
-        if ( $usuario_model->load($post) && $usuario_model->save()
-            && $this->relacionarUsuarioInstrutor($usuario_model) ) {
-
-            return $this->redirect(['view', 'id' => $usuario_model->id]);
-
+        if ($usuario_model->load($post)) {
+            $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
+            if ($usuario_model->upload()
+                && $usuario_model->save()
+                && $this->relacionarUsuarioInstrutor($usuario_model)) {
+                return $this->redirect(['view', 'id' => $usuario_model->id]);
+            }
         }
 
         return $this->render('aluno/create', [
@@ -304,9 +307,11 @@ class PessoaController extends Controller
 
         $post = Yii::$app->request->post();
 
-        if ( $usuario_model->load($post)) {
+        if ($usuario_model->load($post)) {
             $usuario_model->servidor = true;
-            if ($usuario_model->save()
+            $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
+            if ($usuario_model->upload()
+                && $usuario_model->save()
                 && $this->relacionarUsuarioInstrutor($usuario_model)) {
                 return $this->redirect(['view', 'id' => $usuario_model->id]);
             }
