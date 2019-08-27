@@ -38,7 +38,7 @@ use yii\widgets\ActiveForm;
                     'pattern' => '^\(\d{2}\)\d{5}-\d{4}',
                     'placeholder' => "(99)99999-9999",
                     'maxlength' => true
-                ]) ?>
+                ])->label('Telefone (opcional)') ?>
 
             </div>
             <div class="col-xs-6">
@@ -53,7 +53,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'problema_saude')->textarea([
                     'placeholder' => "Descrição do Problema",
                     'rows' => 4
-                ]) ?>
+                ])->label('Problema de Saúde (opcional)') ?>
 
                 <?= $form->field($model, 'image_file')->fileInput() ?>
             </div>
