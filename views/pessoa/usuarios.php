@@ -8,23 +8,18 @@
 use \yii\widgets\LinkPager;
 use \yii\helpers\Url;
 
+$this->title = "Usuários Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
 ?>
 
-<div class="tabs row">
-    <div class="col-md-12">
-        <div class="btn-group btn-group-justified" role="group" aria-label="...">
-            <a class="btn btn-default" href="#"> asdasd </a>
-            <a class="btn btn-default" href="#"> asdasd </a>
-        </div>
-    </div>
-</div>
+<?= $this->render('partial/btn-group') ?>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
-                <h3 class="box-title">Usuários</h3>
+                <h3 class="box-title">Todos</h3>
             </div>
             <div class="box-body">
                 <table class="table table-bordered table-hover">

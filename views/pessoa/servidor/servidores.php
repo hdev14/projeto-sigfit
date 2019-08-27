@@ -8,9 +8,12 @@ use \yii\widgets\LinkPager;
 use \yii\helpers\Html;
 use \yii\helpers\Url;
 
-$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
-$this->params['breadcrumbs'][] = 'Servidores';
+$this->title = "Usuários Instruídos";
+//$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
+//$this->params['breadcrumbs'][] = 'Servidores';
 ?>
+
+<?= $this->render('../partial/btn-group') ?>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
