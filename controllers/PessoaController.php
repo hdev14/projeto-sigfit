@@ -239,8 +239,7 @@ class PessoaController extends Controller
 
         if ($usuario_model->load($post)) {
             $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
-            if ($usuario_model->upload()
-                && $usuario_model->save()
+            if ($usuario_model->upload() && $usuario_model->save()
                 && $this->relacionarUsuarioInstrutor($usuario_model)) {
                 return $this->redirect(['view', 'id' => $usuario_model->id]);
             }
@@ -310,8 +309,7 @@ class PessoaController extends Controller
         if ($usuario_model->load($post)) {
             $usuario_model->servidor = true;
             $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
-            if ($usuario_model->upload()
-                && $usuario_model->save()
+            if ($usuario_model->upload() && $usuario_model->save()
                 && $this->relacionarUsuarioInstrutor($usuario_model)) {
                 return $this->redirect(['view', 'id' => $usuario_model->id]);
             }

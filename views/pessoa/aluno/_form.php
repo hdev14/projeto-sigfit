@@ -55,7 +55,7 @@ use yii\widgets\ActiveForm;
                     'pattern' => '^\(\d{2}\)\d{5}-\d{4}',
                     'placeholder' => "(99)99999-9999",
                     'maxlength' => true
-                ]) ?>
+                ])->label('Telefone (opcional)') ?>
 
                 <?= $form->field($model, 'horario_treino')->dropDownList([
                     '7h às 8h' => '7h às 8h',
@@ -67,7 +67,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'problema_saude')->textarea([
                     'placeholder' => "Descrição do problema",
                     'rows' => 4
-                ]) ?>
+                ])->label('Problema de Saúde (opcional)') ?>
 
                 <?= $form->field($model, 'image_file')->fileInput() ?>
 

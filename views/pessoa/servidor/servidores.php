@@ -1,11 +1,10 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $servidors \yii\db\ActiveQuery */
+/* @var $servidores \yii\db\ActiveQuery */
 /* @var $servidor \app\models\Pessoa */
 
 use \yii\widgets\LinkPager;
-use \yii\helpers\Html;
 use \yii\helpers\Url;
 
 $this->title = "Usuários Instruídos";
