@@ -173,9 +173,17 @@ class PessoaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $usuario = $this->findModel($id);
+        $usuario_instrutor = $usuario->usuarioInstrutores;
 
-        return $this->redirect(['index']);
+        # Exclui os registros na tabela de relacionamento.
+        foreach ($usuario_instrutor as $ui) {
+            $ui->delete();
+        }
+
+        $usuario->delete();
+
+        return $this->redirect(['usuarios']);
     }
 
     /**

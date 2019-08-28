@@ -29,8 +29,8 @@ use yii\web\UploadedFile;
  * @property Frequencia[] $frequencias
  * @property PessoaTreino[] $pessoaTreinos
  * @property Treino[] $treinos
- * @property UsuarioInstrutor[] $usuarioInstrutors
- * @property UsuarioInstrutor[] $usuarioInstrutors0
+ * @property UsuarioInstrutor[] $instrutorUsuarios
+ * @property UsuarioInstrutor[] $usuarioInstrutores
  * @property Pessoa[] $usuarios
  * @property Pessoa[] $instrutors
  */
@@ -297,7 +297,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioInstrutores()
+    public function getInstrutorUsuarios()
     {
         return $this->hasMany(UsuarioInstrutor::className(), ['instrutor_id' => 'id']);
     }
@@ -305,7 +305,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getInstrutorUsuarios()
+    public function getUsuarioInstrutores()
     {
         return $this->hasMany(UsuarioInstrutor::className(), ['usuario_id' => 'id']);
     }
