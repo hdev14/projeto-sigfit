@@ -4,10 +4,13 @@
 namespace app\components;
 
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use yii\base\Component;
 use yii\helpers\Json;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use \Exception;
+use yii\web\NotFoundHttpException;
 
 class Suap extends Component
 {
@@ -48,8 +51,12 @@ class Suap extends Component
                 return $dados['token'];
             }
 
-        } catch(ClientException $e) {
+        } catch (ClientException $e) {
             return false;
+        } catch (ConnectException $e) {
+            # Procurar uma Exception para simbolizar falta de conexão com o
+            # sevidor.
+            throw new NotFoundHttpException("Suap CAIU");
         }
 
     }
@@ -71,7 +78,7 @@ class Suap extends Component
                 $dados = Json::decode($resposta->getBody());
                 return $dados['token'];
             }
-        } catch(ClientException $e) {
+        } catch(Exception $e) {
             return false;
         }
 

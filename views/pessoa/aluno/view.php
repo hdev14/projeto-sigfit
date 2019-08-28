@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 
-//$this->title = $model->id;
+$this->title = 'Perfil do Usuário';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -15,35 +15,81 @@ use yii\helpers\Url;
 
 <div class="row">
     <div class="col-md-3">
-        <div class="box">
+        <div class="box box-primary">
             <div class="box-body box-profile">
-                <img src="<?= Url::to("@web".$model->foto)?>"
+                <img src="<?= Url::to("@web" . $model->foto)?>"
                      alt="<?= $model->nome ?>"
-                     class="profile-user-img img-responsive img-rounded">
+                     class="profile-user-img img-responsive img-circle">
                 <h3 class="profile-username text-center">
                     <?= $model->nome ?>
                 </h3>
                 <p class="text-muted text-center">
-                    <?= $model->matricula ?>
+                    <?= $model->servidor ? 'Servidor' : 'Aluno' ?>
                 </p>
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                        <?= $model->email ?>
+                        <span class="badge bg-green">
+                            <?= $model->horario_treino ?>
+                        </span>
+                        <b>Horário de Treino</b>
                     </li>
                     <li class="list-group-item">
-                        <?= $model->email ?>
+                        <span class="badge bg-red">
+                            <?= $model->faltas ? $model->faltas : 0 ?>
+                        </span>
+                        <b>Faltas</b>
                     </li>
                     <li class="list-group-item">
-                        <?= $model->email ?>
+                        <h6 class="list-group-item-heading">
+                            <b>Matrícula</b>
+                        </h6>
+                        <p class="list-group-item-text text-muted">
+                            <?= $model->matricula ?>
+                        </p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <h6 class="list-group-item-heading">
+                            <b>Curso</b>
+                        </h6>
+                        <p class="list-group-item-text text-muted">
+                            <?= $model->curso ?>
+                            <small class="label pull-right bg-blue">
+                                <?= $model->periodo_curso . 'º Período' ?>
+                            </small>
+                        </p>
                     </li>
                     <li class="list-group-item">
-                        <?= $model->email ?>
+                        <h6 class="list-group-item-heading">
+                            <b>E-mail</b>
+                        </h6>
+                        <p class="list-group-item-text text-muted">
+                            <?= $model->email ?>
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <h6 class="list-group-item-heading">
+                            <b>Telefone</b>
+                        </h6>
+                        <p class="list-group-item-text text-muted">
+                            <?= $model->telefone ?>
+                        </p>
+                    </li>
+                     <li class="list-group-item">
+                        <h6 class="list-group-item-heading">
+                            <b>Problema de Saúde</b>
+                        </h6>
+                        <p class="list-group-item-text text-muted">
+                            <?= $model->problema_saude ?>
+                        </p>
                     </li>
                 </ul>
-                <p>
-                    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                        'class' => 'btn btn-danger',
+                <p class="text-right">
+                    <?= Html::a('<b>Editar</b>', ['update', 'id' => $model->id],
+                        ['class' => 'btn btn-sm btn-primary']) ?>
+                    <?= Html::a('<b>Excluir</b>', ['delete', 'id' =>
+                        $model->id], [
+                        'class' => 'btn btn-sm btn-danger',
                         'data' => [
                             'confirm' => 'Are you sure you want to delete this item?',
                             'method' => 'post',

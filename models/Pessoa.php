@@ -183,7 +183,6 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             # Dessa forma, se a variavel for 'registro_aluno' deve-se adicionar
             # FALSE a coluna servidor, caso for 'registro_servidor', deve-se
             # colocar TRUE na coluna servidor.
-
         }
         return true;
     }

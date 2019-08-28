@@ -77,9 +77,6 @@ class PessoaSearch extends Pessoa
 
     public function searchUsuarios($instrutor_id)
     {
-        // COLETA TODOS OS USUÁRIO DE ALUNOS E SERVIDORES QUE ESTÃO RELACIONADOS
-        // COM O INSTRUTOR
-
         $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios();
 
@@ -88,9 +85,6 @@ class PessoaSearch extends Pessoa
 
     public function searchAlunos($instrutor_id)
     {
-        // COLETA TODOS OS USUÁRIO DE ALUNOS QUE ESTA RELACIONADO COM O
-        // INSTRUTOR
-
         $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios()->where(['servidor' => false]);
 
@@ -99,8 +93,6 @@ class PessoaSearch extends Pessoa
 
     public function searchServidores($instrutor_id)
     {
-        // COLETA TODOS OS USUÁRIO DE ALUNOS QUE ESTA RELACIONADO COM O
-        // INSTRUTOR
 
         $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios()->where(['servidor' => true]);
