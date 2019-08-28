@@ -38,7 +38,7 @@ use yii\helpers\Url;
                 </a>
                 <ul class="treeview-menu">
                     <li class="active">
-                        <a href="<?= Url::to(['pessoa/index']) ?>">
+                        <a href="<?= Url::to(['pessoa/usuarios']) ?>">
                             <i class="fa fa-id-card"></i> Instruídos
                         </a>
                     </li>

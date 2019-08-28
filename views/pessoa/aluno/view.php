@@ -11,15 +11,17 @@ $this->title = 'Perfil do Usuário';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
 ?>
 
 <div class="row">
     <div class="col-md-3">
-        <div class="box box-primary">
+        <div class="box box-success">
             <div class="box-body box-profile">
                 <img src="<?= Url::to("@web" . $model->foto)?>"
                      alt="<?= $model->nome ?>"
-                     class="profile-user-img img-responsive img-circle">
+                     class="profile-user-img img-responsive img-circle"
+                     style="height: 90px; width: 90px;">
                 <h3 class="profile-username text-center">
                     <?= $model->nome ?>
                 </h3>
@@ -28,16 +30,16 @@ $this->title = 'Perfil do Usuário';
                 </p>
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                        <span class="badge bg-green">
-                            <?= $model->horario_treino ?>
-                        </span>
-                        <b>Horário de Treino</b>
-                    </li>
-                    <li class="list-group-item">
                         <span class="badge bg-red">
                             <?= $model->faltas ? $model->faltas : 0 ?>
                         </span>
                         <b>Faltas</b>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge bg-green">
+                            <?= $model->horario_treino ?>
+                        </span>
+                        <b>Horário de Treino</b>
                     </li>
                     <li class="list-group-item">
                         <h6 class="list-group-item-heading">
@@ -47,7 +49,6 @@ $this->title = 'Perfil do Usuário';
                             <?= $model->matricula ?>
                         </p>
                     </li>
-
                     <li class="list-group-item">
                         <h6 class="list-group-item-heading">
                             <b>Curso</b>
@@ -86,10 +87,10 @@ $this->title = 'Perfil do Usuário';
                 </ul>
                 <p class="text-right">
                     <?= Html::a('<b>Editar</b>', ['update', 'id' => $model->id],
-                        ['class' => 'btn btn-sm btn-primary']) ?>
+                        ['class' => 'btn btn-sm btn-primary btn-flat']) ?>
                     <?= Html::a('<b>Excluir</b>', ['delete', 'id' =>
                         $model->id], [
-                        'class' => 'btn btn-sm btn-danger',
+                        'class' => 'btn btn-sm btn-danger btn-flat',
                         'data' => [
                             'confirm' => 'Are you sure you want to delete this item?',
                             'method' => 'post',
