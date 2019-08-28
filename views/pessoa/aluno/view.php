@@ -11,7 +11,6 @@ $this->title = 'Perfil do Usuário';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-
 ?>
 
 <div class="row">
