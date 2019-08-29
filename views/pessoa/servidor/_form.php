@@ -35,7 +35,6 @@ use yii\widgets\ActiveForm;
                 ]) ?>
 
                 <?= $form->field($model, 'telefone')->textInput([
-                    'pattern' => '^\(\d{2}\)\d{5}-\d{4}',
                     'placeholder' => "(99)99999-9999",
                     'maxlength' => true
                 ])->label('Telefone (opcional)') ?>

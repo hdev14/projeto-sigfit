@@ -261,9 +261,13 @@ class PessoaController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-aluno', 'id' => $model->id]);
+        if ($model->load($post)) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->upload() && $model->save()) {
+                return $this->redirect(['view-aluno', 'id' => $model->id]);
+            }
         }
 
         return $this->render('aluno/update', [
@@ -332,9 +336,14 @@ class PessoaController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-servidor', 'id' => $model->id]);
+        # NÃO TA FNCIONANDO O UPLOAD DE ARQUIVO
+        if ($model->load($post)) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->upload() && $model->save()) {
+                return $this->redirect(['view-servidor', 'id' => $model->id]);
+            }
         }
 
         return $this->render('servidor/update', [

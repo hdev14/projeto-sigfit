@@ -193,9 +193,9 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     public function upload()
     {
         if ($this->validate()) {
-
             if (!is_null($this->image_file)) {
                 $this->foto = '/uploads/usuarios/' . $this->image_file->name;
+                Yii::debug($this->foto, "MODEL PESSOA");
                 $this->image_file->saveAs(
                     Yii::getAlias('@webroot') .
                     '/uploads/usuarios/' . $this->image_file->name
