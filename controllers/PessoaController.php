@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\UsuarioInstrutor;
+use app\models\UsuarioInstrutorSearch;
 use Yii;
 use app\models\Pessoa;
 use app\models\PessoaSearch;
@@ -39,49 +40,42 @@ class PessoaController extends Controller
                 /* VERIFICA SE O USUÁRIO ESTÀ AUTENTICADO */
                 'class' => AuthSuap::className(),
             ],
-            /*
             'access' => [
-                [
-                    'class' => AccessControl::className(),
-                    'rules' => [
-                        [
-                            REGRA PARA O USUÁRIO QUE TEM PERMISSÃO DE INSTRUTOR
-                            'allow' => true,
-                            'actions' => [
-                                'index',
-                                'view',
-                                'create',
-                                'update',
-                                'delete',
-                                'usuarios',
-                                'alunos',
-                                'create-aluno',
-                                'servidores',
-                                'create-servidor',
-                            ],
-                            'roles' => ['@'],
-                            'permissions' => ['crud-all'],
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [   #REGRA PARA O USUÁRIO QUE TEM PERMISSÃO DE INSTRUTOR
+                        'allow' => true,
+                        'actions' => [
+                            'index',
+                            'view',
+                            'create',
+                            'update',
+                            'delete',
+                            'usuarios',
+                            'alunos',
+                            'create-aluno',
+                            'servidores',
+                            'create-servidor',
                         ],
-                        [
-                            REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE ADMIN
-                            'allow' => true,
-                            'actions' => [
-                                'create-instrutor',
-                                'update-instrutor',
-                                'view-instrutor',
-                            ],
-                            'roles' => ['@'],
-                            'permissions' => ['crud-all', 'crud-instrutor'],
+                        'roles' => ['crud-all'],
+                    ],
+                    [   #REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE ADMIN
+                        'allow' => true,
+                        'actions' => [
+                            'instrutores',
+                            'create-instrutor',
+                            'update-instrutor',
+                            'view-instrutor',
                         ],
+                        'roles' => ['crud-instrutor'],
+                    ],
 
-                        [   REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE SUPER-ADMIN
-                            'allow' => true,
-                            'roles' => ['@'],
-                            'permissions' => ['super']
-                        ],
+                    [   #REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE SUPER-ADMIN
+                        'allow' => true,
+                        'roles' => ['super'],
                     ],
                 ],
-            ], */
+            ],
         ];
     }
 
@@ -349,6 +343,23 @@ class PessoaController extends Controller
     }
 
     # ---- INSTRUTOR ---- #
+
+    public function actionInstrutores()
+    {
+        $pessoa_search = new PessoaSearch();
+        $query = $pessoa_search->searchInstrutores();
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+        ]);
+
+        $instrutores = $this->paginar($query, $pagination);
+
+        return $this->render('instrutor/instrutores', [
+            'instrutores' => $instrutores,
+            'pagination' => $pagination,
+        ]);
+    }
 
     /**
      * Criar um usuário instrutor

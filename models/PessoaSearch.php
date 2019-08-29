@@ -100,4 +100,15 @@ class PessoaSearch extends Pessoa
         return $query;
     }
 
+    public function searchInstrutores() {
+
+        $query = Pessoa::find()->join(
+            'INNER JOIN',
+            'usuario_instrutor',
+            'usuario_instrutor.instrutor_id = pessoa.id'
+        );
+
+        return $query;
+    }
+
 }

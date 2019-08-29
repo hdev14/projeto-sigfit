@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
         ]) ?>
 
         <div class="form-group text-right">
-            <?= Html::submitButton('Registrar', [
+            <?= Html::submitButton('Confirmar', [
                 'class' => 'btn btn-success btn-flat'
             ]) ?>
         </div>
