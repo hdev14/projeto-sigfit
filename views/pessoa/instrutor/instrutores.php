@@ -6,21 +6,6 @@
 /* @var $instrutor app\models\Pessoa */
 /* @var $pagination yii\data\Pagination */
 
-?>
-
-<h1>Instrutores</h1>
-
-<?php foreach ($instrutores as $instrutor): ?>
-    <h6><?= $instrutor->nome ?></h6>
-<?php endforeach; ?>
-
-<?php
-
-/* @var $this yii\web\View */
-/* @var $alunos \yii\db\ActiveQuery */
-/* @var $aluno \app\models\Pessoa */
-
-
 use \yii\widgets\LinkPager;
 use \yii\helpers\Url;
 
@@ -28,8 +13,6 @@ $this->title = "Usuários Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
 ?>
-
-<?= $this->render('../partial/btn-group') ?>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
@@ -45,19 +28,15 @@ $this->title = "Usuários Instruídos";
                         <th>E-mail</th>
                         <th style="width: 100px">Opções</th>
                     </tr>
-                    <?php foreach ($alunos as $aluno) { ?>
+                    <?php foreach ($instrutores as $instrutor) { ?>
                         <tr>
-                            <td><?= $aluno->matricula ?></td>
-                            <td><?= $aluno->nome ?></td>
-                            <td><?= $aluno->horario_treino ?></td>
-                            <td><?= $aluno->email ?></td>
-                            <td><?= $aluno->curso ?></td>
-                            <td><?= $aluno->periodo_curso ?></td>
-                            <td><?= $aluno->telefone ?></td>
+                            <td><?= $instrutor->matricula ?></td>
+                            <td><?= $instrutor->nome ?></td>
+                            <td><?= $instrutor->email ?></td>
                             <td>
                                 <a href="<?= Url::to([
-                                    'pessoa/view',
-                                    'id' => $aluno->id
+                                    'pessoa/view-instrutor',
+                                    'id' => $instrutor->id
                                 ]) ?> "
                                    class="btn btn-xs btn-flat btn-default"
                                    title="Visualizar usuário">
@@ -65,8 +44,8 @@ $this->title = "Usuários Instruídos";
                                 </a>
 
                                 <a href="<?= Url::to([
-                                    'pessoa/update',
-                                    'id' => $aluno->id
+                                    'pessoa/update-instrutor',
+                                    'id' => $instrutor->id
                                 ]) ?> "
                                    class="btn btn-xs btn-flat btn-info"
                                    title="Editar usuário">
