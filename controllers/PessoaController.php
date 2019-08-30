@@ -325,8 +325,13 @@ class PessoaController extends Controller
             'scenario' => Pessoa::SCENARIO_REGISTRO_INSTRUTOR
         ]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-instrutor', 'id' => $model->id]);
+        $post = Yii::$app->request->post();
+
+        if ($model->load($post)) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->upload() && $model->save()) {
+                return $this->redirect(['view-instrutor', 'id' => $model->id]);
+            }
         }
 
         return $this->render('instrutor/create', [
