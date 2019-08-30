@@ -287,6 +287,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 
     /**
      * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function getTreinos()
     {

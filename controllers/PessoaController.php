@@ -143,19 +143,11 @@ class PessoaController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
         if ($model->servidor) {
-            return $this->render('servidor/update', [
-                'model' => $model
-            ]);
+            return $this->updateServidor($model);
         }
 
-        return $this->render('aluno/update', [
-            'model' => $model,
-        ]);
+        return $this->updateAluno($model);
     }
 
     /**
@@ -257,16 +249,15 @@ class PessoaController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    protected function updateAluno($id)
+    protected function updateAluno(Pessoa $model)
     {
-        $model = $this->findModel($id);
         $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
         $post = Yii::$app->request->post();
 
         if ($model->load($post)) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->upload() && $model->save()) {
-                return $this->redirect(['view-aluno', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
@@ -332,17 +323,16 @@ class PessoaController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    protected function updateServidor($id)
+    protected function updateServidor(Pessoa $model)
     {
-        $model = $this->findModel($id);
         $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
         $post = Yii::$app->request->post();
 
-        # NÃO TA FNCIONANDO O UPLOAD DE ARQUIVO
         if ($model->load($post)) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            Yii::debug($model->image_file, "IMAGEM");
             if ($model->upload() && $model->save()) {
-                return $this->redirect(['view-servidor', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
