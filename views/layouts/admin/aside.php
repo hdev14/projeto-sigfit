@@ -29,12 +29,13 @@ use yii\helpers\Url;
         </form> -->
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu" data-widget="tree">
+        <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
             <?php if (Yii::$app->user->can('crud-instrutor')): ?>
-                <li>
+                <li class="treeview">
                     <a href="<?= Url::to(['pessoa/instrutores']) ?>">
-                        <i class="fa fa-user-secret"></i> Instrutores
+                        <i class="fa fa-user-secret"></i>
+                        <span>Instrutores</span>
                     </a>
                 </li>
             <?php endif; ?>

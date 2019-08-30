@@ -245,28 +245,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * @param Pessoa $model
-     * @return string|\yii\web\Response
-     * @throws \Exception
-     */
-    protected function updateAluno(Pessoa $model)
-    {
-        $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
-        $post = Yii::$app->request->post();
-
-        if ($model->load($post)) {
-            $model->image_file = UploadedFile::getInstance($model, 'image_file');
-            if ($model->upload() && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        }
-
-        return $this->render('aluno/update', [
-            'model' => $model,
-        ]);
-    }
-
     # ---- SERVIDOR ---- #
 
     /**
@@ -315,29 +293,6 @@ class PessoaController extends Controller
 
         return $this->render('servidor/create', [
             'model' => $usuario_model,
-        ]);
-    }
-
-    /**
-     * Edita um servidor
-     * @param $id
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
-     */
-    protected function updateServidor(Pessoa $model)
-    {
-        $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
-        $post = Yii::$app->request->post();
-
-        if ($model->load($post)) {
-            $model->image_file = UploadedFile::getInstance($model, 'image_file');
-            if ($model->upload() && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        }
-
-        return $this->render('servidor/update', [
-            'model' => $model,
         ]);
     }
 
@@ -418,6 +373,51 @@ class PessoaController extends Controller
 
 
     # ---- MÉTODOS AUXILIARES ---- #
+
+     /**
+     * @param Pessoa $model
+     * @return string|\yii\web\Response
+     * @throws \Exception
+     */
+    protected function updateAluno(Pessoa $model)
+    {
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
+        $post = Yii::$app->request->post();
+
+        if ($model->load($post)) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->upload() && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('aluno/update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Edita um servidor
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    protected function updateServidor(Pessoa $model)
+    {
+        $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
+        $post = Yii::$app->request->post();
+
+        if ($model->load($post)) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->upload() && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('servidor/update', [
+            'model' => $model,
+        ]);
+    }
 
     /**
      * @param $usuario_model \app\models\Pessoa
