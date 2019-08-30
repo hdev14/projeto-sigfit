@@ -9,15 +9,15 @@ use yii\helpers\Url;
         <div class="btn-group btn-group-sm" role="group"
              aria-label="
         ...">
-           <a class="btn btn-success btn-flat"
+           <a class="btn btn-default btn-flat"
               href="<?= Url::to(['pessoa/usuarios']) ?>">
                 Todos
             </a>
-            <a class="btn btn-success btn-flat"
+            <a class="btn btn-default btn-flat"
                href="<?= Url::to(['pessoa/alunos']) ?>">
                 Alunos
             </a>
-            <a class="btn btn-success btn-flat"
+            <a class="btn btn-default btn-flat"
                href="<?= Url::to(['pessoa/servidores']) ?>">
                 Servidores
             </a>

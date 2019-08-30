@@ -7,6 +7,8 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 
+$f = Yii::$app->formatter;
+
 $this->title = 'Perfil do Usuário';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
@@ -73,7 +75,7 @@ $this->title = 'Perfil do Usuário';
                             <b>E-mail</b>
                         </h6>
                         <p class="list-group-item-text text-muted">
-                            <?= $model->email ?>
+                            <?= $f->asEmail($model->email) ?>
                         </p>
                     </li>
                     <li class="list-group-item">

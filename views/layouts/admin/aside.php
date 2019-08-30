@@ -1,4 +1,6 @@
 <?php
+
+use Yii;
 use yii\helpers\Url;
 ?>
 <aside class="main-sidebar">
@@ -29,6 +31,13 @@ use yii\helpers\Url;
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
+            <?php if (Yii::$app->user->can('crud-instrutor')): ?>
+                <li>
+                    <a href="<?= Url::to(['pessoa/instrutores']) ?>">
+                        <i class="fa fa-user-secret"></i> Instrutores
+                    </a>
+                </li>
+            <?php endif; ?>
             <li class="active treeview menu-open">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Usuários</span>
