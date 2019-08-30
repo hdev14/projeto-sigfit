@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\UsuarioInstrutor;
 use app\models\UsuarioInstrutorSearch;
+use DateTime;
 use Yii;
 use app\models\Pessoa;
 use app\models\PessoaSearch;

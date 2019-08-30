@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Yii;
 
 use yii\web\IdentityInterface;
@@ -189,25 +190,29 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function upload()
     {
         if ($this->validate()) {
             if (!is_null($this->image_file)) {
-                $this->foto = '/uploads/usuarios/' . $this->image_file->name;
-                Yii::debug($this->foto, "MODEL PESSOA");
+
+                $timestamp = (new DateTime())->getTimestamp();
+
+                $this->foto = '/uploads/usuarios/'
+                    . $timestamp . '.' . $this->image_file->extension;
+
                 $this->image_file->saveAs(
                     Yii::getAlias('@webroot') .
-                    '/uploads/usuarios/' . $this->image_file->name
+                    $this->foto
                 );
+
                 $this->image_file = null;
             } else {
                 $this->foto =  '/uploads/usuarios/default.jpeg';
             }
-
             return true;
         }
-
         return false;
     }
 
