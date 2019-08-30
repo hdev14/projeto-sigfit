@@ -17,6 +17,25 @@ $this->title = 'Perfil do Usuário';
 <div class="row">
     <div class="col-md-3">
         <div class="box box-success">
+            <div class="box-header">
+                <h3 class="box-title"></h3>
+                <div class="box-tools pull-right">
+                    <?= Html::a('<i class="fa fa-pencil fa-lg"></i>', ['update', 'id' => $model->id],
+                        [
+                            'class' => 'btn btn-box-tool',
+                            'title' => 'Editar usuário'
+                        ]) ?>
+                    <?= Html::a('<i class="fa fa-user-times fa-lg"></i>', ['delete', 'id' =>
+                        $model->id], [
+                        'class' => 'btn btn-box-tool',
+                        'title' => 'Excluir usuário',
+                        'data' => [
+                            'confirm' => 'Tem certeza de que deseja excluir este servidor?',
+                            'method' => 'post',
+                        ],
+                    ]) ?>
+                </div>
+            </div>
             <div class="box-body box-profile">
                 <img src="<?= Url::to("@web" . $model->foto)?>"
                      alt="<?= $model->nome ?>"
@@ -74,18 +93,6 @@ $this->title = 'Perfil do Usuário';
                         </p>
                     </li>
                 </ul>
-                <p class="text-right">
-                    <?= Html::a('<b>Editar</b>', ['update', 'id' => $model->id],
-                        ['class' => 'btn btn-sm btn-primary']) ?>
-                    <?= Html::a('<b>Excluir</b>', ['delete', 'id' =>
-                        $model->id], [
-                        'class' => 'btn btn-sm btn-danger',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to delete this item?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
-                </p>
             </div>
         </div>
     </div>

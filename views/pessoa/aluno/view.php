@@ -3,9 +3,12 @@
 /* @var $this yii\web\View */
 /* @var $model app\models\Pessoa */
 
+use Yii;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
+
+$f = Yii::$app->formatter;
 
 $this->title = 'Perfil do Usuário';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
@@ -16,6 +19,25 @@ $this->title = 'Perfil do Usuário';
 <div class="row">
     <div class="col-md-3">
         <div class="box box-success">
+            <div class="box-header">
+                <h3 class="box-title"></h3>
+                <div class="box-tools pull-right">
+                    <?= Html::a('<i class="fa fa-pencil fa-lg"></i>', ['update', 'id' => $model->id],
+                        [
+                            'class' => 'btn btn-box-tool',
+                            'title' => 'Editar usuário'
+                        ]) ?>
+                    <?= Html::a('<i class="fa fa-user-times fa-lg"></i>', ['delete', 'id' =>
+                        $model->id], [
+                        'class' => 'btn btn-box-tool',
+                        'title' => 'Excluir usuário',
+                        'data' => [
+                            'confirm' => 'Tem certeza de que deseja excluir este aluno?',
+                            'method' => 'post',
+                        ],
+                    ]) ?>
+                </div>
+            </div>
             <div class="box-body box-profile">
                 <img src="<?= Url::to("@web" . $model->foto)?>"
                      alt="<?= $model->nome ?>"
@@ -75,7 +97,7 @@ $this->title = 'Perfil do Usuário';
                             <?= $model->telefone ?>
                         </p>
                     </li>
-                     <li class="list-group-item">
+                    <li class="list-group-item">
                         <h6 class="list-group-item-heading">
                             <b>Problema de Saúde</b>
                         </h6>
@@ -85,16 +107,7 @@ $this->title = 'Perfil do Usuário';
                     </li>
                 </ul>
                 <p class="text-right">
-                    <?= Html::a('<b>Editar</b>', ['update', 'id' => $model->id],
-                        ['class' => 'btn btn-sm btn-primary btn-flat']) ?>
-                    <?= Html::a('<b>Excluir</b>', ['delete', 'id' =>
-                        $model->id], [
-                        'class' => 'btn btn-sm btn-danger btn-flat',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to delete this item?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
+
                 </p>
             </div>
         </div>

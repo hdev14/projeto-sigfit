@@ -246,9 +246,9 @@ class PessoaController extends Controller
     }
 
     /**
-     * @param $id
+     * @param Pessoa $model
      * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     protected function updateAluno(Pessoa $model)
     {
@@ -331,7 +331,6 @@ class PessoaController extends Controller
 
         if ($model->load($post)) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
-            Yii::debug($model->image_file, "IMAGEM");
             if ($model->upload() && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -390,9 +389,13 @@ class PessoaController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = Pessoa::SCENARIO_REGISTRO_INSTRUTOR;
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-instrutor', 'id' => $model->id]);
+        if ($model->load($post)) {
+            $model->image_file = UploadedFile::getInstance($model, 'image_file');
+            if ($model->upload() && $model->save()) {
+                return $this->redirect(['view-instrutor', 'id' => $model->id]);
+            }
         }
 
         return $this->render('instrutor/update', [
