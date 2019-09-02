@@ -104,8 +104,8 @@ class PessoaSearch extends Pessoa
 
         $query = Pessoa::find()->join(
             'INNER JOIN',
-            'usuario_instrutor',
-            'usuario_instrutor.instrutor_id = pessoa.id'
+            'auth_assignment',
+            "auth_assignment.user_id = pessoa.id AND auth_assignment.item_name = 'instrutor'"
         );
 
         return $query;

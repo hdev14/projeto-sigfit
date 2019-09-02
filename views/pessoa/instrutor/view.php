@@ -77,7 +77,11 @@ $this->title = 'Perfil do Instrutor';
         <?= ListView::widget([
             'dataProvider' => $data_provider,
             'itemView' => '../partial/_usuarios-view',
-            'emptyText' => "O instrutor {$model->nome} ainda não possui usuários instruídos.",
+            'emptyText' => "
+                <div class='alert alert-info' rol=\"alert\">
+                    O instrutor <b>{$model->nome}</b> ainda não possui usuários instruídos.          
+                </div>
+            ",
             'pager' => [
                 'options' => [
                     'class' => 'pagination pagination-sm no-margin pull-right'
