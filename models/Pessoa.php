@@ -180,13 +180,23 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function beforeSave($insert)
     {
-        if (parent::beforeSave($insert)) {
-            # Antes de salvar o usuário verificar a variavel scenario.
-            # Dessa forma, se a variavel for 'registro_aluno' deve-se adicionar
-            # FALSE a coluna servidor, caso for 'registro_servidor', deve-se
-            # colocar TRUE na coluna servidor.
+
+        return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $auth = Yii::$app->authManager;
+
+        if (!key_exists('instrutor', $auth->getRolesByUser($this->id))
+            && $this->scenario === Pessoa::SCENARIO_REGISTRO_INSTRUTOR) {
+
+            $instrutor_role =  $auth->getRole('instrutor');
+            $auth->assign($instrutor_role, $this->id);
+            Yii::debug("ADD ROLE");
         }
-        return true;
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
