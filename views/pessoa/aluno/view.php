@@ -52,7 +52,7 @@ $this->title = 'Perfil do Usuário';
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
                         <span class="badge bg-red">
-                            <?= $model->faltas ? $model->faltas : 0 ?>
+                            <?= $model->faltas ?>
                         </span>
                         <b>Faltas</b>
                     </li>

@@ -106,6 +106,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             ],
 
             # VALORES DEFAULT
+            ['faltas', 'default', 'value' => 0],
             ['problema_saude', 'default', 'value' => 'Nenhum problema de saúde.'],
             ['telefone', 'default', 'value' => 'Sem telefone.'],
         ];

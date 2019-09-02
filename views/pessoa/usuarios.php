@@ -40,7 +40,11 @@ $this->title = "Usuários Instruídos";
                         <tr>
                             <td><?= $usuario->matricula ?></td>
                             <td>
-                                <?= $usuario->servidor ? 'Servidor' : 'Aluno' ?>
+                                <?php if ($usuario->servidor): ?>
+                                    <span class="label label-success">Servidor</span>
+                                <?php else: ?>
+                                    <span class="label label-primary">Aluno</span>
+                                <?php endif; ?>
                             </td>
                             <td><?= $usuario->nome ?></td>
                             <td><?= $usuario->horario_treino ?></td>

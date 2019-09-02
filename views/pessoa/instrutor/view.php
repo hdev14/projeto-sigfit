@@ -2,10 +2,12 @@
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Pessoa */
+/* @var $data_provider yii\data\ActiveDataProvider */
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
+use yii\widgets\ListView;
 
 $f = Yii::$app->formatter;
 
@@ -27,7 +29,7 @@ $this->title = 'Perfil do Instrutor';
                             'class' => 'btn btn-box-tool',
                             'title' => 'Editar usuário'
                         ]) ?>
-                    <?= Html::a('<i class="fa fa-user-times fa-lg"></i>', ['delete', 'id' =>
+                    <?= Html::a('<i class="fa fa-user-times fa-lg"></i>', ['delete-instrutor', 'id' =>
                         $model->id], [
                         'class' => 'btn btn-box-tool',
                         'title' => 'Excluir usuário',
@@ -72,17 +74,47 @@ $this->title = 'Perfil do Instrutor';
         </div>
     </div>
     <div class="col-md-9">
-        <div class="box">
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'matricula',
-                    'nome',
-                    'email:email',
+        <?= ListView::widget([
+            'dataProvider' => $data_provider,
+            'itemView' => '../partial/_usuarios-view',
+            'emptyText' => "O instrutor {$model->nome} ainda não possui usuários instruídos.",
+            'pager' => [
+                'options' => [
+                    'class' => 'pagination pagination-sm no-margin pull-right'
                 ],
-            ]) ?>
-        </div>
+            ],
+            'layout' => "
+            <div class=\"box box-primary\">
+                <div class=\"box-header\">
+                    <h3 class=\"box-title\">
+                        Usuários Instruídos
+                    </h3>
+                    <div class='box-tools'>
+                        {summary}
+                    </div>
+                </div>
+                <div class=\"box-body table-responsive no-padding\">
+                    <table class=\"table table-hover\">
+                        <tbody>
+                            <tr>
+                                <th>Matrícula</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Horário de Treino</th>
+                                <th>Faltas</th>
+                                <th>Tipo</th>
+                                <th width=\"50px\"></th>
+                            </tr>
+                            {items}
+                        </tbody>
+                    </table>
+                </div>
+                <div class=\"box-footer clearfix\">
+                    {pager}
+                </div>
+            </div>
+            ",
+        ]) ?>
     </div>
 </div>
 

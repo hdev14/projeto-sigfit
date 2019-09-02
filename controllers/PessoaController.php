@@ -8,6 +8,7 @@ use DateTime;
 use Yii;
 use app\models\Pessoa;
 use app\models\PessoaSearch;
+use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use yii\db\QueryInterface;
 use yii\filters\AccessControl;
@@ -371,9 +372,43 @@ class PessoaController extends Controller
      */
     public function actionViewInstrutor($id)
     {
-        return $this->render('instrutor/view', [
-            'model' => $this->findModel($id),
+        $instrutor_model = $this->findModel($id);
+
+        $query = $instrutor_model->getUsuarios();
+
+        $data_provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
         ]);
+
+        return $this->render('instrutor/view', [
+            'model' => $instrutor_model,
+            'data_provider' => $data_provider,
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDeleteInstrutor($id)
+    {
+        $instrutor_model = $this->findModel($id);
+        $instrutor_usuarios = $instrutor_model->instrutorUsuarios;
+
+        # Exclui os registros na tabela de relacionamento.
+        foreach ($instrutor_usuarios as $iu) {
+            $iu->delete();
+        }
+
+        $instrutor_model->delete();
+
+        return $this->redirect(['instrutores']);
     }
 
 
