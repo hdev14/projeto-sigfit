@@ -208,7 +208,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
                 );
 
                 $this->image_file = null;
-            } else {
+            } else if(empty($this->foto)) {
                 $this->foto =  '/uploads/usuarios/default.jpeg';
             }
             return true;
