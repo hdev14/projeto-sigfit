@@ -5,7 +5,7 @@ use yii\web\View;
 
 $this->registerJs("
         const elt_modal = document.querySelector('#modal-registro');
-        const elt_btn = document.querySelector('#registro-aluno');
+        const elt_btn = document.querySelector('#registro-usuario');
         
         elt_btn.onclick = function() {
             elt_modal.style.display = 'block';
