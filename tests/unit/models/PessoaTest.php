@@ -30,6 +30,7 @@ class PessoaTest extends Unit
     /**
      * @test
      * @expectedException \Exception
+     * @expectedException \Throwable
      */
     public function SeOModeloPessoaEstaSalvando()
     {
@@ -40,9 +41,7 @@ class PessoaTest extends Unit
             'charset' => 'utf8',
         ]);
 
-        $isolation_level = Transaction::READ_UNCOMMITTED;
-
-        $trasanction = $db->beginTransaction($isolation_level);
+        $transaction = $db->beginTransaction();
 
         try {
 
@@ -55,13 +54,16 @@ class PessoaTest extends Unit
             $pessoa->horario_treino = '7h às 8h';
             $pessoa->save();
 
-            $trasanction->commit();
+            $transaction->commit();
 
         } catch (\Exception $e) {
-
-            $trasanction->rollBack();
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
             throw $e;
         }
+
 
         $pessoa_inserida = Pessoa::findOne(['matricula' => '20161038060041']);
 
@@ -73,7 +75,7 @@ class PessoaTest extends Unit
         $this->assertEquals($pessoa_inserida->periodo_curso, $pessoa->periodo_curso);
         $this->assertEquals($pessoa_inserida->horario_treino, $pessoa->horario_treino);
 
-        $trasanction->rollBack();
+        $transaction->rollBack();
 
     }
 
@@ -82,7 +84,6 @@ class PessoaTest extends Unit
      */
     public function VerificarSeEstaSalvandoAImagem()
     {
-
         $this->markTestIncomplete('Ainda será refeito ');
 
         // Criar o teste para verificar se a função upload está funcionando

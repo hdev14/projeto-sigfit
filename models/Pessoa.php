@@ -180,7 +180,6 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function beforeSave($insert)
     {
-
         return parent::beforeSave($insert);
     }
 
