@@ -135,11 +135,9 @@ class PessoaController extends Controller
     }
 
     /**
-     * Updates an existing Pessoa model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -175,8 +173,8 @@ class PessoaController extends Controller
     }
 
     /**
-     * Lista todos os usuários Alunos e Servidores
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionUsuarios()
     {
@@ -199,8 +197,8 @@ class PessoaController extends Controller
     # ---- ALUNO ---- #
 
     /**
-     * Lista todos os Alunos
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionAlunos()
     {
@@ -221,7 +219,6 @@ class PessoaController extends Controller
     }
 
     /**
-     * Criar um usuário aluno
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
@@ -249,8 +246,8 @@ class PessoaController extends Controller
     # ---- SERVIDOR ---- #
 
     /**
-     * Lista todos os servidores
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionServidores()
     {

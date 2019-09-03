@@ -10,7 +10,7 @@ use yii\helpers\Html;
 use \yii\widgets\LinkPager;
 use \yii\helpers\Url;
 
-$this->title = "Usuários Instruídos";
+$this->title = "Instrutores";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
 ?>
@@ -18,13 +18,13 @@ $this->title = "Usuários Instruídos";
     <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
-                <h3 class="box-title">Instrutores</h3>
+                <h3 class="box-title"></h3>
                 <div class="box-tools pull-right">
                     <div class="box-tools pull-right">
                         <?= Html::a('<i class="fa fa-user-plus fa-lg"></i> Novo Instrutor',
                             ['pessoa/create-instrutor'],
                             [
-                                'class' => 'btn btn-box-tool bg-green btn-flat'
+                                'class' => 'btn btn-box-tool bg-green'
                             ]
                         ) ?>
                     </div>

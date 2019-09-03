@@ -98,7 +98,9 @@ class SiteController extends Controller
         $this->layout = 'login';
 
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect(['pessoa/index']);
+            return Yii::$app->user->can('crud-instrutor') ?
+                $this->redirect(['pessoa/instrutores']) :
+                $this->redirect(['pessoa/usuarios']);
         }
 
         $post = Yii::$app->request->post();
@@ -110,28 +112,24 @@ class SiteController extends Controller
             $token = $login_suap->autenticarUsuario();
 
             if (!$token) {
-
-                Yii::trace('TOKEN FALSE');
-
                 $session = Yii::$app->session;
-
                 $session->addFlash(
                     'autenticacao_error',
                     'Matrícula ou senha inválida.'
                 );
-
             } else if ($this->salvarToken($token, $login_suap->matricula)
-                        && $login_suap->login($token)) {
+                && $login_suap->login($token)) {
 
-                Yii::trace('TOKEN VALIDO E USUÁRIO AUTENTICADO');
-                return $this->redirect(['pessoa/index']);
+                return Yii::$app->user->can('crud-instrutor') ?
+                    $this->redirect(['pessoa/instrutores']) :
+                    $this->redirect(['pessoa/usuarios']);
             }
+
         }
 
         return $this->render('login', [
             'model' => $login_suap,
         ]);
-
     }
 
 

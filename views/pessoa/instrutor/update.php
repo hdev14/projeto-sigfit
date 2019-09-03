@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pessoa */
 
-$this->title = 'Editar registro';
+$this->title = "Editar o instrutor(a) <b>{$model->nome}</b>";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 //$this->params['breadcrumbs'][] = 'Update';

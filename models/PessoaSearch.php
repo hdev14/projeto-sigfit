@@ -75,31 +75,45 @@ class PessoaSearch extends Pessoa
         return $dataProvider;
     }
 
+    /**
+     * @param $instrutor_id
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
     public function searchUsuarios($instrutor_id)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios();
-
         return $query;
     }
 
+    /**
+     * @param $instrutor_id
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
     public function searchAlunos($instrutor_id)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios()->where(['servidor' => false]);
-
         return $query;
     }
 
+    /**
+     * @param $instrutor_id
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
     public function searchServidores($instrutor_id)
     {
-
         $instrutor = Pessoa::findOne($instrutor_id);
         $query = $instrutor->getUsuarios()->where(['servidor' => true]);
-
         return $query;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function searchInstrutores() {
 
         $query = Pessoa::find()->join(

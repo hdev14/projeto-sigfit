@@ -7,7 +7,7 @@
 use \yii\widgets\LinkPager;
 use \yii\helpers\Url;
 
-$this->title = "Usuários Instruídos";
+$this->title = "Servidores Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Servidores';
 ?>
