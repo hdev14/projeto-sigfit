@@ -1,8 +1,8 @@
 <?php
 
-
 namespace app\commands;
 
+use Yii;
 use yii\console\Controller;
 use app\models\Pessoa;
 use \Exception;
@@ -13,24 +13,49 @@ class SuperAdminController extends  Controller
     {
         echo "---- AÇÕES ---- \n";
         echo "super-admin/admins - Retorna todos os administradores. \n";
-        echo "super-admin/create-admin - Cria um usuário administrador.\n";
+        echo "super-admin/create-admin <matricula> <nome> <email> - Cria um usuário administrador.\n";
         echo "super-admin/update-admin - Editar um usuário administrador. \n";
         echo "super-admin/delete-admin - Excluir um usuário administrador. \n";
         echo "super-admin/view-admin - Retorna os dados de um aministrador. \n";
     }
 
+    public function actionAdmins()
+    {
+        /* @var $admin Pessoa */
+        $admins = Pessoa::find()->join(
+            'INNER JOIN',
+            'auth_assignment',
+            "auth_assignment.user_id = pessoa.id AND auth_assignment.item_name = 'admin'"
+        )->all();
+
+        echo "A D M I N S\n";
+
+        if (!$admins) {
+            echo "Nenhuma admin registrado.\n";
+        } else {
+            foreach ($admins as $admin) {
+                echo "------------------------------\n";
+                echo "id: {$admin->id}\n" .
+                    "matricula: {$admin->matricula}\n" .
+                    "nome: {$admin->nome}\n" .
+                    "email: {$admin->email}\n";
+                echo "------------------------------\n";
+            }
+        }
+
+    }
+
     public function actionCreateAdmin($matricula, $nome, $email)
     {
-        # DEPOIS QUE A AUTENTICAÇÃO ESTIVE COMPLETADA, VERIFICAR SE
-        # O USUÁRIO ESTA AUTENTICA E SE TEM PERMISSÃO PARA EXECUTAR ESTA AÇÃO,
-        # DEPOIS RELACIONAR O USUÁRIO AUTENTICADO COM O NOVO ADMINISTRADOR.
-
         $admin = new Pessoa();
         $admin->matricula = $matricula;
         $admin->nome = $nome;
         $admin->email = $email;
 
         if ($admin->save()) {
+            $auth = Yii::$app->authManager;
+            $admin_role = $auth->getRole('admin');
+            $auth->assign($admin_role, $admin->id);
             echo "Registro feito com sucesso. \n";
             return;
         }
@@ -44,9 +69,6 @@ class SuperAdminController extends  Controller
         $nome = null,
         $email = null
     ) {
-        # DEPOIS QUE A AUTENTICAÇÃO ESTIVE COMPLETADA, VERIFICAR SE
-        # O USUÁRIO ESTA AUTENTICA E SE TEM PERMISSÃO PARA EXECUTAR ESTA AÇÃO.
-
         try {
             $admin = $this->findModel($id);
             $admin->matricula =
@@ -68,9 +90,6 @@ class SuperAdminController extends  Controller
 
     public function actionDeleteAdmin($id)
     {
-        # DEPOIS QUE A AUTENTICAÇÃO ESTIVE COMPLETADA, VERIFICAR SE
-        # O USUÁRIO ESTA AUTENTICA E SE TEM PERMISSÃO PARA EXECUTAR ESTA AÇÃO.
-
         try {
             $admin = $this->findModel($id);
             if ($admin->delete()) {
