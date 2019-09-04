@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
         <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-        <?= $form->field($model, 'foto')->fileInput() ?>
+        <?= $form->field($model, 'image_file')->fileInput() ?>
 
         <?= $form->field($model, 'matricula')->textInput([
             'placeholder' => 'Digite a matrícula.',
@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
         ]) ?>
 
         <div class="form-group text-right">
-            <?= Html::submitButton('Registrar', [
+            <?= Html::submitButton('Confirmar', [
                 'class' => 'btn btn-success btn-flat'
             ]) ?>
         </div>

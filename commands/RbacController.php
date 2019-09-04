@@ -11,7 +11,7 @@ class RbacController extends Controller
     public function actionInit()
     {
         # Define todas os papeis, como também todas permissões da aplicação.
-        $auth =  Yii::$app->authManager;
+        $auth = Yii::$app->authManager;
 
         $instrutor_perm = $auth->createPermission('crud-all');
         $instrutor_perm->description = "Pode realizar a manipulação de todoas as entidades do banco de dados.";
@@ -43,7 +43,7 @@ class RbacController extends Controller
 
     public function actionVerificarPerm()
     {
-        $auth =  Yii::$app->authManager;
+        $auth = Yii::$app->authManager;
 
         $instrutor_role = $auth->getRole('instrutor');
         $admin_role = $auth->getRole('admin');
@@ -56,5 +56,27 @@ class RbacController extends Controller
         }
 
         echo "Não foram criadas as permissões.";
+    }
+
+    public function actionAddPermissaoSuper($id)
+    {
+        $auth = Yii::$app->authManager;
+        $super_role = $auth->getRole('super-admin');
+        $auth->assign($super_role, $id);
+
+    }
+
+    public function actionAddPermissaoAdmin($id)
+    {
+        $auth = Yii::$app->authManager;
+        $admin_role = $auth->getRole('admin');
+        $auth->assign($admin_role, $id);
+    }
+
+    public function actionAddPermissaoInstrutor($id)
+    {
+        $auth = Yii::$app->authManager;
+        $instrutor_role = $auth->getRole('instrutor');
+        $auth->assign($instrutor_role, $id);
     }
 }

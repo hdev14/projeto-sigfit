@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model app\models\Pessoa */
 
 $this->title = 'Registrar Servidor';
-$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pessoa-create">
 

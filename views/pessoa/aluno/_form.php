@@ -25,8 +25,8 @@ use yii\widgets\ActiveForm;
                 ]) ?>
 
                 <?= $form->field($model, 'nome')->textInput([
-                        'placeholder' => "Digite o nome do usuário",
-                        'maxlength' => true
+                    'placeholder' => "Digite o nome do usuário",
+                    'maxlength' => true
                 ]) ?>
 
                 <?= $form->field($model, 'email')->textInput([
@@ -50,11 +50,11 @@ use yii\widgets\ActiveForm;
 
             <div class="col-xs-6">
 
+
                 <?= $form->field($model, 'telefone')->textInput([
-                    'pattern' => '^\(\d{2}\)\d{5}-\d{4}',
                     'placeholder' => "(99)99999-9999",
-                    'maxlength' => true
-                ]) ?>
+                    'maxlength' => true,
+                ])->label('Telefone (opcional)') ?>
 
                 <?= $form->field($model, 'horario_treino')->dropDownList([
                     '7h às 8h' => '7h às 8h',
@@ -65,11 +65,14 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'problema_saude')->textarea([
                     'placeholder' => "Descrição do problema",
-                    'rows' => 6
-                ]) ?>
+                    'rows' => 4
+                ])->label('Problema de Saúde (opcional)') ?>
+
+                <?= $form->field($model, 'image_file')->fileInput() ?>
+
             </div>
             <div class="col-xs-12 form-group text-right">
-                <?= Html::submitButton('Registrar', [
+                <?= Html::submitButton('Confirmar', [
                     'class' => 'btn btn-success btn-flat'
                 ]) ?>
             </div>

@@ -11,6 +11,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'language' => 'pt-BR',
     'layout' => 'admin',
     'components' => [
         // Componente para autenticação com SUAP

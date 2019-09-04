@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Yii;
 
 use yii\web\IdentityInterface;
@@ -29,8 +30,8 @@ use yii\web\UploadedFile;
  * @property Frequencia[] $frequencias
  * @property PessoaTreino[] $pessoaTreinos
  * @property Treino[] $treinos
- * @property UsuarioInstrutor[] $usuarioInstrutors
- * @property UsuarioInstrutor[] $usuarioInstrutors0
+ * @property UsuarioInstrutor[] $instrutorUsuarios
+ * @property UsuarioInstrutor[] $usuarioInstrutores
  * @property Pessoa[] $usuarios
  * @property Pessoa[] $instrutors
  */
@@ -61,6 +62,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             [['matricula', 'nome'], 'string', 'max' => 45],
             [['matricula', 'nome'], 'required'],
             ['matricula', 'unique'],
+            ['matricula', 'number'],
             ['email', 'email'],
             [['email', 'curso'], 'string', 'max' => 50],
             [['periodo_curso', 'faltas'], 'integer'],
@@ -96,12 +98,15 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 
             # VALIDADOR DE ARQUIVO PARA A FOTO
             [
-                'image_file',
-                'file','extensions' => ['png', 'jpeg', 'jpg'],
+                ['image_file'],
+                'file',
+                'skipOnEmpty' => true,
+                'extensions' => ['png', 'jpeg', 'jpg'],
                 'maxSize' => 1024*1024
             ],
 
             # VALORES DEFAULT
+            ['faltas', 'default', 'value' => 0],
             ['problema_saude', 'default', 'value' => 'Nenhum problema de saúde.'],
             ['telefone', 'default', 'value' => 'Sem telefone.'],
         ];
@@ -121,6 +126,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'problema_saude',
             'telefone',
             'espera',
+            'foto',
             'image_file'
         ];
 
@@ -132,6 +138,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'problema_saude',
             'telefone',
             'espera',
+            'foto',
             'image_file'
         ];
 
@@ -139,6 +146,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'matricula',
             'nome',
             'email',
+            'foto',
             'image_file'
         ];
 
@@ -151,18 +159,18 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'matricula' => Yii::t('app', 'Matrícula'),
-            'nome' => Yii::t('app', 'Nome'),
-            'email' => Yii::t('app', 'Email'),
-            'curso' => Yii::t('app', 'Curso'),
-            'periodo_curso' => Yii::t('app', 'Período do Curso'),
-            'horario_treino' => Yii::t('app', 'Horário do Treino'),
-            'problema_saude' => Yii::t('app', 'Problema de Saúde (opcional)'),
-            'faltas' => Yii::t('app', 'Faltas'),
-            'espera' => Yii::t('app', 'Espera'),
-            'telefone' => Yii::t('app', 'Telefone (opcional)'),
-            'foto' => Yii::t('app', 'Adicionar Foto'),
+            'id' => 'ID',
+            'matricula' => 'Matrícula',
+            'nome' => 'Nome',
+            'email' => 'Email',
+            'curso' => 'Curso',
+            'periodo_curso' => 'Período do Curso',
+            'horario_treino' => 'Horário do Treino',
+            'problema_saude' => 'Problema de Saúde',
+            'faltas' => 'Faltas',
+            'espera' => 'Espera',
+            'telefone' => 'Telefone',
+            'image_file' => 'Adicionar Foto',
         ];
     }
 
@@ -172,27 +180,47 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function beforeSave($insert)
     {
-        if (parent::beforeSave($insert)) {
-            # Antes de salvar o usuário verificar a variavel scenario.
-            # Dessa forma, se a variavel for 'registro_aluno' deve-se adicionar
-            # FALSE a coluna servidor, caso for 'registro_servidor', deve-se
-            # colocar TRUE na coluna servidor.
+        return parent::beforeSave($insert);
+    }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        $auth = Yii::$app->authManager;
+
+        if (!key_exists('instrutor', $auth->getRolesByUser($this->id))
+            && $this->scenario === Pessoa::SCENARIO_REGISTRO_INSTRUTOR) {
+
+            $instrutor_role =  $auth->getRole('instrutor');
+            $auth->assign($instrutor_role, $this->id);
+            Yii::debug("ADD ROLE");
         }
-        return true;
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function upload()
     {
-
         if ($this->validate()) {
-            $this->image_file->saveAs(
-                'uploads/usuarios/' . $this->image_file->baseName .
-                "." . $this->image_file->extension
-            );
+            if (!is_null($this->image_file)) {
+
+                $timestamp = (new DateTime())->getTimestamp();
+
+                $this->foto = '/uploads/usuarios/'
+                    . $timestamp . '.' . $this->image_file->extension;
+
+                $this->image_file->saveAs(
+                    Yii::getAlias('@webroot') .
+                    $this->foto
+                );
+
+                $this->image_file = null;
+            } else if(empty($this->foto)) {
+                $this->foto =  '/uploads/usuarios/default.jpeg';
+            }
             return true;
         }
         return false;
@@ -274,6 +302,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 
     /**
      * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function getTreinos()
     {
@@ -284,7 +313,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioInstrutors()
+    public function getInstrutorUsuarios()
     {
         return $this->hasMany(UsuarioInstrutor::className(), ['instrutor_id' => 'id']);
     }
@@ -292,23 +321,25 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioInstrutors0()
+    public function getUsuarioInstrutores()
     {
         return $this->hasMany(UsuarioInstrutor::className(), ['usuario_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function getUsuarios()
     {
-        return $this->hasMany(Pessoa::className(), ['id' => 'usuario_id'])->viaTable('usuario_instrutor', ['instrutor_id' => 'id']);
+        return $this->hasMany(Pessoa::className(), ['id' => 'usuario_id'])
+            ->viaTable('usuario_instrutor', ['instrutor_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getInstrutors()
+    public function getInstrutores()
     {
         return $this->hasMany(Pessoa::className(), ['id' => 'instrutor_id'])
             ->viaTable('usuario_instrutor', ['usuario_id' => 'id']);

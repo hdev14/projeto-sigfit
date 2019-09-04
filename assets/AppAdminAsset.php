@@ -12,6 +12,7 @@ class AppAdminAsset extends AssetBundle
         'css/site.css',
         'css/forms.css',
         'css/modal_registro.css',
+        'css/usuarios.css',
     ];
     public $js = [
     ];

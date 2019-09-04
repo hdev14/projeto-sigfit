@@ -8,7 +8,6 @@ class SuapTest extends Unit
 {
     /**
      * @test
-     * @expectedException \GuzzleHttp\Exception\ClientException
      */
     public function verifica_se_token_esta_sendo_validado_corretamente()
     {
