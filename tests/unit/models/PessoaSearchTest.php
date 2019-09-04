@@ -9,10 +9,12 @@ use app\models\UsuarioInstrutor;
 use Codeception\Test\Unit;
 use yii\db\ActiveQuery;
 use yii\db\Connection;
+use yii\db\Query;
 use yii\db\Transaction;
 
 class PessoaSearchTest extends Unit
 {
+    /* @var $db Connection */
     private $db;
 
     public function setUp()
@@ -178,14 +180,12 @@ class PessoaSearchTest extends Unit
         $transaction->rollBack();
     }
 
-     /**
+    /**
      * @test
      * @expectedException \Exception
      * @expectedException \Throwable
      */
     public function verificar_retorno_do_metodo_searchInstrutores() {
-
-        $this->markTestIncomplete('Ainda será refeito ');
 
         /* @var $transaction Transaction */
         $transaction = $this->db->beginTransaction();
@@ -204,8 +204,15 @@ class PessoaSearchTest extends Unit
             $instrutor2->email = 'instrutor2deteste@email.com';
             $instrutor2->save();
 
-            // FAZER A QUERY E DA TABELA AUTH E ASSINAR OS INSTRUTORES COM A
-            // ROLE INSTRUTOR.
+            $this->db->createCommand(
+                'INSERT INTO `auth_assignment` (`ìtem_name`, `user_id`) 
+                VALUES (:item_name, :user_id1), (:item_name, :user_id2)',
+                [
+                    ':item_name' => 'instrutor',
+                    ':user_id1' => $instrutor1->id,
+                    ':user_id2' => $instrutor2->id,
+                ]
+            )->execute();
 
             $transaction->commit();
 
@@ -218,7 +225,7 @@ class PessoaSearchTest extends Unit
         }
 
         $pessoa_search = new PessoaSearch();
-        $query = $pessoa_search->searchServidores('192837465');
+        $query = $pessoa_search->searchInstrutores();
         $this->assertEquals(ActiveQuery::className(), $query::className());
 
         $transaction->rollBack();
