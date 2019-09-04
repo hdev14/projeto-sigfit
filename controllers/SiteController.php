@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+
+use app\filters\AuthSuap;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -9,6 +11,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\LoginSuapForm;
+use app\models\Pessoa;
 
 class SiteController extends Controller
 {
@@ -69,22 +73,65 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
+//    public function actionLogin()
+//    {
+//        $this->layout = 'login';
+//
+//        if (!Yii::$app->user->isGuest) {
+//            return $this->goHome();
+//        }
+//
+//        $model = new LoginSuapForm();
+//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+//            return $this->goBack();
+//        }
+//
+//        //$model->password = '';
+//        $model->senha = '';
+//        return $this->render('login', [
+//            'model' => $model,
+//        ]);
+//    }
+
     public function actionLogin()
     {
+        $this->layout = 'login';
+
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return Yii::$app->user->can('crud-instrutor') ?
+                $this->redirect(['pessoa/instrutores']) :
+                $this->redirect(['pessoa/usuarios']);
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        $post = Yii::$app->request->post();
+
+        $login_suap = new LoginSuapForm();
+
+        if ($login_suap->load($post) && $login_suap->validate()) {
+
+            $token = $login_suap->autenticarUsuario();
+
+            if (!$token) {
+                $session = Yii::$app->session;
+                $session->addFlash(
+                    'autenticacao_error',
+                    'Matrícula ou senha inválida.'
+                );
+            } else if ($this->salvarToken($token, $login_suap->matricula)
+                && $login_suap->login($token)) {
+
+                return Yii::$app->user->can('crud-instrutor') ?
+                    $this->redirect(['pessoa/instrutores']) :
+                    $this->redirect(['pessoa/usuarios']);
+            }
+
         }
 
-        $model->password = '';
         return $this->render('login', [
-            'model' => $model,
+            'model' => $login_suap,
         ]);
     }
+
 
     /**
      * Logout action.
@@ -106,7 +153,9 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+        $post = Yii::$app->request->post();
+
+        if ($model->load($post) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
 
             return $this->refresh();
@@ -125,4 +174,19 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    protected function salvarToken($token, $matricula)
+    {
+        $usuario = Pessoa::findByMatricula($matricula);
+
+        if (is_null($usuario)) {
+            return false;
+        }
+
+        $usuario->token = $token;
+        $usuario->save();
+
+        return $usuario;
+    }
+
 }

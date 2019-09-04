@@ -11,8 +11,13 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'language' => 'pt-BR',
     'layout' => 'admin',
     'components' => [
+        // Componente para autenticação com SUAP
+        'suap' => [
+            'class' => 'app\components\Suap',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'TpjqD9Y3MzP0YwWKe0Q8UZgG_SNSRgNS',
@@ -21,7 +26,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Pessoa',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -44,6 +49,9 @@ $config = [
             ],
         ],
         'db' => $db,
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

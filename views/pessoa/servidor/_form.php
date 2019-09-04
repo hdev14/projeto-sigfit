@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
     </div>
     <div class="box-body">
 
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
         <div class="row">
             <div class="col-xs-6">
@@ -35,10 +35,9 @@ use yii\widgets\ActiveForm;
                 ]) ?>
 
                 <?= $form->field($model, 'telefone')->textInput([
-                    'pattern' => '^\(\d{2}\)\d{5}-\d{4}',
                     'placeholder' => "(99)99999-9999",
                     'maxlength' => true
-                ]) ?>
+                ])->label('Telefone (opcional)') ?>
 
             </div>
             <div class="col-xs-6">
@@ -53,15 +52,19 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'problema_saude')->textarea([
                     'placeholder' => "Descrição do Problema",
                     'rows' => 4
+                ])->label('Problema de Saúde (opcional)') ?>
+
+                <?= $form->field($model, 'image_file')->fileInput() ?>
+            </div>
+
+            <div class="col-xs-12 form-group text-right">
+                <?= Html::submitButton('Confirmar', [
+                    'class' => 'btn btn-success btn-flat'
                 ]) ?>
             </div>
         </div>
 
-        <div class="col-xs-12 form-group text-right">
-            <?= Html::submitButton('Registrar', [
-                    'class' => 'btn btn-success btn-flat'
-            ]) ?>
-        </div>
+
 
         <?php ActiveForm::end(); ?>
     </div>

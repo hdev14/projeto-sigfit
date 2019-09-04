@@ -2,7 +2,11 @@
 
 namespace app\models;
 
+use DateTime;
 use Yii;
+
+use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "pessoa".
@@ -18,20 +22,28 @@ use Yii;
  * @property int $faltas
  * @property int $espera
  * @property string $telefone
+ * @property string $foto
+ * @property bool $servidor
+ * @property string $token
  *
  * @property Avaliacao[] $avaliacaos
  * @property Frequencia[] $frequencias
  * @property PessoaTreino[] $pessoaTreinos
  * @property Treino[] $treinos
- * @property UsuarioInstrutor[] $usuarioInstrutors
- * @property UsuarioInstrutor[] $usuarioInstrutors0
+ * @property UsuarioInstrutor[] $instrutorUsuarios
+ * @property UsuarioInstrutor[] $usuarioInstrutores
  * @property Pessoa[] $usuarios
  * @property Pessoa[] $instrutors
  */
-class Pessoa extends \yii\db\ActiveRecord
+class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 {
     const SCENARIO_REGISTRO_USUARIO = 'registro_aluno';
     const SCENARIO_REGISTRO_SERVIDOR = 'registro_servidor';
+    const SCENARIO_REGISTRO_INSTRUTOR = 'registro_instrutor';
+
+
+    /** @var UploadedFile */
+    public $image_file;
 
     /**
      * {@inheritdoc}
@@ -49,10 +61,29 @@ class Pessoa extends \yii\db\ActiveRecord
         return [
             [['matricula', 'nome'], 'string', 'max' => 45],
             [['matricula', 'nome'], 'required'],
-            [['periodo_curso', 'faltas'], 'integer'],
-            [['horario_treino', 'problema_saude'], 'string'],
-            [['email', 'curso'], 'string', 'max' => 50],
+            ['matricula', 'unique'],
+            ['matricula', 'number'],
             ['email', 'email'],
+            [['email', 'curso'], 'string', 'max' => 50],
+            [['periodo_curso', 'faltas'], 'integer'],
+            [['horario_treino', 'problema_saude', 'foto', 'token'], 'string'],
+            [
+                'espera',
+                'boolean',
+                'trueValue' => true,
+                'falseValue' => false,
+                'strict' => true
+            ],
+            [['telefone'], 'string', 'max' => 20],
+            [
+                'servidor',
+                'boolean',
+                'trueValue' => true,
+                'falseValue' => false,
+                'strict' => false
+            ],
+
+            # SCENARIOS
             [
                 ['email', 'horario_treino'],
                 'required',
@@ -63,17 +94,21 @@ class Pessoa extends \yii\db\ActiveRecord
                 'required',
                 'on' => Pessoa::SCENARIO_REGISTRO_USUARIO
             ],
+            ['email', 'required', 'on' => Pessoa::SCENARIO_REGISTRO_INSTRUTOR],
+
+            # VALIDADOR DE ARQUIVO PARA A FOTO
             [
-                'espera',
-                'boolean',
-                'trueValue' => true,
-                'falseValue' => false,
-                'strict' => true
+                ['image_file'],
+                'file',
+                'skipOnEmpty' => true,
+                'extensions' => ['png', 'jpeg', 'jpg'],
+                'maxSize' => 1024*1024
             ],
-            [['telefone'], 'string', 'max' => 20],
-            # Valores defautls
+
+            # VALORES DEFAULT
+            ['faltas', 'default', 'value' => 0],
             ['problema_saude', 'default', 'value' => 'Nenhum problema de saúde.'],
-            ['telefone', 'default', 'value' => 'Sem telefone.']
+            ['telefone', 'default', 'value' => 'Sem telefone.'],
         ];
     }
 
@@ -90,7 +125,9 @@ class Pessoa extends \yii\db\ActiveRecord
             'horario_treino',
             'problema_saude',
             'telefone',
-            'espera'
+            'espera',
+            'foto',
+            'image_file'
         ];
 
         $scenarios['registro_servidor'] = [
@@ -100,7 +137,17 @@ class Pessoa extends \yii\db\ActiveRecord
             'horario_treino',
             'problema_saude',
             'telefone',
-            'espera'
+            'espera',
+            'foto',
+            'image_file'
+        ];
+
+        $scenarios['registro_instrutor'] = [
+            'matricula',
+            'nome',
+            'email',
+            'foto',
+            'image_file'
         ];
 
         return $scenarios;
@@ -112,28 +159,121 @@ class Pessoa extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'matricula' => Yii::t('app', 'Matrícula'),
-            'nome' => Yii::t('app', 'Nome'),
-            'email' => Yii::t('app', 'Email'),
-            'curso' => Yii::t('app', 'Curso'),
-            'periodo_curso' => Yii::t('app', 'Período do Curso'),
-            'horario_treino' => Yii::t('app', 'Horário do Treino'),
-            'problema_saude' => Yii::t('app', 'Problema de Saúde (opcional)'),
-            'faltas' => Yii::t('app', 'Faltas'),
-            'espera' => Yii::t('app', 'Espera'),
-            'telefone' => Yii::t('app', 'Telefone (opcional)'),
+            'id' => 'ID',
+            'matricula' => 'Matrícula',
+            'nome' => 'Nome',
+            'email' => 'Email',
+            'curso' => 'Curso',
+            'periodo_curso' => 'Período do Curso',
+            'horario_treino' => 'Horário do Treino',
+            'problema_saude' => 'Problema de Saúde',
+            'faltas' => 'Faltas',
+            'espera' => 'Espera',
+            'telefone' => 'Telefone',
+            'image_file' => 'Adicionar Foto',
         ];
     }
 
+    /**
+     * @param bool $insert
+     * @return bool
+     */
     public function beforeSave($insert)
     {
-        # Antes de salvar o usuário verificar a variavel scenario.
-        # Dessa forma, se a variavel for 'registro_aluno' deve-se adicionar o
-        # papel de 'usuario_aluno', caso for 'registro_servidor', deve-se
-        # colocar o papel de 'usuario_servidor'.
+        return parent::beforeSave($insert);
+    }
 
-        return parent::beforeSave($insert); // TODO: Change the autogenerated stub
+    public function afterSave($insert, $changedAttributes)
+    {
+        $auth = Yii::$app->authManager;
+
+        if (!key_exists('instrutor', $auth->getRolesByUser($this->id))
+            && $this->scenario === Pessoa::SCENARIO_REGISTRO_INSTRUTOR) {
+
+            $instrutor_role =  $auth->getRole('instrutor');
+            $auth->assign($instrutor_role, $this->id);
+            Yii::debug("ADD ROLE");
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function upload()
+    {
+        if ($this->validate()) {
+            if (!is_null($this->image_file)) {
+
+                $timestamp = (new DateTime())->getTimestamp();
+
+                $this->foto = '/uploads/usuarios/'
+                    . $timestamp . '.' . $this->image_file->extension;
+
+                $this->image_file->saveAs(
+                    Yii::getAlias('@webroot') .
+                    $this->foto
+                );
+
+                $this->image_file = null;
+            } else if(empty($this->foto)) {
+                $this->foto =  '/uploads/usuarios/default.jpeg';
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    public static function findByMatricula($matricula)
+    {
+        return static::findOne(['matricula' => $matricula]);
+    }
+
+    /**
+     * @param int|string $id
+     * @return Pessoa|IdentityInterface|null
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    /**
+     * @param mixed $token
+     * @param null $type
+     * @return Pessoa|IdentityInterface|null
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['token' => $token]);
+    }
+
+    /**
+     * @return int|string|void
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string|void
+     */
+    public function getAuthKey()
+    {
+        // TODO: Implement getAuthKey() method.
+    }
+
+    /**
+     * @param string $authKey
+     * @return bool|void
+     */
+    public function validateAuthKey($authKey)
+    {
+        // TODO: Implement validateAuthKey() method.
     }
 
     /**
@@ -162,6 +302,7 @@ class Pessoa extends \yii\db\ActiveRecord
 
     /**
      * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function getTreinos()
     {
@@ -172,7 +313,7 @@ class Pessoa extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioInstrutors()
+    public function getInstrutorUsuarios()
     {
         return $this->hasMany(UsuarioInstrutor::className(), ['instrutor_id' => 'id']);
     }
@@ -180,25 +321,29 @@ class Pessoa extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioInstrutors0()
+    public function getUsuarioInstrutores()
     {
         return $this->hasMany(UsuarioInstrutor::className(), ['usuario_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function getUsuarios()
     {
-        return $this->hasMany(Pessoa::className(), ['id' => 'usuario_id'])->viaTable('usuario_instrutor', ['instrutor_id' => 'id']);
+        return $this->hasMany(Pessoa::className(), ['id' => 'usuario_id'])
+            ->viaTable('usuario_instrutor', ['instrutor_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getInstrutors()
+    public function getInstrutores()
     {
         return $this->hasMany(Pessoa::className(), ['id' => 'instrutor_id'])
             ->viaTable('usuario_instrutor', ['usuario_id' => 'id']);
     }
+
+
 }
