@@ -11,6 +11,7 @@ use Yii;
  * @property int $pessoa_id
  * @property string $data
  * @property int $altura
+ * @property int $nome
  *
  * @property Pessoa $pessoa
  * @property Imc[] $imcs
@@ -33,8 +34,9 @@ class Avaliacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pessoa_id', 'data'], 'required'],
+            [['pessoa_id', 'data', 'nome'], 'required'],
             [['pessoa_id', 'altura'], 'integer'],
+            ['nome', 'string'],
             [['data'], 'safe'],
             [['pessoa_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pessoa::className(), 'targetAttribute' => ['pessoa_id' => 'id']],
         ];
