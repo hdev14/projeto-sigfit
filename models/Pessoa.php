@@ -25,6 +25,7 @@ use yii\web\UploadedFile;
  * @property string $foto
  * @property bool $servidor
  * @property string $token
+ * @property string $sexo
  *
  * @property Avaliacao[] $avaliacaos
  * @property Frequencia[] $frequencias
@@ -66,7 +67,8 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             ['email', 'email'],
             [['email', 'curso'], 'string', 'max' => 50],
             [['periodo_curso', 'faltas'], 'integer'],
-            [['horario_treino', 'problema_saude', 'foto', 'token'], 'string'],
+            [['horario_treino', 'problema_saude', 'foto', 'token', 'sexo'],
+            'string'],
             [
                 'espera',
                 'boolean',
@@ -85,12 +87,12 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 
             # SCENARIOS
             [
-                ['email', 'horario_treino'],
+                ['email', 'horario_treino', 'sexo'],
                 'required',
                 'on' => Pessoa::SCENARIO_REGISTRO_SERVIDOR
             ],
             [
-                ['email', 'horario_treino', 'curso', 'periodo_curso'],
+                ['email', 'horario_treino', 'curso', 'periodo_curso', 'sexo'],
                 'required',
                 'on' => Pessoa::SCENARIO_REGISTRO_USUARIO
             ],
@@ -126,6 +128,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'problema_saude',
             'telefone',
             'espera',
+            'sexo',
             'foto',
             'image_file'
         ];
@@ -138,6 +141,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'problema_saude',
             'telefone',
             'espera',
+            'sexo',
             'foto',
             'image_file'
         ];
@@ -169,6 +173,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             'problema_saude' => 'Problema de Saúde',
             'faltas' => 'Faltas',
             'espera' => 'Espera',
+            'sexo' => 'Sexo',
             'telefone' => 'Telefone',
             'image_file' => 'Adicionar Foto',
         ];
