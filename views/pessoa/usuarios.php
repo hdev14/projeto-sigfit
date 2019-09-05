@@ -5,6 +5,7 @@
 /* @var $usuario \app\models\Pessoa */
 /* @var $pagination \yii\data\Pagination */
 
+use yii\web\View;
 use \yii\widgets\LinkPager;
 use \yii\helpers\Url;
 
@@ -12,7 +13,6 @@ $this->title = "Usuários Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
 ?>
-
 <?= $this->render('partial/btn-group') ?>
 
 <div class="row">
