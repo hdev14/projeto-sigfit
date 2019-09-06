@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Imc;
+use app\models\PercentualGordura;
+use app\models\Peso;
 use Yii;
 use app\models\Avaliacao;
 use app\models\AvaliacaoSearch;
@@ -58,20 +61,56 @@ class AvaliacaoController extends Controller
     }
 
     /**
-     * Creates a new Avaliacao model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @param null $usuario_id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
-    public function actionCreate()
+    public function actionCreate($usuario_id = null)
     {
-        $model = new Avaliacao();
+        if (is_null($usuario_id))
+            throw new NotFoundHttpException('Sinto muito, página não encontrada.');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $avaliacao_model = new Avaliacao();
+        $peso_model = new Peso();
+        $imc_model = new Imc();
+        $pdg_model = new PercentualGordura();
+
+        $post = Yii::$app->request->post();
+
+        Yii::debug($usuario_id, "USUARIO_ID");
+        $avaliacao_model->pessoa_id = $usuario_id;
+
+        if (($avaliacao_model->load($post) && $avaliacao_model->validate())
+            && ($peso_model->load($post) && $peso_model->validate())
+            && ($imc_model->load($post) && $imc_model->validate())
+            && ($pdg_model->load($post) && $pdg_model->validate())) {
+
+            Yii::debug("V A L I D A T E");
+
+            $avaliacao_model->data = date('Y-m-d');
+
+            if ($avaliacao_model->save()) {
+
+                $peso_model->avaliacao_id = $avaliacao_model->id;
+                $imc_model->avaliacao_id = $avaliacao_model->id;
+                $pdg_model->avaliacao_id = $avaliacao_model->id;
+
+                if ($peso_model->save()
+                    && $imc_model->save()
+                    && $pdg_model->save()) {
+                    return $this->redirect([
+                        'view',
+                        'id' => $avaliacao_model->id
+                    ]);
+                }
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'avaliacao_model' => $avaliacao_model,
+            'peso_model' => $peso_model,
+            'imc_model' => $imc_model,
+            'pdg_model' => $pdg_model,
         ]);
     }
 

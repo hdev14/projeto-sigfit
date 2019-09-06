@@ -11,6 +11,7 @@ use app\models\PercentualGordura;
  */
 class PercentualGorduraSearch extends PercentualGordura
 {
+
     /**
      * {@inheritdoc}
      */

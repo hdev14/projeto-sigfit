@@ -34,11 +34,17 @@ class Avaliacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pessoa_id', 'data', 'nome'], 'required'],
+            [['pessoa_id', 'nome'], 'required'],
             [['pessoa_id', 'altura'], 'integer'],
             ['nome', 'string'],
             [['data'], 'safe'],
-            [['pessoa_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pessoa::className(), 'targetAttribute' => ['pessoa_id' => 'id']],
+            [
+                ['pessoa_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Pessoa::className(),
+                'targetAttribute' => ['pessoa_id' => 'id']
+            ],
         ];
     }
 
@@ -48,10 +54,8 @@ class Avaliacao extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'pessoa_id' => Yii::t('app', 'Pessoa ID'),
-            'data' => Yii::t('app', 'Data'),
-            'altura' => Yii::t('app', 'Altura'),
+            'nome' => 'Nome',
+            'altura' => 'Altura',
         ];
     }
 

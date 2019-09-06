@@ -36,6 +36,11 @@ $this->title = 'Perfil do Usuário';
                             'method' => 'post',
                         ],
                     ]) ?>
+                    <?= Html::a('<i class="fa fa-user-times fa-lg"></i>', ['avaliacao/create', 'usuario_id' =>
+                        $model->id], [
+                        'class' => 'btn btn-box-tool',
+                        'title' => 'Avaliar Usuário',
+                    ]) ?>
                 </div>
             </div>
             <div class="box-body box-profile">
