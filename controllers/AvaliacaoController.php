@@ -55,8 +55,16 @@ class AvaliacaoController extends Controller
      */
     public function actionView($id)
     {
+        $avaliacao_model = $this->findModel($id);
+        $pesos = $avaliacao_model->getPesos()->all();
+        $imcs = $avaliacao_model->getImcs()->all();
+        $pdgs = $avaliacao_model->getPercentualGorduras()->all();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $avaliacao_model,
+            'pesos' => $pesos,
+            'imcs' => $imcs,
+            'pdgs' => $pdgs,
         ]);
     }
 
