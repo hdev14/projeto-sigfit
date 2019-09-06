@@ -126,9 +126,14 @@ class AvaliacaoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $usuario_id = null)
     {
+        if (is_null($usuario_id))
+            throw new NotFoundHttpException("Sinto muito, página não encontrada.");
+
         $model = $this->findModel($id);
+
+        $model->pessoa_id = $usuario_id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

@@ -14,8 +14,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'pessoa_id')->textInput() ?>
 
-    <?= $form->field($model, 'data')->textInput() ?>
-
     <?= $form->field($model, 'altura')->textInput() ?>
 
     <div class="form-group">
