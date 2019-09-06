@@ -77,15 +77,12 @@ class AvaliacaoController extends Controller
 
         $post = Yii::$app->request->post();
 
-        Yii::debug($usuario_id, "USUARIO_ID");
         $avaliacao_model->pessoa_id = $usuario_id;
 
         if (($avaliacao_model->load($post) && $avaliacao_model->validate())
             && ($peso_model->load($post) && $peso_model->validate())
             && ($imc_model->load($post) && $imc_model->validate())
             && ($pdg_model->load($post) && $pdg_model->validate())) {
-
-            Yii::debug("V A L I D A T E");
 
             $avaliacao_model->data = date('Y-m-d');
 
@@ -135,15 +132,33 @@ class AvaliacaoController extends Controller
     }
 
     /**
-     * Deletes an existing Avaliacao model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $avaliacao_model = $this->findModel($id);
+
+        $pesos = $avaliacao_model->getPesos()->all();
+        foreach ($pesos as $peso) {
+            $peso->delete();
+        }
+
+        $imcs = $avaliacao_model->getImcs()->all();
+        foreach ($imcs as $imc) {
+            $imc->delete();
+        }
+
+        $pdgs = $avaliacao_model->getPercentualGorduras()->all();
+        foreach ($pdgs as $pdg) {
+            $pdg->delete();
+        }
+
+        $avaliacao_model->delete();
+
         return $this->redirect(['index']);
     }
 
