@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Imc;
 use app\models\PercentualGordura;
 use app\models\Peso;
+use app\models\Pessoa;
 use Yii;
 use app\models\Avaliacao;
 use app\models\AvaliacaoSearch;
@@ -75,8 +76,8 @@ class AvaliacaoController extends Controller
      */
     public function actionCreate($usuario_id = null)
     {
-        if (is_null($usuario_id))
-            throw new NotFoundHttpException('Sinto muito, página não encontrada.');
+        if ($usuario_id === null)
+            throw new NotFoundHttpException("Página não encontrada.");
 
         $avaliacao_model = new Avaliacao();
         $peso_model = new Peso();
@@ -96,18 +97,15 @@ class AvaliacaoController extends Controller
 
             if ($avaliacao_model->save()) {
 
-                $peso_model->avaliacao_id = $avaliacao_model->id;
-                $imc_model->avaliacao_id = $avaliacao_model->id;
-                $pdg_model->avaliacao_id = $avaliacao_model->id;
+                $peso_model->link('avaliacao', $avaliacao_model);
+                $imc_model->link('avaliacao', $avaliacao_model);
+                $pdg_model->link('avaliacao', $avaliacao_model);
 
-                if ($peso_model->save()
-                    && $imc_model->save()
-                    && $pdg_model->save()) {
-                    return $this->redirect([
-                        'view',
-                        'id' => $avaliacao_model->id
-                    ]);
-                }
+                return $this->redirect([
+                    'view',
+                    'id' => $avaliacao_model->id
+                ]);
+
             }
         }
 
@@ -126,14 +124,9 @@ class AvaliacaoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id, $usuario_id = null)
+    public function actionUpdate($id)
     {
-        if (is_null($usuario_id))
-            throw new NotFoundHttpException("Sinto muito, página não encontrada.");
-
         $model = $this->findModel($id);
-
-        $model->pessoa_id = $usuario_id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
