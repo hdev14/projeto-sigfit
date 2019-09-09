@@ -56,7 +56,7 @@ class AvaliacaoController extends Controller
      */
     public function actionView($id)
     {
-        $avaliacao_model = $this->findModel($id);
+        $avaliacao_model = $this->findModelAvaliacao($id);
         $pesos = $avaliacao_model->getPesos()->all();
         $imcs = $avaliacao_model->getImcs()->all();
         $pdgs = $avaliacao_model->getPercentualGorduras()->all();
@@ -126,7 +126,7 @@ class AvaliacaoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModelAvaliacao($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -146,7 +146,7 @@ class AvaliacaoController extends Controller
      */
     public function actionDelete($id)
     {
-        $avaliacao_model = $this->findModel($id);
+        $avaliacao_model = $this->findModelAvaliacao($id);
 
         $pesos = $avaliacao_model->getPesos()->all();
         foreach ($pesos as $peso) {
@@ -168,6 +168,126 @@ class AvaliacaoController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionCreatePeso($avaliacao_id = null) {
+
+        if ($avaliacao_id === null)
+            throw new NotFoundHttpException("Página não encontrada.");
+
+        $peso = new Peso(['scenario' => Peso::SCENARIO_PESO]);
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
+
+        $peso->avaliacao_id = $avaliacao_id;
+
+        if ($peso->load($post) && $peso->save()) {
+            $session->addFlash('success', 'Peso registrado !');
+            return $this->goHome(); // TODO: volta para a página do usuário.
+        }
+
+        $session->addFlash('error', 'Não foi possível registra o novo peso.');
+        return $this->goBack();
+    }
+
+    public function actionUpdatePeso($id) {
+
+        $peso = $this->findModelPeso($id);
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
+
+        if ($peso->load($post) && $peso->save()) {
+            $session->addFlash('success', 'Peso editado !');
+            return $this->goBack(); // TODO: Implementar o redirecionamento.
+        }
+
+        $session->addFlash('error', 'Não foi possível editar o peso.');
+        return $this->goBack();
+    }
+
+    public function actionDeletePeso($id) {
+        $this->findModelPeso($id)->delete();
+        return $this->goBack();
+    }
+
+    public function actionCreateImc($avaliacao_id = null) {
+
+        if ($avaliacao_id === null)
+            throw new NotFoundHttpException('Página não encontrada.');
+
+        $imc = new Imc(['scenario' => Imc::SCENARIO_IMC]);
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
+
+        $imc->avaliacao_id = $avaliacao_id;
+
+        if ($imc->load($post) && $imc->save()) {
+            $session->addFlash('success', 'IMC registrado !');
+            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        }
+
+        $session->addFlash('error', 'Não foi possivel criar o novo IMC.');
+        return $this->goBack();
+    }
+
+    public function actionUpdateImc($id) {
+
+        $imc = $this->findModelImc($id);
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
+
+        if ($imc->load($post) && $imc->save()) {
+            $session->addFlash('success', 'IMC editado !');
+            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        }
+
+        $session->addFlash('error', 'Não foi possível editar o IMC');
+        return $this->goBack();
+    }
+
+    public function actionDeleteImc($id) {
+        $this->findModelImc($id)->delete();
+        return $this->goBack(); # TODO: Implementar o redirecionamento.
+    }
+
+    public function actionCreatePg($avaliacao_id = null) {
+        if ($avaliacao_id === null)
+            throw new NotFoundHttpException('Página não encontrada.');
+
+        $pg = new PercentualGordura([
+            'scenario' => PercentualGordura::SCENARIO_PG
+        ]);
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
+
+        $pg->avaliacao_id = $avaliacao_id;
+
+        if ($pg->load($post) && $pg->save()) {
+            $session->addFlash('success', 'Percentual de Gordura registrado !');
+            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        }
+
+        $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
+        return $this->goBack();
+    }
+
+    public function actionUpdatePg($id) {
+        $pg = $this->findModelPg($id);
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
+
+        if ($pg->load($post) && $pg->save()) {
+            $session->addFlash('success', 'Percentual de Gordura editado !');
+            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        }
+
+        $session->addFlash('error', 'Não foi possível editar o percentual de gordura.');
+        return $this->goBack();
+    }
+
+    public function actionDeletePg($id) {
+        $this->findModelPg($id)->delete();
+        return $this->goBack();
+    }
+
     /**
      * Finds the Avaliacao model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -175,9 +295,36 @@ class AvaliacaoController extends Controller
      * @return Avaliacao the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModelAvaliacao($id)
     {
         if (($model = Avaliacao::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findModelPeso($id)
+    {
+        if (($model = Peso::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findModelImc($id)
+    {
+        if (($model = Imc::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findModelPg($id)
+    {
+        if (($model = PercentualGordura::findOne($id)) !== null) {
             return $model;
         }
 

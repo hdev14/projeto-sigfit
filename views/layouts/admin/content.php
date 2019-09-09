@@ -1,5 +1,6 @@
 <?php
 
+use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\Breadcrumbs;
@@ -30,6 +31,17 @@ use yii\widgets\Breadcrumbs;
     </section>
 
     <section class="content">
+        <?php if ($error = Yii::$app->session->getFlash('success')): ?>
+            <?= Alert::widget([
+                'options' => ['class' => 'alert-success'],
+                'body' => $error[0],
+            ]) ?>
+        <?php elseif ($error = Yii::$app->session->getFlash('error')): ?>
+            <<?= Alert::widget([
+                'options' => ['class' => 'alert-danger'],
+                'body' => $error[0],
+            ]) ?>
+        <?php endif; ?>
         <?= $content ?>
     </section>
 </div>
