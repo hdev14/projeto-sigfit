@@ -170,7 +170,7 @@ class AvaliacaoController extends Controller
 
     /**
      * @param null $avaliacao_id
-     * @return \yii\web\Response
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
     public function actionCreatePeso($avaliacao_id = null) {
@@ -184,13 +184,18 @@ class AvaliacaoController extends Controller
 
         $peso->avaliacao_id = $avaliacao_id;
 
-        if ($peso->load($post) && $peso->save()) {
-            $session->addFlash('success', 'Peso registrado !');
-            return $this->goHome(); // TODO: volta para a página do usuário.
+        if ($peso->load($post)) {
+
+            if ($peso->save()) {
+                $session->addFlash('success', 'Peso registrado !');
+                return $this->goHome(); // TODO: volta para a página do usuário.
+            }
+            $session->addFlash('error', 'Não foi possível registra o novo peso.');
         }
 
-        $session->addFlash('error', 'Não foi possível registra o novo peso.');
-        return $this->goBack();
+        return $this->render('../peso/create', [
+            'model' => $peso,
+        ]);
     }
 
     /**
@@ -204,13 +209,18 @@ class AvaliacaoController extends Controller
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        if ($peso->load($post) && $peso->save()) {
-            $session->addFlash('success', 'Peso editado !');
-            return $this->goBack(); // TODO: Implementar o redirecionamento.
+        if ($peso->load($post)) {
+
+            if ($peso->save()) {
+                $session->addFlash('success', 'Peso editado !');
+                return $this->goBack(); // TODO: Implementar o redirecionamento.
+            }
+            $session->addFlash('error', 'Não foi possível editar o peso.');
         }
 
-        $session->addFlash('error', 'Não foi possível editar o peso.');
-        return $this->goBack();
+        return $this->render('../peso/update', [
+            'model' => $peso,
+        ]);
     }
 
     /**
@@ -241,12 +251,15 @@ class AvaliacaoController extends Controller
 
         $imc->avaliacao_id = $avaliacao_id;
 
-        if ($imc->load($post) && $imc->save()) {
-            $session->addFlash('success', 'IMC registrado !');
-            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        if ($imc->load($post)) {
+
+            if ($imc->save()) {
+                $session->addFlash('success', 'IMC registrado !');
+                return $this->goBack(); # TODO: Implementar o redirecionamento.
+            }
+            $session->addFlash('error', 'Não foi possivel criar o novo IMC.');
         }
 
-        $session->addFlash('error', 'Não foi possivel criar o novo IMC.');
         return $this->goBack();
     }
 
@@ -261,12 +274,15 @@ class AvaliacaoController extends Controller
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        if ($imc->load($post) && $imc->save()) {
-            $session->addFlash('success', 'IMC editado !');
-            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        if ($imc->load($post)) {
+
+            if ($imc->save()) {
+                $session->addFlash('success', 'IMC editado !');
+                return $this->goBack(); # TODO: Implementar o redirecionamento.
+            }
+            $session->addFlash('error', 'Não foi possível editar o IMC');
         }
 
-        $session->addFlash('error', 'Não foi possível editar o IMC');
         return $this->goBack();
     }
 
@@ -299,12 +315,15 @@ class AvaliacaoController extends Controller
 
         $pg->avaliacao_id = $avaliacao_id;
 
-        if ($pg->load($post) && $pg->save()) {
-            $session->addFlash('success', 'Percentual de Gordura registrado !');
-            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        if ($pg->load($post)) {
+
+            if ($pg->save()) {
+                $session->addFlash('success', 'Percentual de Gordura registrado !');
+                return $this->goBack(); # TODO: Implementar o redirecionamento.
+            }
+            $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
         }
 
-        $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
         return $this->goBack();
     }
 
@@ -318,12 +337,15 @@ class AvaliacaoController extends Controller
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        if ($pg->load($post) && $pg->save()) {
-            $session->addFlash('success', 'Percentual de Gordura editado !');
-            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        if ($pg->load($post)) {
+
+            if ($pg->save()) {
+                $session->addFlash('success', 'Percentual de Gordura editado !');
+                return $this->goBack(); # TODO: Implementar o redirecionamento.
+            }
+            $session->addFlash('error', 'Não foi possível editar o percentual de gordura.');
         }
 
-        $session->addFlash('error', 'Não foi possível editar o percentual de gordura.');
         return $this->goBack();
     }
 

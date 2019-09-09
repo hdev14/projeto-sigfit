@@ -13,6 +13,12 @@ $this->title = 'Avaliação';
 //$this->params['breadcrumbs'][] = ['label' => 'Avaliacaos', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<div class="row">
+    <div class="col">
+        <?= $this->render('../partial/_alert') ?>
+    </div>
+</div>
 <div class="avaliacao-create">
     <?= $this->render('./partial/_multiform', [
         'avaliacao_model' => $avaliacao_model,

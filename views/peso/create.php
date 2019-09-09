@@ -9,6 +9,13 @@ $this->title = 'Create Peso';
 $this->params['breadcrumbs'][] = ['label' => 'Pesos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<div class="row">
+    <div class="col">
+        <?= $this->render('../partial/_alert') ?>
+    </div>
+</div>
+
 <div class="peso-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
