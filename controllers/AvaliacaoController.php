@@ -168,6 +168,11 @@ class AvaliacaoController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * @param null $avaliacao_id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionCreatePeso($avaliacao_id = null) {
 
         if ($avaliacao_id === null)
@@ -188,6 +193,11 @@ class AvaliacaoController extends Controller
         return $this->goBack();
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionUpdatePeso($id) {
 
         $peso = $this->findModelPeso($id);
@@ -203,11 +213,23 @@ class AvaliacaoController extends Controller
         return $this->goBack();
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDeletePeso($id) {
         $this->findModelPeso($id)->delete();
         return $this->goBack();
     }
 
+    /**
+     * @param null $avaliacao_id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionCreateImc($avaliacao_id = null) {
 
         if ($avaliacao_id === null)
@@ -228,6 +250,11 @@ class AvaliacaoController extends Controller
         return $this->goBack();
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionUpdateImc($id) {
 
         $imc = $this->findModelImc($id);
@@ -243,11 +270,23 @@ class AvaliacaoController extends Controller
         return $this->goBack();
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDeleteImc($id) {
         $this->findModelImc($id)->delete();
         return $this->goBack(); # TODO: Implementar o redirecionamento.
     }
 
+    /**
+     * @param null $avaliacao_id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionCreatePg($avaliacao_id = null) {
         if ($avaliacao_id === null)
             throw new NotFoundHttpException('Página não encontrada.');
@@ -269,6 +308,11 @@ class AvaliacaoController extends Controller
         return $this->goBack();
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionUpdatePg($id) {
         $pg = $this->findModelPg($id);
         $post = Yii::$app->request->post();
@@ -283,6 +327,13 @@ class AvaliacaoController extends Controller
         return $this->goBack();
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDeletePg($id) {
         $this->findModelPg($id)->delete();
         return $this->goBack();
@@ -304,6 +355,11 @@ class AvaliacaoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    /**
+     * @param $id
+     * @return Peso|null
+     * @throws NotFoundHttpException
+     */
     protected function findModelPeso($id)
     {
         if (($model = Peso::findOne($id)) !== null) {
@@ -313,6 +369,11 @@ class AvaliacaoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    /**
+     * @param $id
+     * @return Imc|null
+     * @throws NotFoundHttpException
+     */
     protected function findModelImc($id)
     {
         if (($model = Imc::findOne($id)) !== null) {
@@ -322,6 +383,11 @@ class AvaliacaoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    /**
+     * @param $id
+     * @return PercentualGordura|null
+     * @throws NotFoundHttpException
+     */
     protected function findModelPg($id)
     {
         if (($model = PercentualGordura::findOne($id)) !== null) {
