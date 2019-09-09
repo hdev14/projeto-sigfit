@@ -20,6 +20,8 @@ use Yii;
  */
 class Avaliacao extends \yii\db\ActiveRecord
 {
+
+    const SCENARIO_AVALIACAO = 'avaliacao';
     /**
      * {@inheritdoc}
      */
@@ -34,7 +36,8 @@ class Avaliacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pessoa_id', 'nome'], 'required'],
+            ['pessoa_id', 'required', 'on' => Avaliacao::SCENARIO_AVALIACAO],
+            ['nome', 'required'],
             [['pessoa_id', 'altura'], 'integer'],
             ['nome', 'string'],
             [['data'], 'safe'],

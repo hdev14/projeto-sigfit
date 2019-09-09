@@ -79,7 +79,7 @@ class AvaliacaoController extends Controller
         if ($usuario_id === null)
             throw new NotFoundHttpException("Página não encontrada.");
 
-        $avaliacao_model = new Avaliacao();
+        $avaliacao_model = new Avaliacao(['scenario' => Avaliacao::SCENARIO_AVALIACAO]);
         $peso_model = new Peso();
         $imc_model = new Imc();
         $pdg_model = new PercentualGordura();
