@@ -260,7 +260,9 @@ class AvaliacaoController extends Controller
             $session->addFlash('error', 'Não foi possivel criar o novo IMC.');
         }
 
-        return $this->goBack();
+        return $this->render('../imc/create', [
+            'model' => $imc,
+        ]);
     }
 
     /**
@@ -283,7 +285,9 @@ class AvaliacaoController extends Controller
             $session->addFlash('error', 'Não foi possível editar o IMC');
         }
 
-        return $this->goBack();
+        return $this->render('../imc/update', [
+            'model' => $imc
+        ]);
     }
 
     /**
