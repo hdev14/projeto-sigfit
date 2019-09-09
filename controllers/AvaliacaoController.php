@@ -328,7 +328,9 @@ class AvaliacaoController extends Controller
             $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
         }
 
-        return $this->goBack();
+        return $this->render('../percentual-gordura/create', [
+            'model' => $pg,
+        ]);
     }
 
     /**
@@ -350,7 +352,9 @@ class AvaliacaoController extends Controller
             $session->addFlash('error', 'Não foi possível editar o percentual de gordura.');
         }
 
-        return $this->goBack();
+        return $this->render('../percentual-gordura/update', [
+            'model' => $pg,
+        ]);
     }
 
     /**
