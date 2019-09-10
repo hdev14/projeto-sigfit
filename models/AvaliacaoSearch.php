@@ -18,7 +18,7 @@ class AvaliacaoSearch extends Avaliacao
     {
         return [
             [['id', 'pessoa_id', 'altura', 'idade'], 'integer'],
-            ['nome', 'string'],
+            ['titulo', 'string'],
             [['data'], 'safe'],
         ];
     }

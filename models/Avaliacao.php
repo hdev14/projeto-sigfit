@@ -11,7 +11,7 @@ use Yii;
  * @property int $pessoa_id
  * @property string $data
  * @property int $altura
- * @property int $nome
+ * @property string $titulo
  * @property int $idade
  *
  * @property Pessoa $pessoa
@@ -38,9 +38,9 @@ class Avaliacao extends \yii\db\ActiveRecord
     {
         return [
             ['pessoa_id', 'required', 'on' => Avaliacao::SCENARIO_AVALIACAO],
-            [['nome', 'altura', 'idade'], 'required'],
+            [['titulo', 'altura', 'idade'], 'required'],
             [['pessoa_id', 'altura', 'idade'], 'integer'],
-            ['nome', 'string'],
+            ['titulo', 'string'],
             [['data'], 'safe'],
             [
                 ['pessoa_id'],
@@ -58,8 +58,9 @@ class Avaliacao extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'nome' => 'Nome',
+            'titulo' => 'Título',
             'altura' => 'Altura',
+            'idade' => 'Idade',
         ];
     }
 

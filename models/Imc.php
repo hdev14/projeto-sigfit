@@ -54,7 +54,7 @@ class Imc extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'valor' => 'IMC',
+            'valor' => 'Índice de massa corporal (IMC)',
         ];
     }
 
