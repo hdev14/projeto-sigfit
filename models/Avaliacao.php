@@ -12,6 +12,7 @@ use Yii;
  * @property string $data
  * @property int $altura
  * @property int $nome
+ * @property int $idade
  *
  * @property Pessoa $pessoa
  * @property Imc[] $imcs
@@ -20,8 +21,8 @@ use Yii;
  */
 class Avaliacao extends \yii\db\ActiveRecord
 {
-
     const SCENARIO_AVALIACAO = 'avaliacao';
+
     /**
      * {@inheritdoc}
      */
@@ -37,8 +38,8 @@ class Avaliacao extends \yii\db\ActiveRecord
     {
         return [
             ['pessoa_id', 'required', 'on' => Avaliacao::SCENARIO_AVALIACAO],
-            ['nome', 'required'],
-            [['pessoa_id', 'altura'], 'integer'],
+            [['nome', 'altura', 'idade'], 'required'],
+            [['pessoa_id', 'altura', 'idade'], 'integer'],
             ['nome', 'string'],
             [['data'], 'safe'],
             [

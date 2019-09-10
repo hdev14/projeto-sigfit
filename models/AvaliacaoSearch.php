@@ -17,7 +17,7 @@ class AvaliacaoSearch extends Avaliacao
     public function rules()
     {
         return [
-            [['id', 'pessoa_id', 'altura'], 'integer'],
+            [['id', 'pessoa_id', 'altura', 'idade'], 'integer'],
             ['nome', 'string'],
             [['data'], 'safe'],
         ];

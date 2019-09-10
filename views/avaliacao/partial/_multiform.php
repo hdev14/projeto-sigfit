@@ -23,6 +23,8 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($avaliacao_model, 'nome')->textInput() ?>
 
+                <?= $form->field($avaliacao_model, 'idade')->textInput() ?>
+
                 <?= $form->field($avaliacao_model, 'altura')->textInput() ?>
 
                 <?= $form->field($peso_model, 'valor')->textInput() ?>
