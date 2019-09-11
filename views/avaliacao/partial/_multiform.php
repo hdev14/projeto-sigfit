@@ -10,6 +10,7 @@ use yii\widgets\ActiveForm;
 /* @var $pdg_model app\models\PercentualGordura */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $usuario_id int */
+/* @var $sexo string */
 
 $this->registerJs("
 
@@ -80,13 +81,13 @@ $this->registerJs("
                 return;
                 
             } else {
-                let sexo = document.querySelector('#sexo').innerHTML;
                 let dobra_1 = parseInt(dobra_tres_1.value);
                 let dobra_2 = parseInt(dobra_tres_2.value);
                 let dobra_3 = parseInt(dobra_tres_3.value);
-                let pdg = calcularPdg(dobra_1, dobra_2, dobra_3, sexo);
+                let pdg = calcularPdgTresDobras(dobra_1, dobra_2, dobra_3);
                 let percentualgordura_valor = document.querySelector('#percentualgordura-valor');
                 percentualgordura_valor.value = pdg.toFixed(2);
+                alertar.style.display = 'none';
             }
             
         } else if (pdg_quatro.style.display == 'block') {
@@ -94,6 +95,24 @@ $this->registerJs("
             let dobra_quatro_2 = document.querySelector('#dobra-quatro-2');
             let dobra_quatro_3 = document.querySelector('#dobra-quatro-3');
             let dobra_quatro_4 = document.querySelector('#dobra-quatro-4');
+            
+            if (dobra_quatro_1.value == ''
+                || dobra_quatro_2.value == ''
+                || dobra_quatro_3.value == ''
+                || dobra_quatro_4.value == '') {
+                
+                alertar.innerHTML = 'Por fovar, preencha os dados.'
+                alertar.style.display = 'block';
+                return;
+            } else {
+                let sexo = document.querySelector('#sexo').innerHTML;
+                let dobra_1 = parseInt(dobra_quatro_1.value);
+                let dobra_2 = parseInt(dobra_quatro_2.value);
+                let dobra_3 = parseInt(dobra_quatro_3.value);
+                let dobra_4 = parseInt(dobra_quatro_4.value);
+                let pdg = calculcarPgdQuatroDobras(dobra_1, dobra_2, dobra_3, dobra_4, sexo);
+                console.log(pdg);
+            }
         }
         
         if (form2.style.display == 'block') {
@@ -120,16 +139,24 @@ $this->registerJs("
         }  
     }
      
-    function calcularPdg(dobra_1, dobra_2, dobra_3, sexo) {
-        let pdg = 0;
+    function calcularPdgTresDobras(dobra_1, dobra_2, dobra_3) {
         let soma_dobras = dobra_1 + dobra_2 + dobra_3;
+        let quadrado_da_soma = Math.pow(soma_dobras, 2);
+        let idade = document.querySelector('#avaliacao-idade').value;
+        let pdg = (0.41563 * soma_dobras) - (0.00112 * quadrado_da_soma) + (0.03661 * idade) + 4.03653;
+        return pdg;
+    }
+    
+    function calcularPdgQuatroDobras(dobra_1, dobra_2, dobra_3, dobra_3, sexo) {
+        let soma_dobras = dobra_1 + dobra_2 + dobra_3 + dobra_4;
+        let quadrado_da_soma = Math.pow(soma_dobras, 2);
+        let idade = document.querySelector('#avaliacao-idade').value;
+        let pdg = 0;
+        
         if (sexo == 'masculino') {
-            
-            let quadrado_da_soma = Math.pow(soma_dobras, 2);
-            let idade = document.querySelector('#avaliacao-idade').value;
             pdg = (0.29288 * soma_dobras) - (0.0005 * quadrado_da_soma) + (0.15845 * idade) - 5.76377;
         } else if (sexo == 'feminino') {
-            
+            pdg = (0.29669 * quadrado_da_soma) - (0.00043 * quadrado_da_soma) + (0.02963 * idade) + 1.4072; 
         }
         
         return pdg;

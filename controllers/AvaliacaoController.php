@@ -85,8 +85,6 @@ class AvaliacaoController extends Controller
 
         $post = Yii::$app->request->post();
 
-        Yii::debug($post);
-
         $avaliacao_model->pessoa_id = $usuario->id;
 
         if (($avaliacao_model->load($post) && $avaliacao_model->validate())
