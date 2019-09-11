@@ -76,8 +76,7 @@ class AvaliacaoController extends Controller
      */
     public function actionCreate($usuario_id = null)
     {
-        if ($usuario_id === null)
-            throw new NotFoundHttpException("Página não encontrada.");
+        $usuario = Pessoa::findOne($usuario_id);
 
         $avaliacao_model = new Avaliacao(['scenario' => Avaliacao::SCENARIO_AVALIACAO]);
         $peso_model = new Peso();
@@ -86,7 +85,9 @@ class AvaliacaoController extends Controller
 
         $post = Yii::$app->request->post();
 
-        $avaliacao_model->pessoa_id = $usuario_id;
+        Yii::debug($post);
+
+        $avaliacao_model->pessoa_id = $usuario->id;
 
         if (($avaliacao_model->load($post) && $avaliacao_model->validate())
             && ($peso_model->load($post) && $peso_model->validate())
@@ -114,6 +115,7 @@ class AvaliacaoController extends Controller
             'peso_model' => $peso_model,
             'imc_model' => $imc_model,
             'pdg_model' => $pdg_model,
+            'sexo' => $usuario->sexo,
         ]);
     }
 

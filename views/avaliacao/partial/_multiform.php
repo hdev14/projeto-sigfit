@@ -16,6 +16,7 @@ $this->registerJs("
     const form1 = document.querySelector('#form1');
     const form2 = document.querySelector('#form2');
     const form3 = document.querySelector('#form3');
+    const alertar = document.querySelector('#alertar');
     
     const btn_proximo1 = document.querySelector('#btn-proximo1');
     const btn_proximo2 = document.querySelector('#btn-proximo2');
@@ -37,14 +38,17 @@ $this->registerJs("
             || avaliacao_idade.value == ''
             || avaliacao_altura.value == ''
             || peso_valor.value == '') {
-            const alertar = document.querySelector('#alertar');
             alertar.innerHTML = 'Por fovar, preencha os dados.'
             alertar.style.display = 'block';
             return;
         } else {
-            // TODO: MUDAR BASE DO NÚMERO
-            let imc = peso_valor.value / Math.pow(avaliacao_altura.value, 2);
-            console.log(imc);
+            let altura = avaliacao_altura.value;
+            let peso = peso_valor.value;
+            let imc = ((peso / Math.pow(altura, 2)) * 10000).toFixed(2);
+            document.querySelector('#imc-valor').value = imc;
+            document.querySelector('#altura-final').value = altura;
+            document.querySelector('#peso-final').value = peso;
+            alertar.style.display = 'none';
         }
         
         if (form1.style.display == 'block') {    
@@ -61,6 +65,37 @@ $this->registerJs("
     }
     
     btn_proximo2.onclick = function() {
+    
+        if (pdg_tres.style.display == 'block') {
+            let dobra_tres_1 = document.querySelector('#dobra-tres-1');
+            let dobra_tres_2 = document.querySelector('#dobra-tres-2');
+            let dobra_tres_3 = document.querySelector('#dobra-tres-3');
+            
+            if (dobra_tres_1.value == ''
+                || dobra_tres_2.value == '' 
+                || dobra_tres_3.value == '') {
+                
+                alertar.innerHTML = 'Por fovar, preencha os dados.'
+                alertar.style.display = 'block';
+                return;
+                
+            } else {
+                let sexo = document.querySelector('#sexo').innerHTML;
+                let dobra_1 = parseInt(dobra_tres_1.value);
+                let dobra_2 = parseInt(dobra_tres_2.value);
+                let dobra_3 = parseInt(dobra_tres_3.value);
+                let pdg = calcularPdg(dobra_1, dobra_2, dobra_3, sexo);
+                let percentualgordura_valor = document.querySelector('#percentualgordura-valor');
+                percentualgordura_valor.value = pdg.toFixed(2);
+            }
+            
+        } else if (pdg_quatro.style.display == 'block') {
+            let dobra_quatro_1 = document.querySelector('#dobra-quatro-1');
+            let dobra_quatro_2 = document.querySelector('#dobra-quatro-2');
+            let dobra_quatro_3 = document.querySelector('#dobra-quatro-3');
+            let dobra_quatro_4 = document.querySelector('#dobra-quatro-4');
+        }
+        
         if (form2.style.display == 'block') {
             form2.style.display = 'none';
             form3.style.display = 'block';
@@ -84,10 +119,26 @@ $this->registerJs("
             pdg_tres.style.display = 'none';
         }  
     }
-      
+     
+    function calcularPdg(dobra_1, dobra_2, dobra_3, sexo) {
+        let pdg = 0;
+        let soma_dobras = dobra_1 + dobra_2 + dobra_3;
+        if (sexo == 'masculino') {
+            
+            let quadrado_da_soma = Math.pow(soma_dobras, 2);
+            let idade = document.querySelector('#avaliacao-idade').value;
+            pdg = (0.29288 * soma_dobras) - (0.0005 * quadrado_da_soma) + (0.15845 * idade) - 5.76377;
+        } else if (sexo == 'feminino') {
+            
+        }
+        
+        return pdg;
+    }
+    
 ");
 ?>
 
+<p id="sexo" style="display: none"><?= $sexo ?></p>
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <div class="box box-primary">
@@ -133,7 +184,7 @@ $this->registerJs("
                         <div class="form-group">
                             <label for="calculo-pg">Escolha o tipo de
                                 cálculo</label>
-                            <select name="calculo-pg"
+                            <select
                                     id="calculo-pg"
                                     class="form-control">
                                 <option value="calculo3">3 Dobras
@@ -144,60 +195,69 @@ $this->registerJs("
                         </div>
                         <div id="pdg-tres" style="display: block;">
                             <div class="form-group">
-                                <label for="abdome3">
-                                    Dobra cutânea do abdome
+                                <label for="dobra-tres-1">
+                                    <?php if($sexo == 'masculino'): ?>
+                                        Dobra cutânea do peitoral
+                                    <?php elseif($sexo == 'feminino'): ?>
+                                        Dobra cutânea do triceps
+                                    <?php endif; ?>
                                 </label>
-                                <input id="abdome3" type="text"
+                                <input id="dobra-tres-1" type="text"
                                        class="form-control"
                                        placeholder="Digite o valor em milímetro">
                             </div>
                             <div class="form-group">
-                                <label for="tricep3">
-                                    Dobra cutânea do triceps
+                                <label for="dobra-tres-2">
+                                    <?php if($sexo == 'masculino'): ?>
+                                        Dobra cutânea do abdóme
+                                    <?php elseif($sexo == 'feminino'): ?>
+                                        Dobra cutânea do suprailiaco
+                                    <?php endif; ?>
                                 </label>
-                                <input id="tricep3" type="text"
+                                <input id="dobra-tres-2" type="text"
                                        class="form-control"
                                        placeholder="Digite o valor em milímetro">
                             </div>
                             <div class="form-group">
-                                <label for="suprailiaco3">
-                                    Dobra cutânea do suprailíaco
+                                <label for="dobra-tres-3">
+                                    Dobra cutânea do coxa
                                 </label>
-                                <input id="suprailiaco3" type="text"
+                                <input id="dobra-tres-3" type="text"
                                        class="form-control"
                                        placeholder="Digite o valor em milímetro">
                             </div>
                         </div>
                         <div id="pdg-quatro" style="display: none;">
                             <div class="form-group">
-                                <label for="abdome4">
-                                    Dobra cutânea do abdome
+                                <label for="dobra-quatro-1">
+                                    Dobra cutânea do biceps
                                 </label>
-                                <input id="abdome4" type="text"
+                                <input id="dobra-quatro-1" type="text"
                                        class="form-control"
                                        placeholder="Digite o valor em milímetro">
                             </div>
                             <div class="form-group">
-                                <label for="tricep4">
+                                <label for="dobra-quatro-2">
                                     Dobra cutânea do triceps
                                 </label>
-                                <input id="tricep4" type="text"
+                                <input id="dobra-quatro-2" type="text"
                                        class="form-control"
                                        placeholder="Digite o valor em milímetro">
                             </div>
                             <div class="form-group">
-                                <label for="suprailiaco4">
-                                    Dobra cutânea do suprailíaco
+                                <label for="dobra-quatro-3">
+                                    Dobra cutânea do subescapular
                                 </label>
-                                <input id="suprailiaco4" type="text"
+                                <input id="dobra-quatro-3" type="text"
                                        class="form-control"
                                        placeholder="Digite o valor em milímetro">
                             </div>
                             <div class="form-group">
-                                <label for="coxa">
-                                    Dobra cutânea da coxa
+                                <label for="dobra-quatro-4">
+                                    Dobra cutânea da suprailíaco
                                 </label>
-                                <input id="coxa" type="text" class="form-control"
+                                <input id="dobra-quatro-4" type="text"
+                                       class="form-control"
                                        placeholder="Digite o valor em milímetro">
                             </div>
                         </div>
@@ -234,11 +294,11 @@ $this->registerJs("
                         </div>
 
                         <?= $form->field($imc_model, 'valor')->textInput([
-                            'disabled' => 'disabled',
+                            'readonly' => 'readonly',
                         ]) ?>
 
                         <?= $form->field($pdg_model, 'valor')->textInput([
-                            'disabled' => 'disabled',
+                            'readonly' => 'readonly',
                         ]) ?>
 
                         <div class="form-group">
@@ -248,6 +308,7 @@ $this->registerJs("
                             ]) ?>
                             <?= Html::submitButton('Confirmar', ['class' => 'btn btn-success btn-flat pull-right']) ?>
                         </div>
+
                     </div>
                 </div>
 

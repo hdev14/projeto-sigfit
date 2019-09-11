@@ -25,6 +25,7 @@ $this->title = 'Avaliação';
         'peso_model' => $peso_model,
         'imc_model' => $imc_model,
         'pdg_model' => $pdg_model,
+        'sexo' => $sexo,
     ]) ?>
 
 </div>
