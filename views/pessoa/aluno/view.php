@@ -3,7 +3,6 @@
 /* @var $this yii\web\View */
 /* @var $model app\models\Pessoa */
 
-use Yii;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
@@ -35,11 +34,6 @@ $this->title = 'Perfil do Usuário';
                             'confirm' => 'Tem certeza de que deseja excluir este aluno?',
                             'method' => 'post',
                         ],
-                    ]) ?>
-                    <?= Html::a('<i class="fa fa-user-times fa-lg"></i>', ['avaliacao/create', 'usuario_id' =>
-                        $model->id], [
-                        'class' => 'btn btn-box-tool',
-                        'title' => 'Avaliar Usuário',
                     ]) ?>
                 </div>
             </div>
@@ -119,22 +113,66 @@ $this->title = 'Perfil do Usuário';
     </div>
     <div class="col-md-9">
         <div class="box">
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'matricula',
-                    'nome',
-                    'email:email',
-                    'curso',
-                    'periodo_curso',
-                    'horario_treino',
-                    'problema_saude:ntext',
-                    'faltas',
-                    'espera',
-                    'telefone',
-                ],
-            ]) ?>
+            <div class="box-header">
+                <h3 class="box-title">Avaliações Físicas</h3>
+                <div class="box-tools pull-right">
+                    <?= Html::a('asd', ['avaliacao/create', 'usuario_id' =>
+                        $model->id], [
+                        'class' => 'btn btn-box-tool',
+                        'title' => 'Avaliar Usuário',
+                    ]) ?>
+                    <?= Html::beginForm() ?>
+
+                    <?= Html::endForm() ?>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row col-md-12">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs pull-right">
+                            <li>
+                                <a href="#tab1" data-toggle="tab">
+                                    Item 1
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#tab2" data-toggle="tab">
+                                    Item 2
+                                </a>
+                            </li>
+                            <li class="pull-left header">
+                                <h4>Desempenho</h4>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="#tab1" class="tab-pane active">
+                                Tab 1
+                            </div>
+                            <div id="#tab2" class="tab-pane active">
+                                Tab 2
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<!-- DetailView::widget([
+               'model' => $model,
+               'attributes' => [
+                   'id',
+                   'matricula',
+                   'nome',
+                   'email:email',
+                   'curso',
+                   'periodo_curso',
+                   'horario_treino',
+                   'problema_saude:ntext',
+                   'faltas',
+                   'espera',
+                   'telefone',
+               ],
+           ]) -->
