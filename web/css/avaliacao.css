@@ -1,0 +1,12 @@
+#form1, #form2, #form3{
+    animation: ani_form .5s ease-out;
+}
+
+@keyframes ani_form {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
