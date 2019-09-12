@@ -39,7 +39,7 @@ $this->registerJs("
             || avaliacao_idade.value == ''
             || avaliacao_altura.value == ''
             || peso_valor.value == '') {
-            alertar.innerHTML = 'Por fovar, preencha os dados.'
+            alertar.innerHTML = 'Por fovar, preencha os dados.';
             alertar.style.display = 'block';
             return;
         } else {
@@ -67,11 +67,14 @@ $this->registerJs("
     
     btn_proximo2.onclick = function() {
     
+        let percentualgordura_valor = document.querySelector('#percentualgordura-valor');
+        
         if (pdg_tres.style.display == 'block') {
+        
             let dobra_tres_1 = document.querySelector('#dobra-tres-1');
             let dobra_tres_2 = document.querySelector('#dobra-tres-2');
             let dobra_tres_3 = document.querySelector('#dobra-tres-3');
-            
+
             if (dobra_tres_1.value == ''
                 || dobra_tres_2.value == '' 
                 || dobra_tres_3.value == '') {
@@ -81,11 +84,10 @@ $this->registerJs("
                 return;
                 
             } else {
-                let dobra_1 = parseInt(dobra_tres_1.value);
-                let dobra_2 = parseInt(dobra_tres_2.value);
-                let dobra_3 = parseInt(dobra_tres_3.value);
+                let dobra_1 = parseFloat(dobra_tres_1.value);
+                let dobra_2 = parseFloat(dobra_tres_2.value);
+                let dobra_3 = parseFloat(dobra_tres_3.value);
                 let pdg = calcularPdgTresDobras(dobra_1, dobra_2, dobra_3);
-                let percentualgordura_valor = document.querySelector('#percentualgordura-valor');
                 percentualgordura_valor.value = pdg.toFixed(2);
                 alertar.style.display = 'none';
             }
@@ -106,12 +108,12 @@ $this->registerJs("
                 return;
             } else {
                 let sexo = document.querySelector('#sexo').innerHTML;
-                let dobra_1 = parseInt(dobra_quatro_1.value);
-                let dobra_2 = parseInt(dobra_quatro_2.value);
-                let dobra_3 = parseInt(dobra_quatro_3.value);
-                let dobra_4 = parseInt(dobra_quatro_4.value);
-                let pdg = calculcarPgdQuatroDobras(dobra_1, dobra_2, dobra_3, dobra_4, sexo);
-                console.log(pdg);
+                let dobra_1 = parseFloat(dobra_quatro_1.value);
+                let dobra_2 = parseFloat(dobra_quatro_2.value);
+                let dobra_3 = parseFloat(dobra_quatro_3.value);
+                let dobra_4 = parseFloat(dobra_quatro_4.value);
+                let pdg = calcularPdgQuatroDobras(dobra_1, dobra_2, dobra_3, dobra_4, sexo);
+                percentualgordura_valor.value = pdg.toFixed(2);
             }
         }
         
@@ -129,7 +131,6 @@ $this->registerJs("
     }
     
     calculo_pg.onchange = function(event) {
-        console.log(event.target.value);
         if (event.target.value == 'calculo3') {
             pdg_tres.style.display = 'block';
             pdg_quatro.style.display = 'none';
@@ -147,7 +148,7 @@ $this->registerJs("
         return pdg;
     }
     
-    function calcularPdgQuatroDobras(dobra_1, dobra_2, dobra_3, dobra_3, sexo) {
+    function calcularPdgQuatroDobras(dobra_1, dobra_2, dobra_3, dobra_4, sexo) {
         let soma_dobras = dobra_1 + dobra_2 + dobra_3 + dobra_4;
         let quadrado_da_soma = Math.pow(soma_dobras, 2);
         let idade = document.querySelector('#avaliacao-idade').value;
