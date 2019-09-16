@@ -95,4 +95,5 @@ class Avaliacao extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Peso::className(), ['avaliacao_id' => 'id']);
     }
+
 }

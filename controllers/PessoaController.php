@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Avaliacao;
 use app\models\UsuarioInstrutor;
 use app\models\UsuarioInstrutorSearch;
 use DateTime;

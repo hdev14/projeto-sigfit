@@ -13,6 +13,25 @@ $this->title = 'Perfil do Usuário';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$this->registerJs("
+
+    $('#tabs a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+    
+    let avaliacao_op = $('#avaliacao-op')[0];
+
+    if (avaliacao_op.value === 'default') {
+        let a = $('[id^=\"avaliacao-id-\"]')[0];
+        $('#' + a.id).siblings().hide();
+    }
+    
+    avaliacao_op.onchange = function(e) {
+        $('#' + e.target.value).show().siblings().hide();
+    }
+");
 ?>
 
 <div class="row">
@@ -112,44 +131,139 @@ $this->title = 'Perfil do Usuário';
         </div>
     </div>
     <div class="col-md-9">
-        <div class="box">
+        <div class="box box-success">
             <div class="box-header">
-                <h3 class="box-title">Avaliações Físicas</h3>
+                <h3 class="box-title">Avaliações</h3>
                 <div class="box-tools pull-right">
-                    <?= Html::a('asd', ['avaliacao/create', 'usuario_id' =>
-                        $model->id], [
-                        'class' => 'btn btn-box-tool',
-                        'title' => 'Avaliar Usuário',
-                    ]) ?>
-                    <?= Html::beginForm() ?>
-
-                    <?= Html::endForm() ?>
+                    <div class="input-group input-group-sm hidden-xs">
+                        <select id="avaliacao-op"
+                                class="form-control pull-right"
+                                style="width: 200px;">
+                            <option value="default">
+                                Selecione a avaliação
+                            </option>
+                            <?php foreach ($model->avaliacaos as $avaliacao): ?>
+                                <option value="<?= 'avaliacao-id-' .
+                                $avaliacao->id ?>">
+                                    <?= $avaliacao->titulo ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="box-body">
                 <div class="row col-md-12">
+                    <?php foreach($model->avaliacaos as $avaliacao): ?>
+                        <div id="<?= 'avaliacao-id-' . $avaliacao->id ?>"
+                        class="nav-tabs-custom">
+                            <ul id="tabs" class="nav nav-tabs pull-right">
+                                <li>
+<!--                                    FAZER DESSA FORMA-->
+                                    <a href="<?= '#pdg' . $avaliacao->id ?>"
+                                    data-toggle="tab">
+                                        Percentual de Gordura
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab2" data-toggle="tab">
+                                        Peso
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a href="#tab3" data-toggle="tab">
+                                        Índice de Massa Corporal (IMC)
+                                    </a>
+                                </li>
+                                <li class="pull-left header">
+                                    <h4><?= $avaliacao->titulo ?></h4>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tab1" class="tab-pane fade">
+                                    <div class="box">
+                                        <div class="box-header">
+                                            <h3 class="box-title">Desempenho</h3>
+                                        </div>
+                                        <div class="box-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores blanditiis, consequatur doloremque dolorum enim ex exercitationem, explicabo facilis itaque modi necessitatibus obcaecati perferendis quas quisquam quos sunt suscipit voluptates voluptatum?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab2" class="tab-pane fade">
+                                    <div class="box">
+                                        <div class="box-header">
+                                            <h3 class="box-title">Desempenho</h3>
+                                        </div>
+                                        <div class="box-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores blanditiis, consequatur doloremque dolorum enim ex exercitationem, explicabo facilis itaque modi necessitatibus obcaecati perferendis quas quisquam quos sunt suscipit voluptates voluptatum?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab3" class="tab-pane fade">
+                                    <div class="box">
+                                        <div class="box-header">
+                                            <h3 class="box-title">Desempenho</h3>
+                                        </div>
+                                        <div class="box-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores blanditiis, consequatur doloremque dolorum enim ex exercitationem, explicabo facilis itaque modi necessitatibus obcaecati perferendis quas quisquam quos sunt suscipit voluptates voluptatum?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                     <div class="nav-tabs-custom">
-                        <ul class="nav nav-tabs pull-right">
+                        <ul id="tabs" class="nav nav-tabs pull-right">
                             <li>
                                 <a href="#tab1" data-toggle="tab">
-                                    Item 1
+                                    Percentual de Gordura
                                 </a>
                             </li>
                             <li>
                                 <a href="#tab2" data-toggle="tab">
-                                    Item 2
+                                    Peso
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#tab3" data-toggle="tab">
+                                    Índice de Massa Corporal (IMC)
                                 </a>
                             </li>
                             <li class="pull-left header">
-                                <h4>Desempenho</h4>
+                                <h4>Avaliação 1</h4>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div id="#tab1" class="tab-pane active">
-                                Tab 1
+                            <div id="tab1" class="tab-pane fade">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Desempenho</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores blanditiis, consequatur doloremque dolorum enim ex exercitationem, explicabo facilis itaque modi necessitatibus obcaecati perferendis quas quisquam quos sunt suscipit voluptates voluptatum?</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="#tab2" class="tab-pane active">
-                                Tab 2
+                            <div id="tab2" class="tab-pane fade">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Desempenho</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores blanditiis, consequatur doloremque dolorum enim ex exercitationem, explicabo facilis itaque modi necessitatibus obcaecati perferendis quas quisquam quos sunt suscipit voluptates voluptatum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tab3" class="tab-pane fade">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Desempenho</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores blanditiis, consequatur doloremque dolorum enim ex exercitationem, explicabo facilis itaque modi necessitatibus obcaecati perferendis quas quisquam quos sunt suscipit voluptates voluptatum?</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
