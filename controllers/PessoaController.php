@@ -106,6 +106,8 @@ class PessoaController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+
+
         if ($model->servidor) {
             return $this->render('servidor/view', [ 'model' => $model]);
         }

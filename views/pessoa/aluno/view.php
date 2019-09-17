@@ -32,6 +32,7 @@ $this->registerJs("
         $('#' + e.target.value).show().siblings().hide();
         
     }
+    
 ");
 ?>
 
@@ -179,8 +180,8 @@ $this->registerJs("
                                     </li>
                                     <li class="dropdown pull-left">
                                         <?= Html::a('<i class="fa fa-bars"></i>','#', [
-                                                'class' => 'dropdown-toggle',
-                                                'data-toggle' => 'dropdown'
+                                            'class' => 'dropdown-toggle',
+                                            'data-toggle' => 'dropdown'
                                         ]) ?>
                                         <ul class="dropdown-menu">
                                             <li>
@@ -197,7 +198,7 @@ $this->registerJs("
                                         </ul>
                                     </li>
                                     <li class="pull-left header">
-                                        <h4>asdasd<?= $avaliacao->titulo ?></h4>
+                                        <h4><?= $avaliacao->titulo ?></h4>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
@@ -207,17 +208,23 @@ $this->registerJs("
                                                 <h3 class="box-title">Desempenho</h3>
                                             </div>
                                             <div class="box-body">
-                                                <canvas id="pdg-chart"></canvas>
-                                                <?php $this->registerJs("
-                                                    const pdg_chart_context = document.querySelector('#pdg-chart').getContext('2d');
-                                                    let pdg = new Chart(pdg_chart_context, {
+                                                <canvas id="<?= 'pdg-chart' .
+                                                $avaliacao->id ?>"></canvas>
+                                                <?php
+                                                $this->registerJs("
+                                                    const pdg_chart_context". $avaliacao->id ." = document.querySelector('#pdg-chart". $avaliacao->id ."').getContext('2d');
+                                                    let pdg". $avaliacao->id ." = new Chart(pdg_chart_context". $avaliacao->id .", {
                                                         type: 'line',
                                                         data: {
-                                                            labels: [{}]
-                                                        }
+                                                            datasets:[{
+                                                                label: 'Porcentagem (%)',
+                                                                data: [{$avaliacao->pdgData}]
+                                                            }]
+                                                        },
                                                         options:{}
                                                     });
-                                                "); ?>
+                                                ");
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
