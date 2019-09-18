@@ -14,6 +14,9 @@ $config = [
     'language' => 'pt-BR',
     'layout' => 'admin',
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'php:d/m/Y',
+        ],
         // Componente para autenticação com SUAP
         'suap' => [
             'class' => 'app\components\Suap',

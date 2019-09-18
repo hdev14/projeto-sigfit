@@ -7,10 +7,10 @@ $this->registerJs("
     let pdg". $avaliacao->id ." = new Chart(pdg_chart_context". $avaliacao->id .", {
         type: 'line',
         data: {
-            labels: [{$avaliacao->pdgData}],
+            labels: [{$avaliacao->pdgData['labels']}],
             datasets:[{
                 label: 'Percentual de Gordura (%)',
-                data: [{$avaliacao->pdgData}],
+                data: [{$avaliacao->pdgData['data']}],
                 borderColor: 'rgba(243, 156, 18, .8)',
                 borderWidth: 4,
                 pointBackgroundColor: 'rgba(195, 125, 14, 1)',

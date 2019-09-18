@@ -7,10 +7,10 @@ $this->registerJs("
     let imc". $avaliacao->id ." = new Chart(imc_chart_context". $avaliacao->id .", {
         type: 'line',
         data: {
-            labels: [{$avaliacao->imcData}],
+            labels: [{$avaliacao->imcData['labels']}],
             datasets:[{
                 label: 'IMC (%)',
-                data: [{$avaliacao->imcData}],
+                data: [{$avaliacao->imcData['data']}],
                 borderColor: 'rgba(0, 192, 239, .8)',
                 borderWidth: 4,
                 pointBackgroundColor: 'rgba(0, 154, 191, 1)',

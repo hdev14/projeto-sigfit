@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $avaliacao_id
  * @property double $valor
+ * @property string $data
  *
  * @property Avaliacao $avaliacao
  */
@@ -45,6 +46,7 @@ class Imc extends \yii\db\ActiveRecord
                 'targetClass' => Avaliacao::className(),
                 'targetAttribute' => ['avaliacao_id' => 'id']
             ],
+            ['data', 'safe'],
         ];
     }
 

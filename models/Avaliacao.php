@@ -111,30 +111,61 @@ class Avaliacao extends \yii\db\ActiveRecord
     public function getPdgData()
     {
         $pdgs = $this->percentualGorduras;
+        $labels = [];
         $data = [];
         foreach ($pdgs as $pdg) {
+            array_push($labels, Yii::$app->formatter->asDate($pdg->data));
             array_push($data, $pdg->valor);
         }
-        return implode(',', $data);
+
+        $labels = array_map(function ($valor) {
+            return " \"{$valor}\"";
+        }, $labels);
+
+        return [
+            'labels' => implode(',', $labels),
+            'data' => implode(',', $data)
+        ];
     }
 
     public function getPesoData()
     {
         $pesos = $this->pesos;
+        $labels = [];
         $data = [];
         foreach ($pesos as $peso) {
+            array_push($labels, Yii::$app->formatter->asDate($peso->data));
             array_push($data, $peso->valor);
         }
-        return implode(',', $data);
+
+        $labels = array_map(function ($valor) {
+            return " \"{$valor}\"";
+        }, $labels);
+
+        return [
+            'labels' => implode(',', $labels),
+            'data' => implode(',', $data)
+        ];
     }
 
     public function getImcData()
     {
         $imcs = $this->imcs;
+        $labels = [];
         $data = [];
         foreach ($imcs as $imc) {
+            array_push($labels, Yii::$app->formatter->asDate($imc->data));
             array_push($data, $imc->valor);
         }
-        return implode(',', $data);
+
+        $labels = array_map(function ($valor) {
+            return " \"{$valor}\"";
+        }, $labels);
+
+        Yii::debug(implode(',', $labels));
+        return [
+            'labels' => implode(',', $labels),
+            'data' => implode(',', $data)
+        ];
     }
 }

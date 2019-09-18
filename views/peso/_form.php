@@ -12,8 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'avaliacao_id')->textInput() ?>
-
     <?= $form->field($model, 'valor')->textInput() ?>
 
     <div class="form-group">
