@@ -13,14 +13,14 @@ $this->title = "Usuários Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
 ?>
-<?= $this->render('partial/btn-group') ?>
+<?= $this->render('../partial/_btn-group') ?>
 
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title">Todos</h3>
-                <?= $this->render('./partial/btn-registro') ?>
+                <?= $this->render('../partial/_btn-registro') ?>
             </div>
             <div class="box-body">
                 <table class="table table-bordered table-hover">

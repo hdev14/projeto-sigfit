@@ -29,11 +29,6 @@ class Suap extends Component
         parent::__construct($config);
     }
 
-    /**
-     * @param $matricula
-     * @param $senha
-     * @return bool
-     */
     public function autenticar($matricula, $senha)
     {
 

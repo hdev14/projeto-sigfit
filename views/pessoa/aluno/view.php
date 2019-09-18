@@ -203,51 +203,23 @@ $this->registerJs("
                                 </ul>
                                 <div class="tab-content">
                                     <div id="<?= 'pdg' . $avaliacao->id ?>" class="tab-pane fade">
-                                        <div class="box">
-                                            <div class="box-header">
-                                                <h3 class="box-title">Desempenho</h3>
-                                            </div>
-                                            <div class="box-body">
-                                                <canvas id="<?= 'pdg-chart' .
-                                                $avaliacao->id ?>"></canvas>
-                                                <?php
-                                                $this->registerJs("
-                                                    const pdg_chart_context". $avaliacao->id ." = document.querySelector('#pdg-chart". $avaliacao->id ."').getContext('2d');
-                                                    let pdg". $avaliacao->id ." = new Chart(pdg_chart_context". $avaliacao->id .", {
-                                                        type: 'line',
-                                                        data: {
-                                                            datasets:[{
-                                                                label: 'Porcentagem (%)',
-                                                                data: [{$avaliacao->pdgData}]
-                                                            }]
-                                                        },
-                                                        options:{}
-                                                    });
-                                                ");
-                                                ?>
-                                            </div>
-                                        </div>
+                                        <?= $this->render('../../partial/_chart-pdg', [
+                                            'avaliacao' =>
+                                                $avaliacao,
+                                        ]) ?>
                                     </div>
                                     <div id="<?= 'peso' . $avaliacao->id ?>" class="tab-pane fade">
-                                        <div class="box">
-                                            <div class="box-header">
-                                                <h3 class="box-title">Desempenho</h3>
-                                            </div>
-                                            <div class="box-body">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores blanditiis, consequatur doloremque dolorum enim ex exercitationem, explicabo facilis itaque modi necessitatibus obcaecati perferendis quas quisquam quos sunt suscipit voluptates voluptatum?</p>
-                                            </div>
-                                        </div>
+                                        <?= $this->render('../../partial/_chart-peso', [
+                                            'avaliacao' =>
+                                                $avaliacao,
+                                        ]) ?>
                                     </div>
                                     <div id="<?= 'imc' . $avaliacao->id ?>"
                                          class="tab-pane fade active in">
-                                        <div class="box">
-                                            <div class="box-header">
-                                                <h3 class="box-title">Desempenho</h3>
-                                            </div>
-                                            <div class="box-body">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores blanditiis, consequatur doloremque dolorum enim ex exercitationem, explicabo facilis itaque modi necessitatibus obcaecati perferendis quas quisquam quos sunt suscipit voluptates voluptatum?</p>
-                                            </div>
-                                        </div>
+                                        <?= $this->render('../../partial/_chart-imc', [
+                                            'avaliacao' =>
+                                                $avaliacao,
+                                        ]) ?>
                                     </div>
                                 </div>
                             </div>

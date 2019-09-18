@@ -12,7 +12,7 @@ $this->title = "Alunos Instruídos";
 //$this->params['breadcrumbs'][] = 'Alunos';
 ?>
 
-<?= $this->render('../partial/btn-group') ?>
+<?= $this->render('../../partial/_btn-group') ?>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
