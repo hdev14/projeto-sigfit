@@ -19,7 +19,7 @@ class AvaliacaoSearch extends Avaliacao
         return [
             [['id', 'pessoa_id', 'altura', 'idade'], 'integer'],
             ['titulo', 'string'],
-            [['data'], 'safe'],
+            [['data_inicio', 'data_update'], 'safe'],
         ];
     }
 
@@ -61,7 +61,8 @@ class AvaliacaoSearch extends Avaliacao
         $query->andFilterWhere([
             'id' => $this->id,
             'pessoa_id' => $this->pessoa_id,
-            'data' => $this->data,
+            'data_inicio' => $this->data_inicio,
+            'data_update' => $this->data_update,
             'altura' => $this->altura,
         ]);
 

@@ -87,25 +87,20 @@ class AvaliacaoController extends Controller
 
         $avaliacao_model->pessoa_id = $usuario->id;
 
-        if (($avaliacao_model->load($post) && $avaliacao_model->validate())
-            && ($peso_model->load($post) && $peso_model->validate())
-            && ($imc_model->load($post) && $imc_model->validate())
-            && ($pdg_model->load($post) && $pdg_model->validate())) {
+        if (( $avaliacao_model->load($post) && $avaliacao_model->validate() )
+            && ( $peso_model->load($post) && $peso_model->validate() )
+            && ( $imc_model->load($post) && $imc_model->validate() )
+            && ( $pdg_model->load($post) && $pdg_model->validate() )
+            && $avaliacao_model->save()) {
 
-            $avaliacao_model->data = date('Y-m-d');
+            $peso_model->link('avaliacao', $avaliacao_model);
+            $imc_model->link('avaliacao', $avaliacao_model);
+            $pdg_model->link('avaliacao', $avaliacao_model);
 
-            if ($avaliacao_model->save()) {
-
-                $peso_model->link('avaliacao', $avaliacao_model);
-                $imc_model->link('avaliacao', $avaliacao_model);
-                $pdg_model->link('avaliacao', $avaliacao_model);
-
-                return $this->redirect([
-                    'view',
-                    'id' => $avaliacao_model->id
-                ]);
-
-            }
+            return $this->redirect([
+                'view',
+                'id' => $avaliacao_model->id
+            ]);
         }
 
         return $this->render('create', [
@@ -175,21 +170,19 @@ class AvaliacaoController extends Controller
      */
     public function actionCreatePeso($avaliacao_id = null) {
 
-        if ($avaliacao_id === null)
-            throw new NotFoundHttpException("Página não encontrada.");
+        $avaliacao = $this->findModelAvaliacao($avaliacao_id);
 
         $peso = new Peso(['scenario' => Peso::SCENARIO_PESO]);
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        $peso->avaliacao_id = $avaliacao_id;
+        $peso->avaliacao_id = $avaliacao->id;
 
-        if ($peso->load($post)) {
-
-            if ($peso->save()) {
-                $session->addFlash('success', 'Peso registrado !');
-                return $this->goHome(); // TODO: volta para a página do usuário.
-            }
+        if ($peso->load($post) && $peso->save()) {
+            $avaliacao->data_update = date('Y-m-d');
+            $session->addFlash('success', 'Peso registrado !');
+            return $this->goHome(); // TODO: volta para a página do usuário.
+        } else {
             $session->addFlash('error', 'Não foi possível registra o novo peso.');
         }
 
@@ -209,12 +202,10 @@ class AvaliacaoController extends Controller
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        if ($peso->load($post)) {
-
-            if ($peso->save()) {
-                $session->addFlash('success', 'Peso editado !');
-                return $this->goBack(); // TODO: Implementar o redirecionamento.
-            }
+        if ($peso->load($post) && $peso->save()) {
+            $session->addFlash('success', 'Peso editado !');
+            return $this->goBack(); // TODO: Implementar o redirecionamento.
+        } else {
             $session->addFlash('error', 'Não foi possível editar o peso.');
         }
 
@@ -242,21 +233,19 @@ class AvaliacaoController extends Controller
      */
     public function actionCreateImc($avaliacao_id = null) {
 
-        if ($avaliacao_id === null)
-            throw new NotFoundHttpException('Página não encontrada.');
+        $avaliacao = $this->findModelAvaliacao($avaliacao_id);
 
         $imc = new Imc(['scenario' => Imc::SCENARIO_IMC]);
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        $imc->avaliacao_id = $avaliacao_id;
+        $imc->avaliacao_id = $avaliacao->id;
 
-        if ($imc->load($post)) {
-
-            if ($imc->save()) {
-                $session->addFlash('success', 'IMC registrado !');
-                return $this->goBack(); # TODO: Implementar o redirecionamento.
-            }
+        if ($imc->load($post) && $imc->save()) {
+            $avaliacao->data_update = date('Y-m-d');
+            $session->addFlash('success', 'IMC registrado !');
+            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        } else {
             $session->addFlash('error', 'Não foi possivel criar o novo IMC.');
         }
 
@@ -276,12 +265,10 @@ class AvaliacaoController extends Controller
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        if ($imc->load($post)) {
-
-            if ($imc->save()) {
-                $session->addFlash('success', 'IMC editado !');
-                return $this->goBack(); # TODO: Implementar o redirecionamento.
-            }
+        if ($imc->load($post) && $imc->save()) {
+            $session->addFlash('success', 'IMC editado !');
+            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        } else {
             $session->addFlash('error', 'Não foi possível editar o IMC');
         }
 
@@ -302,14 +289,9 @@ class AvaliacaoController extends Controller
         return $this->goBack(); # TODO: Implementar o redirecionamento.
     }
 
-    /**
-     * @param null $avaliacao_id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
-     */
     public function actionCreatePg($avaliacao_id = null) {
-        if ($avaliacao_id === null)
-            throw new NotFoundHttpException('Página não encontrada.');
+
+        $avaliacao = $this->findModelAvaliacao($avaliacao_id);
 
         $pg = new PercentualGordura([
             'scenario' => PercentualGordura::SCENARIO_PG
@@ -317,14 +299,13 @@ class AvaliacaoController extends Controller
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        $pg->avaliacao_id = $avaliacao_id;
+        $pg->avaliacao_id = $avaliacao->id;
 
-        if ($pg->load($post)) {
-
-            if ($pg->save()) {
-                $session->addFlash('success', 'Percentual de Gordura registrado !');
-                return $this->goBack(); # TODO: Implementar o redirecionamento.
-            }
+        if ($pg->load($post) && $pg->save()) {
+            $avaliacao->data_update = date('Y-m-d');
+            $session->addFlash('success', 'Percentual de Gordura registrado !');
+            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        } else {
             $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
         }
 
@@ -343,12 +324,10 @@ class AvaliacaoController extends Controller
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        if ($pg->load($post)) {
-
-            if ($pg->save()) {
-                $session->addFlash('success', 'Percentual de Gordura editado !');
-                return $this->goBack(); # TODO: Implementar o redirecionamento.
-            }
+        if ($pg->load($post) && $pg->save()) {
+            $session->addFlash('success', 'Percentual de Gordura editado !');
+            return $this->goBack(); # TODO: Implementar o redirecionamento.
+        } else {
             $session->addFlash('error', 'Não foi possível editar o percentual de gordura.');
         }
 

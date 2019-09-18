@@ -184,10 +184,10 @@ $this->registerJs("
                                             'data-toggle' => 'dropdown'
                                         ]) ?>
                                         <ul class="dropdown-menu">
-                                            <li>
+                                            <li role="presentation">
                                                 <?= Html::a('Editar avaliação', ['avaliacao/create', 'usuario_id' => $avaliacao->id]) ?>
                                             </li>
-                                            <li>
+                                            <li role="presentation">
                                                 <?= Html::a('Excluir avaliação', ['delete', 'id' => $avaliacao->id], [
                                                     'data' => [
                                                         'confirm' => 'Are you sure you want to delete this item?',
@@ -226,6 +226,11 @@ $this->registerJs("
                         </div>
                     <?php endforeach; ?>
                 </div>
+            </div>
+            <div class="box-footer clearfix no-border">
+                <?= Html::a('Nova avaliação', ['avaliacao/create', 'usuario_id' => $model->id], [
+                    'class' => 'btn btn-success btn-sm btn-flat pull-right',
+                ]) ?>
             </div>
         </div>
     </div>
