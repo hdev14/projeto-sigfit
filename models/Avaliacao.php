@@ -96,11 +96,32 @@ class Avaliacao extends \yii\db\ActiveRecord
         return $this->hasMany(Peso::className(), ['avaliacao_id' => 'id']);
     }
 
-    public function getPdgData() {
+    public function getPdgData()
+    {
         $pdgs = $this->percentualGorduras;
         $data = [];
         foreach ($pdgs as $pdg) {
             array_push($data, $pdg->valor);
+        }
+        return implode(',', $data);
+    }
+
+    public function getPesoData()
+    {
+        $pesos = $this->pesos;
+        $data = [];
+        foreach ($pesos as $peso) {
+            array_push($data, $peso->valor);
+        }
+        return implode(',', $data);
+    }
+
+    public function getImcData()
+    {
+        $imcs = $this->imcs;
+        $data = [];
+        foreach ($imcs as $imc) {
+            array_push($data, $imc->valor);
         }
         return implode(',', $data);
     }

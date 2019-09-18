@@ -7,10 +7,10 @@ $this->registerJs("
     let peso". $avaliacao->id ." = new Chart(peso_chart_context". $avaliacao->id .", {
         type: 'line',
         data: {
-            labels: [{$avaliacao->pdgData}],
+            labels: [{$avaliacao->pesoData}],
             datasets:[{
-                label: 'Porcentagem (%)',
-                data: [{$avaliacao->pdgData}],
+                label: 'Peso (Kg)',
+                data: [{$avaliacao->pesoData}],
                 borderColor: 'rgba(221, 75, 57, .8)',
                 borderWidth: 4,
                 pointBackgroundColor: 'rgba(177, 60, 46, 1)',

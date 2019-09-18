@@ -9,7 +9,7 @@ $this->registerJs("
         data: {
             labels: [{$avaliacao->pdgData}],
             datasets:[{
-                label: 'Porcentagem (%)',
+                label: 'Percentual de Gordura (%)',
                 data: [{$avaliacao->pdgData}],
                 borderColor: 'rgba(243, 156, 18, .8)',
                 borderWidth: 4,
