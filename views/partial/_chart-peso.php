@@ -2,6 +2,8 @@
 
 /* @var $avaliacao app\models\Avaliacao */
 
+use app\models\Peso;
+
 $this->registerJs("
     const peso_chart_context". $avaliacao->id ." = document.querySelector('#peso-chart". $avaliacao->id ."').getContext('2d');
     let peso". $avaliacao->id ." = new Chart(peso_chart_context". $avaliacao->id .", {
@@ -23,9 +25,14 @@ $this->registerJs("
 ");
 
 ?>
-<div class="box">
+<div class="box ">
     <div class="box-header">
-        <h3 class="box-title">Desempenho</h3>
+        <h3 class="box-title"></h3>
+        <div class="box-tools pull-right">
+            <?= $this->render('./_modal-form-peso', [
+                'avaliacao_id' => $avaliacao->id,
+            ]) ?>
+        </div>
     </div>
     <div class="box-body">
         <div class="row">

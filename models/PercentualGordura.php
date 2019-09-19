@@ -61,6 +61,14 @@ class PercentualGordura extends \yii\db\ActiveRecord
         ];
     }
 
+      public function beforeSave($insert)
+    {
+        if ($this->isNewRecord)
+            $this->data = date('Y-m-d');
+
+        return parent::beforeSave($insert);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

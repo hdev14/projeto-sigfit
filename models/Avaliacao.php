@@ -161,8 +161,7 @@ class Avaliacao extends \yii\db\ActiveRecord
         $labels = array_map(function ($valor) {
             return " \"{$valor}\"";
         }, $labels);
-
-        Yii::debug(implode(',', $labels));
+        
         return [
             'labels' => implode(',', $labels),
             'data' => implode(',', $data)

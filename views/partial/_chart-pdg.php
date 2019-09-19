@@ -2,6 +2,8 @@
 
 /* @var $avaliacao app\models\Avaliacao */
 
+use app\models\PercentualGordura;
+
 $this->registerJs("
     const pdg_chart_context". $avaliacao->id ." = document.querySelector('#pdg-chart". $avaliacao->id ."').getContext('2d');
     let pdg". $avaliacao->id ." = new Chart(pdg_chart_context". $avaliacao->id .", {
@@ -24,9 +26,18 @@ $this->registerJs("
 
 ?>
 
-<div class="box">
+<div class="box ">
     <div class="box-header">
-        <h3 class="box-title">Desempenho</h3>
+        <h3 class="box-title"></h3>
+        <div class="box-tools pull-right">
+            <?= $this->render('./_modal-form', [
+                'label_header' => 'Nova pesagem',
+                'label_button_click' => "<i class='fa fa-fw fa-plus'></i>Adicionar peso",
+                'action' => 'avaliacao/create-peso',
+                'model' => new PercentualGordura(),
+                'avaliacao_id' => $avaliacao->id,
+            ]) ?>
+        </div>
     </div>
     <div class="box-body">
         <div class="row">

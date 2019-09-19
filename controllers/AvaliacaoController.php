@@ -182,8 +182,10 @@ class AvaliacaoController extends Controller
             $peso->data = date('Y-m-d');
             if ($peso->save()) {
                 $avaliacao->save(false);
-                $session->addFlash('success', 'Peso registrado !');
-                return $this->goBack(); // TODO: volta para a página do usuário.
+                $session->addFlash('success', 'Peso registrado com sucesso !');
+                return $this->redirect([
+                    'pessoa/view', 'id' => $avaliacao->pessoa_id
+                ]);
             }
 
             $session->addFlash('error', 'Não foi possível registra o novo peso.');
