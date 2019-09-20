@@ -235,18 +235,9 @@ $this->registerJs("
                 </div>
             </div>
         <?php else: ?>
-            <div class="callout callout-info">
-                <h4>Usuário ainda não possui avaliações físicas</h4>
-                <p>
-                    Efetuar uma nova <?= Html::a(
-                        '<span class="badge bg-blue">Avaliação Física</span>',
-                        [
-                            'avaliacao/create',
-                            'usuario_id' => $model->id
-                        ]
-                    ) ?>
-                </p>
-            </div>
+            <?= $this->render('../../partial/_sem-avaliacao', [
+                    'usuario_id' => $model->id,
+            ]) ?>
         <?php endif; ?>
     </div>
 </div>

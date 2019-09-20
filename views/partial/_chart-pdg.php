@@ -30,18 +30,12 @@ $this->registerJs("
     <div class="box-header">
         <h3 class="box-title"></h3>
         <div class="box-tools pull-right">
-            <?= $this->render('./_modal-form', [
-                'label_header' => 'Nova pesagem',
-                'label_button_click' => "<i class='fa fa-fw fa-plus'></i>Adicionar peso",
-                'action' => 'avaliacao/create-peso',
-                'model' => new PercentualGordura(),
-                'avaliacao_id' => $avaliacao->id,
-            ]) ?>
+
         </div>
     </div>
     <div class="box-body">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <canvas id="<?= 'pdg-chart' . $avaliacao->id ?>"></canvas>
             </div>
         </div>

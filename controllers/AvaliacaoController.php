@@ -179,20 +179,15 @@ class AvaliacaoController extends Controller
         $peso->avaliacao_id = $avaliacao->id;
 
         if ($peso->load($post)) {
-            $peso->data = date('Y-m-d');
             if ($peso->save()) {
                 $avaliacao->save(false);
                 $session->addFlash('success', 'Peso registrado com sucesso !');
-                return $this->redirect([
-                    'pessoa/view', 'id' => $avaliacao->pessoa_id
-                ]);
             }
-
             $session->addFlash('error', 'Não foi possível registra o novo peso.');
         }
 
-        return $this->render('../peso/create', [
-            'model' => $peso,
+        return $this->redirect([
+            'pessoa/view', 'id' => $avaliacao->pessoa_id
         ]);
     }
 
@@ -239,18 +234,16 @@ class AvaliacaoController extends Controller
         $imc->avaliacao_id = $avaliacao->id;
 
         if ($imc->load($post)) {
-            $imc->data = date('Y-m-d');
             if ($imc->save()) {
                 $avaliacao->save(false);
-                $session->addFlash('success', 'IMC registrado !');
-                return $this->goBack(); # TODO: Implementar o redirecionamento.
+                $session->addFlash('success', 'IMC registrado com sucesso!');
             }
-
-            $session->addFlash('error', 'Não foi possivel criar o novo IMC.');
+            $session->addFlash('error', 'Não foi possível registra o novo IMC.');
         }
 
-        return $this->render('../imc/create', [
-            'model' => $imc,
+        return $this->redirect([
+            'pessoa/view',
+            'id' => $avaliacao->pessoa_id,
         ]);
     }
 
@@ -301,18 +294,16 @@ class AvaliacaoController extends Controller
         $pg->avaliacao_id = $avaliacao->id;
 
         if ($pg->load($post)) {
-            $pg->data = date('Y-m-d');
             if ($pg->save()) {
                 $avaliacao->save(false);
                 $session->addFlash('success', 'Percentual de Gordura registrado !');
-                return $this->goBack(); # TODO: Implementar o redirecionamento.
             }
-
             $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
         }
 
-        return $this->render('../percentual-gordura/create', [
-            'model' => $pg,
+        return $this->redirect([
+            'pessoa/view',
+            'id' => $avaliacao->pessoa_id,
         ]);
     }
 

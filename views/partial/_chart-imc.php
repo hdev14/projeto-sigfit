@@ -26,6 +26,11 @@ $this->registerJs("
 <div class="box ">
     <div class="box-header">
         <h3 class="box-title"></h3>
+        <div class="box-tools pull-right">
+            <?= $this->render('_modal-form-imc', [
+                'avaliacao_id' => $avaliacao->id,
+            ]) ?>
+        </div>
     </div>
     <div class="box-body">
         <div class="row">

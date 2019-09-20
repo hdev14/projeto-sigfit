@@ -29,14 +29,14 @@ $this->registerJs("
     <div class="box-header">
         <h3 class="box-title"></h3>
         <div class="box-tools pull-right">
-            <?= $this->render('./_modal-form-peso', [
+            <?= $this->render('_modal-form-peso', [
                 'avaliacao_id' => $avaliacao->id,
             ]) ?>
         </div>
     </div>
     <div class="box-body">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <canvas id="<?= 'peso-chart' . $avaliacao->id ?>"></canvas>
             </div>
         </div>

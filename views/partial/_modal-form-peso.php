@@ -1,23 +1,19 @@
 <?php
 
-
-/* @var $avaliacao_id int */
-/* @var $label_header string */
-/* @var $label_button_click string */
-/* @var $action string */
 /* @var $avaliacao_id int */
 
 use app\models\Peso;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
+$peso = new Peso();
 ?>
 <?php $modal = Modal::begin([
-    'header' => 'Nova pesagem',
+    'header' => 'Preenchar o campo corretamente',
     'footer' =>
         Html::submitButton('Confirmar', [
             'class' => 'btn btn-success btn-flat btn-sm',
-            'form' => 'modal-form' . $avaliacao_id,
+            'form' => 'modal-form-peso' . $avaliacao_id,
         ])
     ,
     'toggleButton' => [
@@ -32,12 +28,13 @@ use yii\helpers\Html;
         'avaliacao_id' => $avaliacao_id,
     ],
     'post',
-    ['id' => 'modal-form' . $avaliacao_id]
+    ['id' => 'modal-form-peso' . $avaliacao_id]
 ); ?>
 
 <div class="form-group">
-    <?= Html::activeInput('text', new Peso(), 'valor', [
-        'placeholder' => 'Adicionar no peso (Kg)',
+    <?= Html::activeLabel($peso, 'valor') ?>
+    <?= Html::activeInput('text', $peso, 'valor', [
+        'placeholder' => 'Digite o valor do peso (Kg)',
         'class' => 'form-control',
         'required' => 'required'
     ]) ?>
