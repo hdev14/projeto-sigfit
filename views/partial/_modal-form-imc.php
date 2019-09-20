@@ -9,18 +9,16 @@ use yii\helpers\Html;
 
 $this->registerJs("
 
-        const altura_elt = document.querySelector('#altura-imc" .
-    $avaliacao_id .
-    "');
-        const peso_elt = document.querySelector('#peso-imc" . $avaliacao_id .
-    "');
-        const btn_calcular = document.querySelector('#calcular-imc');
+        const altura_elt". $avaliacao_id ." = 
+                document.querySelector('#altura-imc". $avaliacao_id ."')
+            , peso_elt". $avaliacao_id ." = document.querySelector('#peso-imc" . $avaliacao_id ."')
+            , btn_calcular". $avaliacao_id ." = document.querySelector('#calcular-imc');
         
-        btn_calcular.onclick = () => {
-            let altura = parseFloat(altura_elt.value);
-            let peso = parseFloat(peso_elt.value);
-            let imc = document.querySelector('#imc-valor');
-            console.log(altura, peso);
+        btn_calcular". $avaliacao_id .".onclick = () => {
+            let altura = parseFloat(altura_elt". $avaliacao_id .".value)
+                , peso = parseFloat(peso_elt.value)
+                , imc = document.querySelector('#imc-valor');
+
             imc.value = ((peso / Math.pow(altura, 2)) * 10000).toFixed(2);
         }
 ");

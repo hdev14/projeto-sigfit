@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
 /* @var $usuario_id int */
 /* @var $sexo string */
 
+$this->registerJsFile('@web/js/calculos-dobras.js');
 $this->registerJsFile('@web/js/avaliacao.js');
 $this->registerCssFile('@web/css/avaliacao.css');
 ?>
