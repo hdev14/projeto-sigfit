@@ -8,17 +8,17 @@ use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
 $this->registerJs("
-
-        const altura_elt". $avaliacao_id ." = 
+          
+        const altura_elt".$avaliacao_id." = 
                 document.querySelector('#altura-imc". $avaliacao_id ."')
-            , peso_elt". $avaliacao_id ." = document.querySelector('#peso-imc" . $avaliacao_id ."')
-            , btn_calcular". $avaliacao_id ." = document.querySelector('#calcular-imc');
+            , peso_elt".$avaliacao_id." = document.querySelector('#peso-imc" . $avaliacao_id ."')
+            , btn_calcular".$avaliacao_id." = document.querySelector('#calcular-imc".$avaliacao_id."');
         
         btn_calcular". $avaliacao_id .".onclick = () => {
-            let altura = parseFloat(altura_elt". $avaliacao_id .".value)
-                , peso = parseFloat(peso_elt.value)
+            let altura = parseFloat(altura_elt".$avaliacao_id.".value)
+                , peso = parseFloat(peso_elt".$avaliacao_id.".value)
                 , imc = document.querySelector('#imc-valor');
-
+            
             imc.value = ((peso / Math.pow(altura, 2)) * 10000).toFixed(2);
         }
 ");
@@ -29,7 +29,7 @@ $this->registerJs("
         Html::a('Calcular', '#', [
             'class' => 'btn btn-primary btn-flat btn-sm',
             'role' => 'button',
-            'id' => 'calcular-imc',
+            'id' => 'calcular-imc'.$avaliacao_id,
         ])
         .
         Html::submitButton('Confirmar', [
@@ -38,7 +38,7 @@ $this->registerJs("
         ])
     ,
     'toggleButton' => [
-        'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar imc",
+        'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar IMC",
         'class' => 'btn btn-defautl btn-xs'
     ],
 ]); ?>
@@ -76,7 +76,7 @@ $this->registerJs("
             'placeholder' => '0.0',
             'class' => 'form-control',
             'readonly' => 'readonly',
-            'required' => 'required'
+            'required' => 'required',
         ]) ?>
     </div>
 </div>

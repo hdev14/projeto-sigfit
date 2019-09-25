@@ -5,7 +5,9 @@
 use app\models\PercentualGordura;
 
 $this->registerJs("
-    const pdg_chart_context". $avaliacao->id ." = document.querySelector('#pdg-chart". $avaliacao->id ."').getContext('2d');
+    const pdg_chart_context". $avaliacao->id ." = 
+        document.querySelector('#pdg-chart". $avaliacao->id ."').getContext('2d');
+    
     let pdg". $avaliacao->id ." = new Chart(pdg_chart_context". $avaliacao->id .", {
         type: 'line',
         data: {
@@ -31,7 +33,9 @@ $this->registerJs("
         <h3 class="box-title"></h3>
         <div class="box-tools pull-right">
             <?= $this->render('_modal-form-pdg', [
-                    'avaliacao_id' => $avaliacao->id,
+                'avaliacao_id' => $avaliacao->id,
+                'idade' => $avaliacao->idade,
+                'sexo' => $avaliacao->pessoa->sexo,
             ]) ?>
         </div>
     </div>

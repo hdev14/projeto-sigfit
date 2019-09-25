@@ -10,41 +10,55 @@ use app\models\PercentualGordura;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
-$idade = 22;
+
 $this->registerJsFile('@web/js/calculos-dobras.js');
 $this->registerJs("
-    
-    let pdg_valor = document.querySelector('#percentualgordura-valor');
-    
-    const calculo_pdg = document.querySelector('#calculo-pdg')
-        , pdg_tres = document.querySelector('#pdg-tres')
-        , pdg_quatro = document.querySelector('#pdg-quatro')
-        , btn_calculo_pdg = document.querySelector('#btn-calculo-pdg');
-    
-    calculo_pdg.onchange = function(event) {
-        if (event.target.value === 'calculo3') {
-            pdg_tres.style.display = 'block';
-            pdg_quatro.style.display = 'none';
-        } else {
-            pdg_quatro.style.display = 'block';
-            pdg_tres.style.display = 'none';
+      
+        const calculo_pdg".$avaliacao_id." = 
+                document.querySelector('#calculo-pdg".$avaliacao_id."')
+            , pdg_tres".$avaliacao_id." = 
+                document.querySelector('#pdg-tres".$avaliacao_id ."')
+            , pdg_quatro".$avaliacao_id." = 
+                document.querySelector('#pdg-quatro".$avaliacao_id."')
+            , btn_calculo_pdg".$avaliacao_id." = 
+                document.querySelector('#btn-calculo-pdg".$avaliacao_id."');
+            
+        calculo_pdg".$avaliacao_id.".onchange = function(event) {
+            if (event.target.value === 'calculo3') {
+                pdg_tres".$avaliacao_id.".style.display = 'block';
+                pdg_quatro".$avaliacao_id.".style.display = 'none';
+            } else {
+                pdg_quatro".$avaliacao_id.".style.display = 'block';
+                pdg_tres".$avaliacao_id.".style.display = 'none';
+            }
         }
-    }
-    
-    btn_calculo_pdg.onclick = () => {
-        if (calculo_pdg.style.display === 'calculo3') {
-            let idade = \"". $idade ."\"
-                , dobra_1 = document.querySelector('#dobra-tres-1')
-                , dobra_2 = document.querySelector('#dobra-tres-1')
-                , dobra_3 = document.querySelector('#dobra-tres-1')
-                , pdg = calcularPdgTresDobras(dobra_1, dobra_2, dobra_3, idade);
+        
+        btn_calculo_pdg".$avaliacao_id.".onclick = () => {
+       
+            let pdg = 0
+                , pdg_valor = document.querySelector('#percentualgordura-valor');
+            
+            if (calculo_pdg".$avaliacao_id.".value === 'calculo3') {
+                let dobra_1 = document.querySelector('#dobra-tres-1').value
+                    , dobra_2 = document.querySelector('#dobra-tres-1').value
+                    , dobra_3 = document.querySelector('#dobra-tres-1').value;
+                    
+                pdg = calcularPdgTresDobras(dobra_1, dobra_2, dobra_3, ". $idade .");
+   
+            } else if (calculo_pdg".$avaliacao_id.".value === 'calculo4') {
+                let dobra_1 = document.querySelector('#dobra-quatro-1').value
+                    , dobra_2 = document.querySelector('#dobra-quatro-2').value
+                    , dobra_3 = document.querySelector('#dobra-quatro-3').value
+                    , dobra_4 = document.querySelector('#dobra-quatro-4').value;
+                
+                console.log(dobra_1, dobra_2, dobra_3, dobra_4);
+                pdg = calcularPdgQuatroDobras(dobra_1, dobra_2, dobra_3, dobra_4, '". $sexo ."', ". $idade .");
+                console.log(pdg.toFixed(2));
+            }
             
             pdg_valor.value = pdg.toFixed(2);
         }
-    }
-    
 ");
-$sexo = 'masculino';
 
 ?>
 
@@ -54,16 +68,16 @@ $sexo = 'masculino';
         Html::a('Calcular', '#', [
             'class' => 'btn btn-primary btn-flat btn-sm',
             'role' => 'button',
-            'id' => 'btn-calculo-pdg',
+            'id' => 'btn-calculo-pdg'.$avaliacao_id,
         ])
         .
         Html::submitButton('Confirmar', [
             'class' => 'btn btn-success btn-flat btn-sm',
-            'form' => 'modal-form-pdg' . $avaliacao_id,
+            'form' => 'modal-form-pdg'.$avaliacao_id,
         ])
     ,
     'toggleButton' => [
-        'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar imc",
+        'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar P. de Gordura",
         'class' => 'btn btn-defautl btn-xs'
     ],
 ]); ?>
@@ -78,10 +92,10 @@ $sexo = 'masculino';
 ); ?>
 
 <div class="form-group">
-    <label for="calculo-pdg">
+    <label for="<?= 'calculo-pdg'.$avaliacao_id ?>">
         Escolha o tipo de cálculo
     </label>
-    <select id="calculo-pdg"
+    <select id="<?= 'calculo-pdg'.$avaliacao_id ?>"
             class="form-control">
         <option value="calculo3">
             3 Dobras Cutâneas
@@ -91,7 +105,7 @@ $sexo = 'masculino';
         </option>
     </select>
 </div>
-<div id="pdg-tres" style="display: block;">
+<div id="<?= 'pdg-tres' . $avaliacao_id?>" style="display: block;">
     <div class="form-group">
         <label for="dobra-tres-1">
             <?php if($sexo == 'masculino'): ?>
@@ -125,7 +139,7 @@ $sexo = 'masculino';
                placeholder="Digite o valor em milímetro">
     </div>
 </div>
-<div id="pdg-quatro" style="display: none;">
+<div id="<?= 'pdg-quatro' . $avaliacao_id ?>" style="display: none;">
     <div class="form-group">
         <label for="dobra-quatro-1">
             Dobra cutânea do biceps
@@ -165,7 +179,7 @@ $sexo = 'masculino';
         'placeholder' => '0.0',
         'class' => 'form-control',
         'readonly' => 'readonly',
-        'required' => 'required'
+        'required' => 'required',
     ]) ?>
 </div>
 

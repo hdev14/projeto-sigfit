@@ -71,7 +71,7 @@ btn_proximo2.onclick = function() {
             alertar.style.display = 'block';
             return;
         } else {
-            let idade = document.querySelector('#avaliacao-idade').value
+            let idade = parseInt(document.querySelector('#avaliacao-idade').value)
                 , dobra_1 = parseFloat(dobra_tres_1.value)
                 , dobra_2 = parseFloat(dobra_tres_2.value)
                 , dobra_3 = parseFloat(dobra_tres_3.value)
@@ -99,7 +99,7 @@ btn_proximo2.onclick = function() {
             return;
         } else {
             let sexo = document.querySelector('#sexo').innerHTML
-                , idade = document.querySelector('#avaliacao-idade').value
+                , idade = parseInt(document.querySelector('#avaliacao-idade').value)
                 , dobra_1 = parseFloat(dobra_quatro_1.value)
                 , dobra_2 = parseFloat(dobra_quatro_2.value)
                 , dobra_3 = parseFloat(dobra_quatro_3.value)
@@ -115,14 +115,14 @@ btn_proximo2.onclick = function() {
         form2.style.display = 'none';
         form3.style.display = 'block';
     }
-}
+};
 
 btn_volta2.onclick = function() {
     if (form3.style.display === 'block') {
         form3.style.display = 'none';
         form2.style.display = 'block';
     }
-}
+};
 
 calculo_pg.onchange = function(event) {
     if (event.target.value === 'calculo3') {
@@ -132,7 +132,9 @@ calculo_pg.onchange = function(event) {
         pdg_quatro.style.display = 'block';
         pdg_tres.style.display = 'none';
     }
-}
+};
+
+console.log(calcularPdgQuatroDobras(12,12,12,12, 'feminino', 22));
 
 function validarCampos(/* agrs */) {
     for (let i = 0; i < arguments.length; i++) {

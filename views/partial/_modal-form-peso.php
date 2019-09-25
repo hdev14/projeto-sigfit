@@ -17,7 +17,7 @@ $peso = new Peso();
         ])
     ,
     'toggleButton' => [
-        'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar peso",
+        'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar Peso",
         'class' => 'btn btn-defautl btn-xs'
     ],
 ]); ?>
