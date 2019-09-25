@@ -17,7 +17,7 @@ $this->registerJs("
         btn_calcular". $avaliacao_id .".onclick = () => {
             let altura = parseFloat(altura_elt".$avaliacao_id.".value)
                 , peso = parseFloat(peso_elt".$avaliacao_id.".value)
-                , imc = document.querySelector('#imc-valor');
+                , imc = document.querySelector('#imc-valor".$avaliacao_id."');
             
             imc.value = ((peso / Math.pow(altura, 2)) * 10000).toFixed(2);
         }
@@ -26,7 +26,7 @@ $this->registerJs("
 <?php $modal = Modal::begin([
     'header' => 'Preenchar os campos corretamente',
     'footer' =>
-        Html::a('Calcular', '#', [
+        Html::a('Calcular Peso', '#', [
             'class' => 'btn btn-primary btn-flat btn-sm',
             'role' => 'button',
             'id' => 'calcular-imc'.$avaliacao_id,
@@ -77,6 +77,7 @@ $this->registerJs("
             'class' => 'form-control',
             'readonly' => 'readonly',
             'required' => 'required',
+            'id' => 'imc-valor'.$avaliacao_id,
         ]) ?>
     </div>
 </div>

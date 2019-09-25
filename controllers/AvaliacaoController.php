@@ -168,8 +168,8 @@ class AvaliacaoController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionCreatePeso($avaliacao_id = null) {
-
+    public function actionCreatePeso($avaliacao_id = null)
+    {
         $avaliacao = $this->findModelAvaliacao($avaliacao_id);
 
         $peso = new Peso(['scenario' => Peso::SCENARIO_PESO]);
@@ -182,8 +182,9 @@ class AvaliacaoController extends Controller
             if ($peso->save()) {
                 $avaliacao->save(false);
                 $session->addFlash('success', 'Peso registrado com sucesso !');
+            } else {
+                $session->addFlash('error', 'Não foi possível registra o novo peso.');
             }
-            $session->addFlash('error', 'Não foi possível registra o novo peso.');
         }
 
         return $this->redirect([
@@ -191,7 +192,8 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    public function actionUpdatePeso($id) {
+    public function actionUpdatePeso($id)
+    {
 
         $peso = $this->findModelPeso($id);
         $post = Yii::$app->request->post();
@@ -202,8 +204,9 @@ class AvaliacaoController extends Controller
             if ($peso->save()) {
                 $session->addFlash('success', 'Peso editado !');
                 return $this->goBack(); // TODO: Implementar o redirecionamento.
+            } else {
+                $session->addFlash('error', 'Não foi possível editar o peso.');
             }
-            $session->addFlash('error', 'Não foi possível editar o peso.');
         }
 
         return $this->render('../peso/update', [
@@ -218,13 +221,14 @@ class AvaliacaoController extends Controller
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDeletePeso($id) {
+    public function actionDeletePeso($id)
+    {
         $this->findModelPeso($id)->delete();
         return $this->goBack();
     }
 
-    public function actionCreateImc($avaliacao_id = null) {
-
+    public function actionCreateImc($avaliacao_id = null)
+    {
         $avaliacao = $this->findModelAvaliacao($avaliacao_id);
 
         $imc = new Imc(['scenario' => Imc::SCENARIO_IMC]);
@@ -237,8 +241,9 @@ class AvaliacaoController extends Controller
             if ($imc->save()) {
                 $avaliacao->save(false);
                 $session->addFlash('success', 'IMC registrado com sucesso!');
+            } else {
+                $session->addFlash('error', 'Não foi possível registra o novo IMC.');
             }
-            $session->addFlash('error', 'Não foi possível registra o novo IMC.');
         }
 
         return $this->redirect([
@@ -247,7 +252,8 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    public function actionUpdateImc($id) {
+    public function actionUpdateImc($id)
+    {
 
         $imc = $this->findModelImc($id);
         $post = Yii::$app->request->post();
@@ -258,9 +264,9 @@ class AvaliacaoController extends Controller
             if ($imc->save()) {
                 $session->addFlash('success', 'IMC editado !');
                 return $this->goBack(); # TODO: Implementar o redirecionamento.
+            } else {
+                $session->addFlash('error', 'Não foi possível editar o IMC');
             }
-
-            $session->addFlash('error', 'Não foi possível editar o IMC');
         }
 
         return $this->render('../imc/update', [
@@ -275,13 +281,14 @@ class AvaliacaoController extends Controller
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDeleteImc($id) {
+    public function actionDeleteImc($id)
+    {
         $this->findModelImc($id)->delete();
         return $this->goBack(); # TODO: Implementar o redirecionamento.
     }
 
-    public function actionCreatePg($avaliacao_id = null) {
-
+    public function actionCreatePg($avaliacao_id = null)
+    {
         $avaliacao = $this->findModelAvaliacao($avaliacao_id);
 
         $pg = new PercentualGordura([
@@ -297,8 +304,9 @@ class AvaliacaoController extends Controller
             if ($pg->save()) {
                 $avaliacao->save(false);
                 $session->addFlash('success', 'Percentual de Gordura registrado !');
+            } else {
+                $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
             }
-            $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
         }
 
         return $this->redirect([
@@ -307,7 +315,8 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    public function actionUpdatePg($id) {
+    public function actionUpdatePg($id)
+    {
         $pg = $this->findModelPg($id);
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
@@ -317,9 +326,9 @@ class AvaliacaoController extends Controller
             if($pg->save()) {
                 $session->addFlash('success', 'Percentual de Gordura editado !');
                 return $this->goBack(); # TODO: Implementar o redirecionamento.
+            } else {
+                $session->addFlash('error', 'Não foi possível editar o percentual de gordura.');
             }
-
-            $session->addFlash('error', 'Não foi possível editar o percentual de gordura.');
         }
 
         return $this->render('../percentual-gordura/update', [
@@ -334,7 +343,8 @@ class AvaliacaoController extends Controller
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDeletePg($id) {
+    public function actionDeletePg($id)
+    {
         $this->findModelPg($id)->delete();
         return $this->goBack();
     }
