@@ -14,6 +14,23 @@ $this->title = 'Perfil do Usuário';
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
+$this->registerJs("
+        $('#tabs a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+        
+        let avaliacao_op = $('#avaliacao-op')[0];
+        
+        if (avaliacao_op.value === 'default') {
+            let a = $('[id^=\"avaliacao-id-\"]')[0];
+            $('#' + a.id).siblings().hide();
+        }
+        
+        avaliacao_op.onchange = function(e) {
+            $('#' + e.target.value).show().siblings().hide();
+        }
+");
 ?>
 
 <div class="row">
@@ -99,22 +116,97 @@ $this->title = 'Perfil do Usuário';
         </div>
     </div>
     <div class="col-md-9">
-        <div class="box">
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'matricula',
-                    'nome',
-                    'email:email',
-                    'horario_treino',
-                    'problema_saude:ntext',
-                    'faltas',
-                    'espera',
-                    'telefone',
-                ],
+        <?php if ($model->avaliacaos): ?>
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Avaliações Físicas</h3>
+                    <div class="box-tools pull-right">
+                        <div class="input-group input-group-sm hidden-xs">
+                            <select id="avaliacao-op"
+                                    class="form-control"
+                                    style="width: 200px;">
+                                <option value="default">
+                                    Outras avaliações
+                                </option>
+                                <?php foreach ($model->avaliacaos as $avaliacao): ?>
+                                    <option value="<?= 'avaliacao-id-' .
+                                    $avaliacao->id ?>">
+                                        <?= $avaliacao->titulo ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?= Html::a('<i class="fa fa-fw fa-plus"></i>',
+                                [
+                                    'avaliacao/create',
+                                    'usuario_id' => $model->id
+                                ], [
+                                    'class' => 'btn btn-success btn-sm',
+                                    'style' => 'margin-left: 5px',
+                                    'title' => 'Nova avaliação física'
+                                ]) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row col-md-12">
+                        <?php foreach($model->avaliacaos as $avaliacao): ?>
+                            <div id="<?= 'avaliacao-id-' . $avaliacao->id ?>">
+                                <div class="nav-tabs-custom">
+                                    <ul id="tabs" class="nav nav-tabs pull-right">
+                                        <li>
+                                            <a href="<?= '#pdg' . $avaliacao->id ?>"
+                                               data-toggle="tab">
+                                                Percentual de Gordura
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?= '#peso' . $avaliacao->id ?>"
+                                               data-toggle="tab">
+                                                Peso
+                                            </a>
+                                        </li>
+                                        <li class="active">
+                                            <a href="<?= '#imc' . $avaliacao->id ?>"
+                                               data-toggle="tab">
+                                                Índice de Massa Corporal (IMC)
+                                            </a>
+                                        </li>
+                                        <li class="pull-left header">
+                                            <h4><?= $avaliacao->titulo ?></h4>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="<?= 'pdg' . $avaliacao->id ?>" class="tab-pane fade">
+                                            <?= $this->render('../../partial/_chart-pdg', [
+                                                'avaliacao' =>
+                                                    $avaliacao,
+                                            ]) ?>
+                                        </div>
+                                        <div id="<?= 'peso' . $avaliacao->id ?>" class="tab-pane fade">
+                                            <?= $this->render('../../partial/_chart-peso', [
+                                                'avaliacao' =>
+                                                    $avaliacao,
+                                            ]) ?>
+                                        </div>
+                                        <div id="<?= 'imc' . $avaliacao->id ?>"
+                                             class="tab-pane fade active in">
+                                            <?= $this->render('../../partial/_chart-imc', [
+                                                'avaliacao' =>
+                                                    $avaliacao,
+                                            ]) ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        <?php else: ?>
+            <?= $this->render('../../partial/_sem-avaliacao', [
+                'usuario_id' => $model->id,
             ]) ?>
-        </div>
+        <?php endif; ?>
     </div>
 </div>
 

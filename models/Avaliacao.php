@@ -59,9 +59,9 @@ class Avaliacao extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'titulo' => 'Título',
-            'altura' => 'Altura',
-            'idade' => 'Idade',
+            'titulo' => 'Título da Avaliação',
+            'altura' => 'Altura do Usuário',
+            'idade' => 'Idade do Usuário',
         ];
     }
 

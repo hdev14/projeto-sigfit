@@ -98,8 +98,8 @@ class AvaliacaoController extends Controller
             $pdg_model->link('avaliacao', $avaliacao_model);
 
             return $this->redirect([
-                'view',
-                'id' => $avaliacao_model->id
+                'pessoa/view',
+                'id' => $usuario->id,
             ]);
         }
 
@@ -122,14 +122,22 @@ class AvaliacaoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModelAvaliacao($id);
+        $session = Yii::$app->session;
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($post)) {
+            if ($model->save())
+                $session->addFlash('success', 'Avaliação atualizada !');
+            else
+                $session->addFlash('error', 'Não possível edita a avaliação.');
+
+//            return $this->redirect(['pessoa/view', 'id' => $model->pessoa_id]);
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
+
     }
 
     /**
@@ -142,25 +150,33 @@ class AvaliacaoController extends Controller
     public function actionDelete($id)
     {
         $avaliacao_model = $this->findModelAvaliacao($id);
+        $usuario_id = $avaliacao_model->pessoa_id;
+        $session = Yii::$app->session;
+        $resultado = false;
 
         $pesos = $avaliacao_model->getPesos()->all();
         foreach ($pesos as $peso) {
-            $peso->delete();
+            $resultado = $peso->delete();
         }
 
         $imcs = $avaliacao_model->getImcs()->all();
         foreach ($imcs as $imc) {
-            $imc->delete();
+            $resultado = $imc->delete();
         }
 
         $pdgs = $avaliacao_model->getPercentualGorduras()->all();
         foreach ($pdgs as $pdg) {
-            $pdg->delete();
+            $resultado = $pdg->delete();
         }
 
-        $avaliacao_model->delete();
+        $resultado = $avaliacao_model->delete();
 
-        return $this->redirect(['index']);
+        if ($resultado !== false)
+            $session->addFlash('success', 'Avaliação excluída !');
+        else
+            $session->addFlash('error', 'Não foi possível excluir a avaliação.');
+
+        return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
     }
 
     /**

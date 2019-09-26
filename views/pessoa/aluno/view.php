@@ -15,14 +15,13 @@ $this->title = 'Perfil do Usuário';
 \yii\web\YiiAsset::register($this);
 
 $this->registerJs("
-    
     $('#tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
     });
     
     let avaliacao_op = $('#avaliacao-op')[0];
-
+    
     if (avaliacao_op.value === 'default') {
         let a = $('[id^=\"avaliacao-id-\"]')[0];
         $('#' + a.id).siblings().hide();
@@ -30,10 +29,9 @@ $this->registerJs("
     
     avaliacao_op.onchange = function(e) {
         $('#' + e.target.value).show().siblings().hide();
-        
     }
-    
 ");
+
 ?>
 
 <div class="row">
@@ -134,7 +132,7 @@ $this->registerJs("
     </div>
     <div class="col-md-9">
         <?php if ($model->avaliacaos): ?>
-            <div class="box box-primary">
+            <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Avaliações Físicas</h3>
                     <div class="box-tools pull-right">
@@ -152,6 +150,15 @@ $this->registerJs("
                                     </option>
                                 <?php endforeach; ?>
                             </select>
+                            <?= Html::a('<i class="fa fa-fw fa-plus"></i>',
+                                [
+                                    'avaliacao/create',
+                                    'usuario_id' => $model->id
+                                ], [
+                                    'class' => 'btn btn-success btn-sm',
+                                    'style' => 'margin-left: 5px',
+                                    'title' => 'Nova avaliação física'
+                                ]) ?>
                         </div>
                     </div>
                 </div>
@@ -179,27 +186,8 @@ $this->registerJs("
                                                 Índice de Massa Corporal (IMC)
                                             </a>
                                         </li>
-                                        <li class="dropdown pull-left">
-                                            <?= Html::a('<i class="fa fa-bars"></i>','#', [
-                                                'class' => 'dropdown-toggle',
-                                                'data-toggle' => 'dropdown'
-                                            ]) ?>
-                                            <ul class="dropdown-menu">
-                                                <li role="presentation">
-                                                    <?= Html::a('Editar avaliação', ['avaliacao/create', 'usuario_id' => $avaliacao->id]) ?>
-                                                </li>
-                                                <li role="presentation">
-                                                    <?= Html::a('Excluir avaliação', ['delete', 'id' => $avaliacao->id], [
-                                                        'data' => [
-                                                            'confirm' => 'Are you sure you want to delete this item?',
-                                                            'method' => 'post',
-                                                        ],
-                                                    ]) ?>
-                                                </li>
-                                            </ul>
-                                        </li>
                                         <li class="pull-left header">
-                                            <h4><?= $avaliacao->titulo ?></h4>
+                                            <h5><?= $avaliacao->titulo ?></h5>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
@@ -228,15 +216,10 @@ $this->registerJs("
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <div class="box-footer clearfix no-border">
-                    <?= Html::a('Nova avaliação', ['avaliacao/create', 'usuario_id' => $model->id], [
-                        'class' => 'btn btn-success btn-sm btn-flat pull-right',
-                    ]) ?>
-                </div>
             </div>
         <?php else: ?>
             <?= $this->render('../../partial/_sem-avaliacao', [
-                    'usuario_id' => $model->id,
+                'usuario_id' => $model->id,
             ]) ?>
         <?php endif; ?>
     </div>

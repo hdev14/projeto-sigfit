@@ -3,6 +3,7 @@
 /* @var $avaliacao app\models\Avaliacao */
 
 use app\models\Peso;
+use yii\helpers\Html;
 
 $this->registerJs("
     const peso_chart_context". $avaliacao->id ." = document.querySelector('#peso-chart". $avaliacao->id ."').getContext('2d');
@@ -27,7 +28,23 @@ $this->registerJs("
 ?>
 <div class="box ">
     <div class="box-header">
-        <h3 class="box-title"></h3>
+        <?= Html::a('<i class="fa fa-fw fa-pencil"></i>', [
+            'avaliacao/update',
+            'id' =>  $avaliacao->id
+        ], [
+            'class' => 'btn bg-aqua btn-xs',
+            'title' => 'Editar avaliação física'
+        ]) ?>
+
+        <?= Html::a('<i class="fa fa-fw fa-trash"></i>', ['avaliacao/delete', 'id' =>
+            $avaliacao->id], [
+            'data' => [
+                'confirm' => 'Tem certeza de que deseja excluir esta avaliação?',
+                'method' => 'post',
+            ],
+            'class' => 'btn bg-red btn-xs',
+            'title' => 'Excluir avaliação física'
+        ]) ?>
         <div class="box-tools pull-right">
             <?= $this->render('_modal-form-peso', [
                 'avaliacao_id' => $avaliacao->id,

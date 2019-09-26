@@ -12,7 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'titulo')->textInput() ?>
+    <?= $form->field($model, 'titulo')->textInput([
+        'placeholder' => 'Digite o título da avaliação'
+    ]) ?>
+
+    <?= $form->field($model, 'altura')->textInput([
+        'placeholder' => 'Digite a idade do usuário'
+    ]) ?>
+
+    <?= $form->field($model, 'idade')->textInput([
+        'placeholder' => 'Digite o peso atual do usuário'
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

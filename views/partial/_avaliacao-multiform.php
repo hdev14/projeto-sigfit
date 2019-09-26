@@ -34,7 +34,7 @@ $this->registerCssFile('@web/css/avaliacao.css');
                     <div id="form1" style='display: block;' class="col-md-12">
                         <?= $form->field($avaliacao_model, 'titulo')
                             ->textInput([
-                                'placeholder' => 'Digite o título da avaliação '
+                                'placeholder' => 'Digite o título da avaliação'
                             ]) ?>
 
                         <?= $form->field($avaliacao_model, 'idade')

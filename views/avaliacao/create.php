@@ -8,8 +8,9 @@ use yii\helpers\Html;
 /* @var $imc_model app\models\Imc */
 /* @var $pdg_model app\models\PercentualGordura */
 /* @var $usuario_id int */
+/* @var $sexo string */
 
-$this->title = 'Avaliação';
+$this->title = 'Avaliação Física';
 //$this->params['breadcrumbs'][] = ['label' => 'Avaliacaos', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -20,7 +21,7 @@ $this->title = 'Avaliação';
     </div>
 </div>
 <div class="avaliacao-create">
-    <?= $this->render('./partial/_multiform', [
+    <?= $this->render('../partial/_avaliacao-multiform', [
         'avaliacao_model' => $avaliacao_model,
         'peso_model' => $peso_model,
         'imc_model' => $imc_model,
