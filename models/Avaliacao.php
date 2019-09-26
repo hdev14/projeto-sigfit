@@ -60,7 +60,7 @@ class Avaliacao extends \yii\db\ActiveRecord
     {
         return [
             'titulo' => 'Título da Avaliação',
-            'altura' => 'Altura do Usuário',
+            'altura' => 'Altura do Usuário (cm)',
             'idade' => 'Idade do Usuário',
         ];
     }

@@ -54,7 +54,7 @@ $this->registerCssFile('@web/css/avaliacao.css');
                         <div class="form-group">
                             <?= Html::a('Próximo','#', [
                                 'id' => 'btn-proximo1',
-                                'class' => 'btn btn-small btn-success btn-flat pull-right'
+                                'class' => 'btn bg-green btn-flat pull-right'
                             ])?>
                         </div>
 
@@ -143,12 +143,12 @@ $this->registerCssFile('@web/css/avaliacao.css');
                         <div class="form-group">
                             <?= Html::a('Voltar', '#', [
                                 'id' => 'btn-volta1',
-                                'class' => 'btn btn-small btn-default btn-flat'
+                                'class' => 'btn bg-gray btn-flat'
                             ]) ?>
 
                             <?= Html::a('Próximo', '#', [
                                 'id' => 'btn-proximo2',
-                                'class' => 'btn btn-small btn-success btn-flat pull-right'
+                                'class' => 'btn bg-green btn-flat pull-right'
                             ]) ?>
                         </div>
                     </div>
@@ -183,9 +183,11 @@ $this->registerCssFile('@web/css/avaliacao.css');
                         <div class="form-group">
                             <?= Html::a('Voltar', '#', [
                                 'id' => 'btn-volta2',
-                                'class' => 'btn btn-small btn-default btn-flat'
+                                'class' => 'btn bg-gray btn-flat'
                             ]) ?>
-                            <?= Html::submitButton('Confirmar', ['class' => 'btn btn-success btn-flat pull-right']) ?>
+                            <?= Html::submitButton('Confirmar', [
+                                'class' => 'btn bg-green btn-flat pull-right'
+                            ]) ?>
                         </div>
 
                     </div>

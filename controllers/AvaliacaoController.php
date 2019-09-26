@@ -131,7 +131,7 @@ class AvaliacaoController extends Controller
             else
                 $session->addFlash('error', 'Não possível edita a avaliação.');
 
-//            return $this->redirect(['pessoa/view', 'id' => $model->pessoa_id]);
+            return $this->redirect(['pessoa/view', 'id' => $model->pessoa_id]);
         }
 
         return $this->render('update', [
