@@ -62,7 +62,7 @@ $this->title = "Usuários Instruídos";
                                     'pessoa/view',
                                     'id' => $usuario->id
                                 ]) ?> "
-                                   class="btn btn-xs btn-flat btn-default"
+                                   class="btn btn-xs btn-flat bg-gray"
                                    title="Visualizar usuário">
                                     <i class="fa fa-eye"></i>
                                 </a>
@@ -71,7 +71,7 @@ $this->title = "Usuários Instruídos";
                                     'pessoa/update',
                                     'id' => $usuario->id
                                 ]) ?> "
-                                   class="btn btn-xs btn-flat btn-info"
+                                   class="btn btn-xs btn-flat bg-aqua"
                                    title="Editar usuário">
                                     <i class="fa fa-pencil"></i>
                                 </a>

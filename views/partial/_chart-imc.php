@@ -21,6 +21,18 @@ $this->registerJs("
                 fill: false,    
             }]
         },
+        options : {
+            onClick: function() {
+                
+            },
+            legend: {
+                labels: {
+                    generateLabels: function() {
+                        
+                    }
+                }
+            }
+        }
     });
 ");
 

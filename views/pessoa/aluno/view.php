@@ -4,7 +4,7 @@
 /* @var $model app\models\Pessoa */
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\web\View;
 use yii\helpers\Url;
 
 $f = Yii::$app->formatter;
@@ -19,7 +19,9 @@ $this->registerJs("
         e.preventDefault();
         $(this).tab('show');
     });
-    
+");
+
+$this->registerJs("
     let avaliacao_op = $('#avaliacao-op')[0];
     
     if (avaliacao_op.value === 'default') {
@@ -30,7 +32,7 @@ $this->registerJs("
     avaliacao_op.onchange = function(e) {
         $('#' + e.target.value).show().siblings().hide();
     }
-");
+", View::POS_LOAD);
 
 ?>
 
@@ -132,7 +134,7 @@ $this->registerJs("
     </div>
     <div class="col-md-9">
         <?php if ($model->avaliacaos): ?>
-            <div class="box">
+            <div class="box box-success">
                 <div class="box-header">
                     <h3 class="box-title">Avaliações Físicas</h3>
                     <div class="box-tools pull-right">
@@ -150,7 +152,7 @@ $this->registerJs("
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <?= Html::a('<i class="fa fa-fw fa-plus"></i>',
+                            <?= Html::a('<i class="fa fa-fw fa-plus"></i> Nova avaliação',
                                 [
                                     'avaliacao/create',
                                     'usuario_id' => $model->id

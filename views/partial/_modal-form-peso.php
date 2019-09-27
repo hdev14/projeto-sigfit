@@ -12,13 +12,13 @@ $peso = new Peso();
     'header' => 'Preenchar o campo corretamente',
     'footer' =>
         Html::submitButton('Confirmar', [
-            'class' => 'btn btn-success btn-flat btn-sm',
+            'class' => 'btn bg-green btn-flat btn-sm',
             'form' => 'modal-form-peso' . $avaliacao_id,
         ])
     ,
     'toggleButton' => [
         'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar Peso",
-        'class' => 'btn btn-defautl btn-xs'
+        'class' => 'btn bg-gray btn-xs'
     ],
 ]); ?>
 

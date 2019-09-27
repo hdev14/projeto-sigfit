@@ -67,19 +67,19 @@ $this->registerJs("
     'header' => 'Preenchar os campos corretamente para realizar o cálculo',
     'footer' =>
         Html::a('Calcular Percentual', '#', [
-            'class' => 'btn btn-primary btn-flat btn-sm',
+            'class' => 'btn bg-light-blue btn-flat btn-sm',
             'role' => 'button',
             'id' => 'btn-calculo-pdg'.$avaliacao_id,
         ])
         .
         Html::submitButton('Confirmar', [
-            'class' => 'btn btn-success btn-flat btn-sm',
+            'class' => 'btn bg-green btn-flat btn-sm',
             'form' => 'modal-form-pdg'.$avaliacao_id,
         ])
     ,
     'toggleButton' => [
         'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar P. de Gordura",
-        'class' => 'btn btn-defautl btn-xs'
+        'class' => 'btn bg-gray btn-xs'
     ],
 ]); ?>
 
