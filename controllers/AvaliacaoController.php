@@ -268,7 +268,7 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    public function actionUpdateImc($id)
+    public function actionUpdateImc($id, $usuario_id = null)
     {
 
         $imc = $this->findModelImc($id);
@@ -277,17 +277,17 @@ class AvaliacaoController extends Controller
 
         if ($imc->load($post)) {
             $imc->data = date('Y-m-d');
-            if ($imc->save()) {
+            if ($imc->save())
                 $session->addFlash('success', 'IMC editado !');
-                return $this->goBack(); # TODO: Implementar o redirecionamento.
-            } else {
+            else
                 $session->addFlash('error', 'Não foi possível editar o IMC');
-            }
         }
 
-        return $this->render('../imc/update', [
-            'model' => $imc
-        ]);
+        if (!is_null($usuario_id)) {
+            return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
+        }
+
+        return $this->goBack();
     }
 
     /**
@@ -297,10 +297,21 @@ class AvaliacaoController extends Controller
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDeleteImc($id)
+    public function actionDeleteImc($id, $usuario_id = null)
     {
-        $this->findModelImc($id)->delete();
-        return $this->goBack(); # TODO: Implementar o redirecionamento.
+        $session = Yii::$app->session;
+
+        if ($this->findModelImc($id)->delete()) {
+            $session->addFlash('success', 'IMC excluído com sucesso !');
+        } else {
+            $session->addFlash('error', 'Não foi possível excluir o IMC');
+        }
+
+        if (!is_null($usuario_id)) {
+            return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
+        }
+
+        return $this->goBack();
     }
 
     public function actionCreatePg($avaliacao_id = null)

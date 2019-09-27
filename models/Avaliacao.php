@@ -154,7 +154,11 @@ class Avaliacao extends \yii\db\ActiveRecord
         $labels = [];
         $data = [];
         foreach ($imcs as $imc) {
-            array_push($labels, Yii::$app->formatter->asDate($imc->data));
+            array_push(
+                $labels,
+                "#". $imc->id . " - " . Yii::$app->formatter->asDate($imc->data,
+                    'dd/MM')
+            );
             array_push($data, $imc->valor);
         }
 
@@ -163,7 +167,7 @@ class Avaliacao extends \yii\db\ActiveRecord
         }, $labels);
         
         return [
-            'labels' => implode(',', $labels),
+            'labels' => implode(",", $labels),
             'data' => implode(',', $data)
         ];
     }

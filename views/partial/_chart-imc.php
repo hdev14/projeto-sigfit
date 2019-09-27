@@ -8,7 +8,6 @@ use yii\helpers\Html;
 $this->registerJs("
     
     const imc_chart_context". $avaliacao->id ." = document.querySelector('#imc-chart". $avaliacao->id ."').getContext('2d');
-    RECUPERA POR AQUI
     let imc". $avaliacao->id ." = new Chart(imc_chart_context". $avaliacao->id .", {
         type: 'line',
         data: {
@@ -20,7 +19,7 @@ $this->registerJs("
                 borderWidth: 4,
                 pointBackgroundColor: 'rgba(0, 154, 191, 1)',
                 pointBorderColor: 'rgba(0, 192, 239, 1)',
-                pointBorderWidth: 6,
+                pointBorderWidth: 8,
                 fill: false,    
             }],
         },
@@ -35,36 +34,29 @@ $this->registerJs("
                          'cancelable': false,
                      }));
                     
-                    let item = legendItem[0]
-                        , index = legendItem[0]._index
-                        , x_scale = legendItem[0]._xScale
-                        , x_scale_ticks = legendItem[0]._xScale.ticks
-                        , y_scale = legendItem[0]._yScale
-                        , y_scale_ticks = legendItem[0]._yScale.ticks
-                        , chart = document.querySelector('#imc-chart".
-                        $avaliacao->id. "');
-                    
-                    chart.dispatchEvent(new MouseEvent('click', {
-                         'view': window,
-                         'bubbles': true,
-                         'cancelable': false,
-                     }));
-
-                    
-                                        
-                    console.log('ITEM ', item);
-                    console.log('INDEX ', index);
-                    console.log('XSCALE ', x_scale);
-                    console.log('XSCALE TICKS ', x_scale_ticks);
-                    console.log('XSCALE TICKS VALOR ', x_scale_ticks[index]);
-                    console.log('YSCALE ', y_scale);
-                    console.log('YSCALE TICKS ', y_scale_ticks);
-                    console.log('YSCALE TICKS VALOR ', y_scale_ticks[y_scale_ticks.length - (index + 1)]);
+                    let pontos_ativos = this.getElementsAtEventForMode(e, 'point', this.options)
+                        , primario_ponto = pontos_ativos[0]
+                        , label = this.data.labels[primario_ponto._index]
+                        , valor = this.data.datasets[primario_ponto._datasetIndex].data[primario_ponto._index]
+                        , array_label = label.split('-')
+                        , data = array_label[1].trim().split('/')
+                        , dia = data[0]
+                        , mes = data[1]
+                        , id_valor = parseInt(array_label[0].trim().slice(1))
+                        , modal_valor_titulo = document.querySelector('#modal-valor-titulo".$avaliacao->id."')
+                        , modal_btn_excluir = document.querySelector('#modal-btn-excluir". $avaliacao->id."')
+                        , modal_btn_editar = document.querySelector('#modal-btn-editar". $avaliacao->id."')
+                        , uri_delete = '?r=avaliacao/delete-imc&id=' + id_valor + '&usuario_id=".$avaliacao->pessoa_id."'
+                        , uri_update = '?r=avaliacao/update-imc&id=' + id_valor + '&usuario_id=".$avaliacao->pessoa_id."'; 
+                  
+                    modal_btn_excluir.setAttribute('href', uri_delete);
+                    modal_btn_editar.setAttribute('href', uri_update);
+                    modal_valor_titulo.innerHTML = 'IMC ' + valor + '%  - Adicionado no dia ' + dia + ' do mês ' + mes;
                 }
             },
             title: {
                 display: true,
-                text: 'Clique nos circulos para excluír um valor de IMC'
+                text: 'Clique em um ponto para mais opções'
             }
         } 
     });
@@ -105,13 +97,20 @@ $this->registerJs("
 
                 <?php $modal_valor_imc = Modal::begin([
                     'footer' =>
-                        Html::a('Excluir', '#', [
+                        Html::a('Editar valor', '#', [
+                            'id' => 'modal-btn-editar'. $avaliacao->id,
+                            'class' => 'btn bg-aqua btn-sm btn-flat',
+                            'title' => 'Editar valor do IMC',
+                        ])
+                        .
+                        Html::a('Excluir valor', '#', [
                             'data' => [
                                 'confirm' => 'Tem certeza de que deseja excluir este IMC?',
                                 'method' => 'post',
                             ],
-                            'class' => 'btn bg-red btn-xs',
-                            'title' => 'Excluir valor de IMC'
+                            'id' => 'modal-btn-excluir'. $avaliacao->id,
+                            'class' => 'btn bg-red btn-sm btn-flat',
+                            'title' => 'Excluir valor do IMC',
                         ])
                     ,
                     'toggleButton' => [
@@ -119,12 +118,9 @@ $this->registerJs("
                         'style' => 'display: none'
                     ],
                 ]); ?>
-                    <h4 id="<?= 'modal-valor-titulo'. $avaliacao->id ?>">
-                        ASDSAD
+                    <h4 class="text-center" id="<?= 'modal-valor-titulo'.
+                $avaliacao->id ?>">
                     </h4>
-                    <p id="<?= 'valor-imc'. $avaliacao->id ?>">
-                        asdasdas
-                    </p>
                 <?php Modal::end(); ?>
             </div>
         </div>
