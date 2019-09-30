@@ -210,7 +210,6 @@ class AvaliacaoController extends Controller
 
     public function actionUpdatePeso($id)
     {
-
         $peso = $this->findModelPeso($id);
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
@@ -218,8 +217,11 @@ class AvaliacaoController extends Controller
         if ($peso->load($post)) {
             $peso->data = date('Y-m-d');
             if ($peso->save()) {
-                $session->addFlash('success', 'Peso editado !');
-                return $this->goBack(); // TODO: Implementar o redirecionamento.
+                $session->addFlash('success', 'O valor do peso foi editado com sucesso !');
+                return $this->redirect([
+                    'pessoa/view',
+                    'id' => $peso->avaliacao->pessoa_id,
+                ]);
             } else {
                 $session->addFlash('error', 'Não foi possível editar o peso.');
             }
@@ -230,17 +232,18 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
     public function actionDeletePeso($id)
     {
-        $this->findModelPeso($id)->delete();
-        return $this->goBack();
+        $peso = $this->findModelPeso($id);
+        $usuario_id = $peso->avaliacao->pessoa_id;
+        $session = Yii::$app->session;
+
+        if ($peso->delete())
+            $session->addFlash('success', 'Peso excluído com sucesso !');
+        else
+            $session->addFlash('error', 'Não possível excluír o peso');
+
+        return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
     }
 
     public function actionCreateImc($avaliacao_id = null)
@@ -293,31 +296,22 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public function actionDeleteImc($id, $usuario_id = null)
+    public function actionDeleteImc($id)
     {
+        $imc = $this->findModelImc($id);
+        $usuario_id =  $imc->avaliacao->pessoa_id;
         $session = Yii::$app->session;
 
-        if ($this->findModelImc($id)->delete()) {
+        if ($imc->delete())
             $session->addFlash('success', 'IMC excluído com sucesso !');
-        } else {
+        else
             $session->addFlash('error', 'Não foi possível excluir o IMC');
-        }
 
-        if (!is_null($usuario_id)) {
-            return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
-        }
 
-        return $this->goBack();
+        return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
     }
 
-    public function actionCreatePg($avaliacao_id = null)
+    public function actionCreatePdg($avaliacao_id = null)
     {
         $avaliacao = $this->findModelAvaliacao($avaliacao_id);
 
@@ -345,7 +339,7 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    public function actionUpdatePg($id)
+    public function actionUpdatePdg($id)
     {
         $pg = $this->findModelPg($id);
         $post = Yii::$app->request->post();
@@ -373,7 +367,7 @@ class AvaliacaoController extends Controller
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDeletePg($id)
+    public function actionDeletePdg($id)
     {
         $this->findModelPg($id)->delete();
         return $this->goBack();

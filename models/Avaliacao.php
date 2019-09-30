@@ -113,8 +113,13 @@ class Avaliacao extends \yii\db\ActiveRecord
         $pdgs = $this->percentualGorduras;
         $labels = [];
         $data = [];
+        $formatter = Yii::$app->formatter;
+
         foreach ($pdgs as $pdg) {
-            array_push($labels, Yii::$app->formatter->asDate($pdg->data));
+            array_push(
+                $labels,
+                "#". $pdg->id . " - ". $formatter->asDate($pdg->data, 'dd/MM')
+            );
             array_push($data, $pdg->valor);
         }
 
@@ -133,8 +138,13 @@ class Avaliacao extends \yii\db\ActiveRecord
         $pesos = $this->pesos;
         $labels = [];
         $data = [];
+        $formatter = Yii::$app->formatter;
+
         foreach ($pesos as $peso) {
-            array_push($labels, Yii::$app->formatter->asDate($peso->data));
+            array_push(
+                $labels,
+                "#". $peso->id ." - ". $formatter->asDate($peso->data, 'dd/MM')
+            );
             array_push($data, $peso->valor);
         }
 
@@ -153,11 +163,12 @@ class Avaliacao extends \yii\db\ActiveRecord
         $imcs = $this->imcs;
         $labels = [];
         $data = [];
+        $formatter = Yii::$app->formatter;
+
         foreach ($imcs as $imc) {
             array_push(
                 $labels,
-                "#". $imc->id . " - " . Yii::$app->formatter->asDate($imc->data,
-                    'dd/MM')
+                "#". $imc->id . " - " . $formatter->asDate($imc->data,'dd/MM')
             );
             array_push($data, $imc->valor);
         }

@@ -35,19 +35,22 @@ $this->registerJs("
                      }));
                     
                     let pontos_ativos = this.getElementsAtEventForMode(e, 'point', this.options)
-                        , primario_ponto = pontos_ativos[0]
-                        , label = this.data.labels[primario_ponto._index]
-                        , valor = this.data.datasets[primario_ponto._datasetIndex].data[primario_ponto._index]
+                        , primeiro_ponto = pontos_ativos[0]
+                        , label = this.data.labels[primeiro_ponto._index]
+                        , valor = this.data.datasets[primeiro_ponto._datasetIndex].data[primeiro_ponto._index]
                         , array_label = label.split('-')
                         , data = array_label[1].trim().split('/')
                         , dia = data[0]
                         , mes = data[1]
                         , id_valor = parseInt(array_label[0].trim().slice(1))
-                        , modal_valor_titulo = document.querySelector('#modal-valor-titulo".$avaliacao->id."')
-                        , modal_btn_excluir = document.querySelector('#modal-btn-excluir". $avaliacao->id."')
-                        , modal_btn_editar = document.querySelector('#modal-btn-editar". $avaliacao->id."')
-                        , uri_delete = '?r=avaliacao/delete-imc&id=' + id_valor + '&usuario_id=".$avaliacao->pessoa_id."'
-                        , uri_update = '?r=avaliacao/update-imc&id=' + id_valor + '&usuario_id=".$avaliacao->pessoa_id."'; 
+                        , modal_valor_titulo = 
+                            document.querySelector('#modal-imc-titulo".$avaliacao->id."')
+                        , modal_btn_excluir = 
+                            document.querySelector('#modal-imc-btn-excluir".$avaliacao->id."')
+                        , modal_btn_editar = 
+                            document.querySelector('#modal-imc-btn-editar".$avaliacao->id."')
+                        , uri_delete = '?r=avaliacao/delete-imc&id=' + id_valor
+                        , uri_update = '?r=avaliacao/update-imc&id=' + id_valor; 
                   
                     modal_btn_excluir.setAttribute('href', uri_delete);
                     modal_btn_editar.setAttribute('href', uri_update);
@@ -93,12 +96,13 @@ $this->registerJs("
     <div class="box-body">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+
                 <canvas id="<?= 'imc-chart' . $avaliacao->id ?>"></canvas>
 
                 <?php $modal_valor_imc = Modal::begin([
                     'footer' =>
                         Html::a('Editar valor', '#', [
-                            'id' => 'modal-btn-editar'. $avaliacao->id,
+                            'id' => 'modal-imc-btn-editar'. $avaliacao->id,
                             'class' => 'btn bg-aqua btn-sm btn-flat',
                             'title' => 'Editar valor do IMC',
                         ])
@@ -108,7 +112,7 @@ $this->registerJs("
                                 'confirm' => 'Tem certeza de que deseja excluir este IMC?',
                                 'method' => 'post',
                             ],
-                            'id' => 'modal-btn-excluir'. $avaliacao->id,
+                            'id' => 'modal-imc-btn-excluir'. $avaliacao->id,
                             'class' => 'btn bg-red btn-sm btn-flat',
                             'title' => 'Excluir valor do IMC',
                         ])
@@ -118,9 +122,9 @@ $this->registerJs("
                         'style' => 'display: none'
                     ],
                 ]); ?>
-                    <h4 class="text-center" id="<?= 'modal-valor-titulo'.
+                <h4 class="text-center" id="<?= 'modal-imc-titulo'.
                 $avaliacao->id ?>">
-                    </h4>
+                </h4>
                 <?php Modal::end(); ?>
             </div>
         </div>

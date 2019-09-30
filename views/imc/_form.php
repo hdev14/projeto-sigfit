@@ -29,7 +29,7 @@ $this->registerJs("
         <div class="box box-success">
             <div class="box-header with-border">
                 <h4 class="box-title">
-                    Prrencha os campos para que possa ser feito o novo cálculo
+                    Preencha os campos para que possa ser feito o novo cálculo
                 </h4>
             </div>
             <div class="box-body">
@@ -61,15 +61,23 @@ $this->registerJs("
                         ]) ?>
                     </div>
                 </div>
-                <div class="form-group text-right">
-                    <?= Html::a('Calcular Peso', '#', [
-                        'class' => 'btn bg-light-blue btn-flat btn-sm',
-                        'role' => 'button',
-                        'id' => 'calcular-imc',
+                <div class="form-group">
+                    <?= Html::a('Voltar', [
+                        'pessoa/view' ,
+                        'id' => $model->avaliacao->pessoa_id
+                    ], [
+                        'class' => 'btn bg-gray btn-flat'
                     ]) ?>
-                    <?= Html::submitButton('Confirmar', [
-                        'class' => 'btn bg-green btn-flat btn-sm'
-                    ]) ?>
+                    <div class="pull-right">
+                        <?= Html::a('Calcular Peso', '#', [
+                            'class' => 'btn bg-light-blue btn-flat',
+                            'role' => 'button',
+                            'id' => 'calcular-imc',
+                        ]) ?>
+                        <?= Html::submitButton('Confirmar', [
+                            'class' => 'btn bg-green btn-flat'
+                        ]) ?>
+                    </div>
                 </div>
 
                 <?php ActiveForm::end(); ?>
