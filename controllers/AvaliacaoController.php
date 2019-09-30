@@ -179,11 +179,6 @@ class AvaliacaoController extends Controller
         return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
     }
 
-    /**
-     * @param null $avaliacao_id
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
-     */
     public function actionCreatePeso($avaliacao_id = null)
     {
         $avaliacao = $this->findModelAvaliacao($avaliacao_id);
@@ -241,7 +236,7 @@ class AvaliacaoController extends Controller
         if ($peso->delete())
             $session->addFlash('success', 'Peso excluído com sucesso !');
         else
-            $session->addFlash('error', 'Não possível excluír o peso');
+            $session->addFlash('error', 'Não possível excluir o peso');
 
         return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
     }
@@ -271,7 +266,7 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    public function actionUpdateImc($id, $usuario_id = null)
+    public function actionUpdateImc($id)
     {
 
         $imc = $this->findModelImc($id);
@@ -327,7 +322,7 @@ class AvaliacaoController extends Controller
         if ($pg->load($post)) {
             if ($pg->save()) {
                 $avaliacao->save(false);
-                $session->addFlash('success', 'Percentual de Gordura registrado !');
+                $session->addFlash('success', 'Percentual de Gordura registrado com sucesso !');
             } else {
                 $session->addFlash('error', 'Não foi possível registrar o percentual de gordura.');
             }
@@ -365,13 +360,6 @@ class AvaliacaoController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
     public function actionDeletePdg($id)
     {
         $pdg = $this->findModelPdg($id);
@@ -381,18 +369,11 @@ class AvaliacaoController extends Controller
         if ($pdg->delete())
             $session->addFlash('success', 'Percentual de gordura excluído com sucesso !');
         else
-            $session->addFlash('error', 'Não possível excluír o percentual de gordura');
+            $session->addFlash('error', 'Não possível excluir o percentual de gordura');
 
         return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
     }
 
-    /**
-     * Finds the Avaliacao model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Avaliacao the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModelAvaliacao($id)
     {
         if (($model = Avaliacao::findOne($id)) !== null) {
@@ -402,11 +383,6 @@ class AvaliacaoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    /**
-     * @param $id
-     * @return Peso|null
-     * @throws NotFoundHttpException
-     */
     protected function findModelPeso($id)
     {
         if (($model = Peso::findOne($id)) !== null) {
@@ -416,11 +392,6 @@ class AvaliacaoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    /**
-     * @param $id
-     * @return Imc|null
-     * @throws NotFoundHttpException
-     */
     protected function findModelImc($id)
     {
         if (($model = Imc::findOne($id)) !== null) {
@@ -430,11 +401,6 @@ class AvaliacaoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    /**
-     * @param $id
-     * @return PercentualGordura|null
-     * @throws NotFoundHttpException
-     */
     protected function findModelPdg($id)
     {
         if (($model = PercentualGordura::findOne($id)) !== null) {
