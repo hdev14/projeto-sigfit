@@ -277,17 +277,20 @@ class AvaliacaoController extends Controller
 
         if ($imc->load($post)) {
             $imc->data = date('Y-m-d');
-            if ($imc->save())
-                $session->addFlash('success', 'IMC editado !');
-            else
+            if ($imc->save()) {
+                $session->addFlash('success', 'O valor do IMC foi editado com sucesso !');
+                return $this->redirect([
+                    'pessoa/view',
+                    'id' => $imc->avaliacao->pessoa_id
+                ]);
+            } else {
                 $session->addFlash('error', 'Não foi possível editar o IMC');
+            }
         }
 
-        if (!is_null($usuario_id)) {
-            return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
-        }
-
-        return $this->goBack();
+        return $this->render('../imc/update', [
+            'model' => $imc,
+        ]);
     }
 
     /**

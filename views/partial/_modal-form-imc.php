@@ -8,19 +8,18 @@ use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
 $this->registerJs("
-          
-        const altura_elt".$avaliacao_id." = 
-                document.querySelector('#altura-imc". $avaliacao_id ."')
-            , peso_elt".$avaliacao_id." = document.querySelector('#peso-imc" . $avaliacao_id ."')
-            , btn_calcular".$avaliacao_id." = document.querySelector('#calcular-imc".$avaliacao_id."');
+    const altura_elt".$avaliacao_id." = 
+            document.querySelector('#altura-imc". $avaliacao_id ."')
+        , peso_elt".$avaliacao_id." = document.querySelector('#peso-imc" . $avaliacao_id ."')
+        , btn_calcular".$avaliacao_id." = document.querySelector('#calcular-imc".$avaliacao_id."');
+    
+    btn_calcular". $avaliacao_id .".onclick = () => {
+        let altura = parseFloat(altura_elt".$avaliacao_id.".value)
+            , peso = parseFloat(peso_elt".$avaliacao_id.".value)
+            , imc = document.querySelector('#imc-valor".$avaliacao_id."');
         
-        btn_calcular". $avaliacao_id .".onclick = () => {
-            let altura = parseFloat(altura_elt".$avaliacao_id.".value)
-                , peso = parseFloat(peso_elt".$avaliacao_id.".value)
-                , imc = document.querySelector('#imc-valor".$avaliacao_id."');
-            
-            imc.value = ((peso / Math.pow(altura, 2)) * 10000).toFixed(2);
-        }
+        imc.value = ((peso / Math.pow(altura, 2)) * 10000).toFixed(2);
+    }
 ");
 ?>
 <?php $modal = Modal::begin([
