@@ -341,22 +341,27 @@ class AvaliacaoController extends Controller
 
     public function actionUpdatePdg($id)
     {
-        $pg = $this->findModelPg($id);
+        $pdg = $this->findModelPdg($id);
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
 
-        if ($pg->load($post)) {
-            $pg->data = date('Y-m-d');
-            if($pg->save()) {
-                $session->addFlash('success', 'Percentual de Gordura editado !');
-                return $this->goBack(); # TODO: Implementar o redirecionamento.
+        if ($pdg->load($post)) {
+            $pdg->data = date('Y-m-d');
+            if($pdg->save()) {
+                $session->addFlash('success', 'O valor do percentual de gordura foi editado com sucesso !');
+                return $this->redirect([
+                    'pessoa/view',
+                    'id' => $pdg->avaliacao->pessoa_id
+                ]);
             } else {
                 $session->addFlash('error', 'Não foi possível editar o percentual de gordura.');
             }
         }
 
         return $this->render('../percentual-gordura/update', [
-            'model' => $pg,
+            'model' => $pdg,
+            'sexo' => $pdg->avaliacao->pessoa->sexo,
+            'idade' => $pdg->avaliacao->idade,
         ]);
     }
 
@@ -369,8 +374,16 @@ class AvaliacaoController extends Controller
      */
     public function actionDeletePdg($id)
     {
-        $this->findModelPg($id)->delete();
-        return $this->goBack();
+        $pdg = $this->findModelPdg($id);
+        $usuario_id = $pdg->avaliacao->pessoa_id;
+        $session =  Yii::$app->session;
+
+        if ($pdg->delete())
+            $session->addFlash('success', 'Percentual de gordura excluído com sucesso !');
+        else
+            $session->addFlash('error', 'Não possível excluír o percentual de gordura');
+
+        return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
     }
 
     /**
@@ -422,7 +435,7 @@ class AvaliacaoController extends Controller
      * @return PercentualGordura|null
      * @throws NotFoundHttpException
      */
-    protected function findModelPg($id)
+    protected function findModelPdg($id)
     {
         if (($model = PercentualGordura::findOne($id)) !== null) {
             return $model;

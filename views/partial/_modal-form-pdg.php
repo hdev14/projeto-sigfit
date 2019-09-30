@@ -85,7 +85,7 @@ $this->registerJs("
 
 <?= Html::beginForm(
     [
-        'avaliacao/create-pg',
+        'avaliacao/create-pdg',
         'avaliacao_id' => $avaliacao_id,
     ],
     'post',
