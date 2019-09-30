@@ -1,14 +1,13 @@
 <?php
 
+use yii\helpers\Html;
+use \yii\widgets\LinkPager;
+use \yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $instrutores yii\db\ActiveQuery */
 /* @var $instrutor app\models\Pessoa */
 /* @var $pagination yii\data\Pagination */
-
-use yii\helpers\Html;
-use \yii\widgets\LinkPager;
-use \yii\helpers\Url;
 
 $this->title = "Instrutores";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];

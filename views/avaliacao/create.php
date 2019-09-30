@@ -1,7 +1,5 @@
 <?php
 
-use yii\helpers\Html;
-
 /* @var $this yii\web\View */
 /* @var $avaliacao_model app\models\Avaliacao */
 /* @var $peso_model app\models\Peso */

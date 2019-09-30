@@ -5,7 +5,6 @@
 /* @var $idade int */
 /* @var $sexo string */
 
-use app\models\Imc;
 use app\models\PercentualGordura;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
@@ -13,7 +12,7 @@ use yii\helpers\Html;
 
 $this->registerJsFile('@web/js/calculos-dobras.js');
 $this->registerJs("
-      
+     
         const calculo_pdg".$avaliacao_id." = 
                 document.querySelector('#calculo-pdg".$avaliacao_id."')
             , pdg_tres".$avaliacao_id." = 

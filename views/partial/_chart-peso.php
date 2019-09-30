@@ -2,7 +2,6 @@
 
 /* @var $avaliacao app\models\Avaliacao */
 
-use app\models\Peso;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 

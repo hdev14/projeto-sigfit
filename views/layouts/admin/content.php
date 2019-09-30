@@ -1,8 +1,7 @@
 <?php
 
-use yii\helpers\Html;
-use yii\web\View;
 use yii\widgets\Breadcrumbs;
+
 ?>
 <div class="content-wrapper">
     <section class="content-header">

@@ -1,13 +1,12 @@
 <?php
 
+use \yii\widgets\LinkPager;
+use \yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $usuarios \yii\db\ActiveQuery */
 /* @var $usuario \app\models\Pessoa */
 /* @var $pagination \yii\data\Pagination */
-
-use yii\web\View;
-use \yii\widgets\LinkPager;
-use \yii\helpers\Url;
 
 $this->title = "Usuários Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];

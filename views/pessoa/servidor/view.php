@@ -1,13 +1,11 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Pessoa */
-
 use yii\helpers\Html;
 use yii\web\View;
-use yii\widgets\DetailView;
 use yii\helpers\Url;
 
+/* @var $this yii\web\View */
+/* @var $model app\models\Pessoa */
 
 $f = Yii::$app->formatter;
 

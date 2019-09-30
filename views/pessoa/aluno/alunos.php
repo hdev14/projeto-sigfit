@@ -1,11 +1,11 @@
 <?php
 
+use \yii\widgets\LinkPager;
+use \yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $alunos \yii\db\ActiveQuery */
 /* @var $aluno \app\models\Pessoa */
-
-use \yii\widgets\LinkPager;
-use \yii\helpers\Url;
 
 $this->title = "Alunos Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];

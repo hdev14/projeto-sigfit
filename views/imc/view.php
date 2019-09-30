@@ -6,6 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Imc */
 
+
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Imcs', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
