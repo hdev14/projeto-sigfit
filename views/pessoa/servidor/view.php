@@ -175,7 +175,7 @@ $this->registerJs("
                                             </a>
                                         </li>
                                         <li class="pull-left header">
-                                            <h4><?= $avaliacao->titulo ?></h4>
+                                            <h5><?= $avaliacao->titulo ?></h5>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
