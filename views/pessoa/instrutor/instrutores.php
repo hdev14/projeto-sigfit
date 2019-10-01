@@ -23,7 +23,7 @@ $this->title = "Instrutores";
                         <?= Html::a('<i class="fa fa-user-plus fa-lg"></i> Novo Instrutor',
                             ['pessoa/create-instrutor'],
                             [
-                                'class' => 'btn btn-box-tool bg-green'
+                                'class' => 'btn btn-box-tool bg-green btn-flat'
                             ]
                         ) ?>
                     </div>

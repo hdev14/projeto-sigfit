@@ -143,7 +143,7 @@ $this->registerJs("
                                     'avaliacao/create',
                                     'usuario_id' => $model->id
                                 ], [
-                                    'class' => 'btn btn-success btn-sm',
+                                    'class' => 'btn bg-green btn-sm btn-flat',
                                     'style' => 'margin-left: 5px',
                                     'title' => 'Nova avaliação física'
                                 ]) ?>

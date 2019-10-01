@@ -18,7 +18,7 @@ $this->title = "Alunos Instruídos";
         <div class="box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title">Alunos</h3>
-                <?= $this->render('../partial/btn-registro') ?>
+                <?= $this->render('../../partial/_btn-registro') ?>
             </div>
             <div class="box-body">
                 <table class="table table-bordered table-hover">
