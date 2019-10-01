@@ -1,7 +1,6 @@
 <?php
 /* @var $model app\models\Pessoa */
 
-use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 
@@ -23,7 +22,7 @@ use yii\helpers\Url;
             'pessoa/view',
             'id' => $model->id
         ]) ?> "
-           class="btn btn-xs btn-flat btn-default"
+           class="btn btn-xs btn-flat bg-gray"
            title="Visualizar usuário">
             <i class="fa fa-eye"></i>
         </a>

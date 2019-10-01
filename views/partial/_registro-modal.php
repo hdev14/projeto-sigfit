@@ -28,10 +28,10 @@ $this->registerJs("
             <p>Aluno ou Servidor ?</p>
             <div>
                 <?= Html::a('Aluno', ['create-aluno'], [
-                    'class' => 'btn btn-default btn-sm btn-flat'
+                    'class' => 'btn bg-gray btn-sm btn-flat'
                 ]) ?>
                 <?= Html::a('Servidor', ['create-servidor'], [
-                    'class' => 'btn btn-primary btn-sm btn-flat'
+                    'class' => 'btn bg-light-blue btn-sm btn-flat'
                 ]) ?>
             </div>
         </div>

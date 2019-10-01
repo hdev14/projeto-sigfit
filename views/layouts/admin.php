@@ -1,11 +1,11 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
 
 use yii\helpers\Html;
 use app\assets\AppAdminAsset;
 
+/* @var $this \yii\web\View */
+/* @var $content string */
 
 $app_admin_asset = AppAdminAsset::register($this);
 $distPath = $app_admin_asset->baseUrl;

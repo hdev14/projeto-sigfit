@@ -18,7 +18,7 @@ class PessoaSearch extends Pessoa
     {
         return [
             [['id', 'periodo_curso', 'faltas', 'espera'], 'integer'],
-            [['matricula', 'nome', 'email', 'curso', 'horario_treino', 'problema_saude', 'telefone'], 'safe'],
+            [['matricula', 'nome', 'email', 'curso', 'horario_treino', 'problema_saude', 'telefone', 'sexo'], 'safe'],
         ];
     }
 

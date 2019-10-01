@@ -1,11 +1,11 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
 
 use yii\helpers\Html;
 use app\assets\LoginAsset;
 
+/* @var $this \yii\web\View */
+/* @var $content string */
 
 LoginAsset::register($this);
 ?>

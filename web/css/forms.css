@@ -4,10 +4,6 @@ div.pessoa-form {
     padding: 20px;
 }
 
-div.pessoa-form {
-    margin-top: 10vh;
-}
-
 .box-body form textarea {
     resize: none;
 }

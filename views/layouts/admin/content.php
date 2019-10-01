@@ -1,8 +1,7 @@
 <?php
 
-use yii\helpers\Html;
-use yii\web\View;
 use yii\widgets\Breadcrumbs;
+
 ?>
 <div class="content-wrapper">
     <section class="content-header">
@@ -30,6 +29,11 @@ use yii\widgets\Breadcrumbs;
     </section>
 
     <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <?= $this->render('../../partial/_alert') ?>
+            </div>
+        </div>
         <?= $content ?>
     </section>
 </div>

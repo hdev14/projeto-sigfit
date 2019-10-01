@@ -50,6 +50,10 @@ use yii\widgets\ActiveForm;
 
             <div class="col-xs-6">
 
+                <?= $form->field($model, 'sexo')->dropDownList([
+                        'masculino' => 'Masculino',
+                        'feminino' => 'Fasculino',
+                ], ['prompt' => 'Selecione seu sexo']) ?>
 
                 <?= $form->field($model, 'telefone')->textInput([
                     'placeholder' => "(99)99999-9999",

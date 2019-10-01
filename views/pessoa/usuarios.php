@@ -1,26 +1,25 @@
 <?php
 
+use \yii\widgets\LinkPager;
+use \yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $usuarios \yii\db\ActiveQuery */
 /* @var $usuario \app\models\Pessoa */
 /* @var $pagination \yii\data\Pagination */
 
-use \yii\widgets\LinkPager;
-use \yii\helpers\Url;
-
 $this->title = "Usuários Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
 ?>
-
-<?= $this->render('partial/btn-group') ?>
+<?= $this->render('../partial/_btn-group') ?>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 ">
         <div class="box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title">Todos</h3>
-                <?= $this->render('./partial/btn-registro') ?>
+                <?= $this->render('../partial/_btn-registro') ?>
             </div>
             <div class="box-body">
                 <table class="table table-bordered table-hover">
@@ -62,7 +61,7 @@ $this->title = "Usuários Instruídos";
                                     'pessoa/view',
                                     'id' => $usuario->id
                                 ]) ?> "
-                                   class="btn btn-xs btn-flat btn-default"
+                                   class="btn btn-xs btn-flat bg-gray"
                                    title="Visualizar usuário">
                                     <i class="fa fa-eye"></i>
                                 </a>
@@ -71,7 +70,7 @@ $this->title = "Usuários Instruídos";
                                     'pessoa/update',
                                     'id' => $usuario->id
                                 ]) ?> "
-                                   class="btn btn-xs btn-flat btn-info"
+                                   class="btn btn-xs btn-flat bg-aqua"
                                    title="Editar usuário">
                                     <i class="fa fa-pencil"></i>
                                 </a>

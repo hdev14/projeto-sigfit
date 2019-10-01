@@ -1,13 +1,12 @@
 <?php
 
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ListView;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Pessoa */
 /* @var $data_provider yii\data\ActiveDataProvider */
-
-use yii\helpers\Html;
-use yii\widgets\DetailView;
-use yii\helpers\Url;
-use yii\widgets\ListView;
 
 $f = Yii::$app->formatter;
 
@@ -76,7 +75,7 @@ $this->title = 'Perfil do Instrutor';
     <div class="col-md-9">
         <?= ListView::widget([
             'dataProvider' => $data_provider,
-            'itemView' => '../partial/_usuarios-view',
+            'itemView' => '../../partial/_usuarios-view',
             'emptyText' => "
                 <div class='alert alert-info' rol=\"alert\">
                     O instrutor <b>{$model->nome}</b> ainda não possui usuários instruídos.          

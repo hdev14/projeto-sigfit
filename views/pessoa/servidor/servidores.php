@@ -1,24 +1,24 @@
 <?php
 
+use \yii\widgets\LinkPager;
+use \yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $servidores \yii\db\ActiveQuery */
 /* @var $servidor \app\models\Pessoa */
-
-use \yii\widgets\LinkPager;
-use \yii\helpers\Url;
 
 $this->title = "Servidores Instruídos";
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Servidores';
 ?>
 
-<?= $this->render('../partial/btn-group') ?>
+<?= $this->render('../../partial/_btn-group') ?>
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title">Servidores</h3>
-                <?= $this->render('../partial/btn-registro') ?>
+                <?= $this->render('../../partial/_btn-registro') ?>
             </div>
             <div class="box-body">
                 <table class="table table-bordered table-hover">

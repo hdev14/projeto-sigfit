@@ -42,6 +42,11 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="col-xs-6">
 
+                <?= $form->field($model, 'sexo')->dropDownList([
+                    'masculino' => 'Masculino',
+                    'feminino' => 'Feminino',
+                ], ['prompt' => 'Selecione seu sexo']) ?>
+
                 <?= $form->field($model, 'horario_treino')->dropDownList([
                     '7h às 8h' => '7h às 8h',
                     '8h às 9h' => '8h às 9h',
