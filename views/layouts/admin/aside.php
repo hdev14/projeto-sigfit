@@ -82,7 +82,7 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li class="">
-                <a href="<?= Url::to(['exercicio/index']) ?>">
+                <a href="<?= Url::to(['exercicio/exercicios']) ?>">
                     <i class="fa fa-bolt"></i>
                     <span>Exercícios</span>
                 </a>

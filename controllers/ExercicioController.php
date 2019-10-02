@@ -6,6 +6,7 @@ use app\models\Equipamento;
 use Yii;
 use app\models\Exercicio;
 use app\models\ExercicioSearch;
+use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -42,6 +43,24 @@ class ExercicioController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionExercicios()
+    {
+        $query = Exercicio::find();
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+        ]);
+
+        $exercicios = $query->orderBy('nome')
+                            ->offset($pagination->offset)
+                            ->limit($pagination->limit)
+                            ->all();
+        return $this->render('exercicios', [
+            'exercicios' => $exercicios,
+            'pagination' => $pagination
         ]);
     }
 
