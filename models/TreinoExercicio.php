@@ -45,9 +45,9 @@ class TreinoExercicio extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'treino_id' => Yii::t('app', 'Treino ID'),
-            'exercicio_id' => Yii::t('app', 'Exercicio ID'),
-            'numero_repeticao' => Yii::t('app', 'Numero Repeticao'),
+            'treino_id' => 'Treino ID',
+            'exercicio_id' => 'Exercicio ID',
+            'numero_repeticao' => 'Numero Repeticao',
         ];
     }
 

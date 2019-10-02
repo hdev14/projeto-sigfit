@@ -49,12 +49,12 @@ class Treino extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'dia' => Yii::t('app', 'Dia'),
-            'generico' => Yii::t('app', 'Generico'),
-            'titulo' => Yii::t('app', 'Titulo'),
-            'genero' => Yii::t('app', 'Genero'),
-            'nivel' => Yii::t('app', 'Nivel'),
+            'id' => 'ID',
+            'dia' => 'Dia',
+            'generico' => 'Generico',
+            'titulo' => 'Titulo',
+            'genero' => 'Genero',
+            'nivel' => 'Nivel',
         ];
     }
 

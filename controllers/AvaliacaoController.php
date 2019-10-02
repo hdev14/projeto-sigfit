@@ -268,7 +268,6 @@ class AvaliacaoController extends Controller
 
     public function actionUpdateImc($id)
     {
-
         $imc = $this->findModelImc($id);
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;

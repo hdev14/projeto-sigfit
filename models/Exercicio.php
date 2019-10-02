@@ -48,11 +48,11 @@ class Exercicio extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'equipamento_id' => Yii::t('app', 'Equipamento ID'),
-            'nome' => Yii::t('app', 'Nome'),
-            'descricao' => Yii::t('app', 'Descricao'),
-            'tipo' => Yii::t('app', 'Tipo'),
+            'id' => 'ID',
+            'equipamento_id' => 'Equipamento (opcional)',
+            'nome' => 'Nome',
+            'descricao' => 'Descrição',
+            'tipo' => 'Tipo',
         ];
     }
 

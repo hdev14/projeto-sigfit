@@ -45,11 +45,11 @@ class Equipamento extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'nome' => Yii::t('app', 'Nome'),
-            'descricao' => Yii::t('app', 'Descricao'),
-            'imagem' => Yii::t('app', 'Imagem'),
-            'defeito' => Yii::t('app', 'Defeito'),
+            'id' => 'ID',
+            'nome' => 'Nome',
+            'descricao' => 'Descricao',
+            'imagem' => 'Imagem',
+            'defeito' => 'Defeito',
         ];
     }
 
