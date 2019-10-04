@@ -52,6 +52,7 @@ class ExercicioController extends Controller
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
+            'pageSize' => 9,
         ]);
 
         $exercicios = $query->orderBy('nome')
@@ -60,6 +61,46 @@ class ExercicioController extends Controller
                             ->all();
         return $this->render('exercicios', [
             'exercicios' => $exercicios,
+            'pagination' => $pagination
+        ]);
+    }
+
+    public function actionAerobicos()
+    {
+        $query = Exercicio::find()->where(['tipo' => 'aerobico']);
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => 9,
+        ]);
+
+        $exercicios_aerobicos = $query->orderBy('nome')
+                                        ->offset($pagination->offset)
+                                        ->limit($pagination->limit)
+                                        ->all();
+
+        return $this->render('exercicios', [
+            'exercicios' => $exercicios_aerobicos,
+            'pagination' => $pagination
+        ]);
+    }
+
+    public function actionAnaerobicos()
+    {
+        $query = Exercicio::find()->where(['tipo' => 'anaerobico']);
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => 9,
+        ]);
+
+        $exercicios_anaerobicos = $query->orderBy('nome')
+                                        ->offset($pagination->offset)
+                                        ->limit($pagination->limit)
+                                        ->all();
+
+        return $this->render('exercicios', [
+            'exercicios' => $exercicios_anaerobicos,
             'pagination' => $pagination
         ]);
     }
@@ -74,6 +115,7 @@ class ExercicioController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'equipamentos' => Equipamento::find()->all(),
         ]);
     }
 
@@ -106,14 +148,17 @@ class ExercicioController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $session = Yii::$app->session;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->save()) {
+                $session->addFlash('success', 'Exercício atualizado com sucesso !');
+            } else {
+                $session->addFlash('error', 'Não foi possível editar o exercício.');
+            }
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->redirect(['exercicio/view', 'id' => $model->id]);
     }
 
     /**

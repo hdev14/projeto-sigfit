@@ -2,9 +2,15 @@
 /* @var $this \yii\web\View */
 
 use yii\helpers\Url;
+
+$this->registerCss("
+    div.links {
+        margin-bottom: 10px;
+    }
+");
 ?>
 
-<div class="tabs row">
+<div class="links row">
     <div class="col-md-12">
         <div class="btn-group btn-group-sm" role="group" >
            <a class="btn bg-gray "
