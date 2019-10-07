@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "equipamento".
@@ -17,6 +18,9 @@ use Yii;
  */
 class Equipamento extends \yii\db\ActiveRecord
 {
+    /** @var UploadedFile */
+    public $image_file;
+
     /**
      * {@inheritdoc}
      */
@@ -36,6 +40,13 @@ class Equipamento extends \yii\db\ActiveRecord
             [['defeito'], 'integer'],
             [['nome'], 'string', 'max' => 45],
             [['descricao'], 'string', 'max' => 200],
+            [
+                ['image_file'],
+                'file',
+                'skipOnEmpty' => true,
+                'extensions' => ['png', 'jpeg', 'jpg'],
+                'maxSize' => 1024*1024
+            ],
         ];
     }
 
@@ -46,11 +57,28 @@ class Equipamento extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'nome' => 'Nome',
-            'descricao' => 'Descricao',
+            'nome' => 'Nome do Equipamento',
+            'descricao' => 'Descrição do Equipamento',
             'imagem' => 'Imagem',
             'defeito' => 'Defeito',
         ];
+    }
+
+
+    public function upload()
+    {
+        if (!$this->validate()) {
+
+            if (!is_null($this->image_file)) {
+                // TODO Implemente o upload da imagem.
+            } else if (empty($this->imagem)) {
+                $this->imagem = ''; // TODO colocar imagem padrão.
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
