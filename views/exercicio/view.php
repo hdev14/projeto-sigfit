@@ -22,6 +22,9 @@ $this->registerCss("
     #desc-exercicio {
         resize: none;
     }
+    div.callout {
+        margin-top: 20px;
+    }
 ");
 ?>
 
@@ -47,7 +50,7 @@ $this->registerCss("
             <?php $form = ActiveForm::begin([
                 'action' => Url::to([
                     'exercicio/update',
-                    'id' => $model->equipamento->id
+                    'id' => $model->id
                 ]),
                 'id' => 'modal-form-editar'
             ]); ?>
@@ -78,10 +81,18 @@ $this->registerCss("
             <?php Modal::end() ?>
             <!--MODAL EDITAR-->
 
-            <?= Html::a("<i class='fa fa-fw fa-close'></i>", '#', [
-                'class' => 'btn btn-box-tool bg-red',
-                'title' => 'Excluir exercício',
-            ]) ?>
+            <?= Html::a(
+                "<i class='fa fa-fw fa-close'></i>",
+                ['exercicio/delete', 'id' => $model->id],
+                [
+                    'class' => 'btn btn-box-tool bg-red',
+                    'title' => 'Excluir exercício',
+                    'data' => [
+                        'confirm' => 'Tem certeza de que deseja excluir este aluno?',
+                        'method' => 'post',
+                    ],
+                ]
+            ) ?>
         </div>
     </div>
     <div class="box-body">

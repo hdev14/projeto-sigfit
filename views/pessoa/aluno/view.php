@@ -52,7 +52,7 @@ $this->registerJs("
                         'class' => 'btn btn-box-tool',
                         'title' => 'Excluir usuário',
                         'data' => [
-                            'confirm' => 'Tem certeza de que deseja excluir este aluno?',
+                            'confirm' => 'Tem certeza de que deseja excluir este exercício?',
                             'method' => 'post',
                         ],
                     ]) ?>

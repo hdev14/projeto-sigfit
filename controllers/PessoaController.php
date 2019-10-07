@@ -82,10 +82,6 @@ class PessoaController extends Controller
         ];
     }
 
-    /**
-     * Lists all Pessoa models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new PessoaSearch();
@@ -97,12 +93,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Pessoa model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         $model = $this->findModel($id);
@@ -136,11 +126,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -152,32 +137,29 @@ class PessoaController extends Controller
         return $this->updateAluno($model);
     }
 
-    /**
-     * @param $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
+
     public function actionDelete($id)
     {
         $usuario = $this->findModel($id);
         $usuario_instrutor = $usuario->usuarioInstrutores;
+        $result = false;
 
         # Exclui os registros na tabela de relacionamento.
         foreach ($usuario_instrutor as $ui) {
-            $ui->delete();
+            $result = $ui->delete();
         }
 
-        $usuario->delete();
+        $result = $usuario->delete();
+        $session = Yii::$app->session;
+
+        if ($result)
+            $session->addFlash('success', 'Usuário excluído com sucesso !');
+        else
+            $session->addFlash('error', 'Não foi possível excluir o usuário.');
 
         return $this->redirect(['usuarios']);
     }
 
-    /**
-     * @return string
-     * @throws \yii\base\InvalidConfigException
-     */
     public function actionUsuarios()
     {
         $pessoa_search = new PessoaSearch();
@@ -198,10 +180,6 @@ class PessoaController extends Controller
 
     # ---- ALUNO ---- #
 
-    /**
-     * @return string
-     * @throws \yii\base\InvalidConfigException
-     */
     public function actionAlunos()
     {
         $pessoa_search = new PessoaSearch();
@@ -220,10 +198,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
-     */
     public function actionCreateAluno()
     {
         $usuario_model = new Pessoa([
@@ -231,12 +205,16 @@ class PessoaController extends Controller
         ]);
 
         $post = Yii::$app->request->post();
+        $session =  Yii::$app->session;
 
         if ($usuario_model->load($post)) {
             $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
             if ($usuario_model->upload() && $usuario_model->save()
                 && $this->relacionarUsuarioInstrutor($usuario_model)) {
+                $session->addFlash('success', 'Usuário registrado com sucesso !');
                 return $this->redirect(['view', 'id' => $usuario_model->id]);
+            } else {
+                $session->addFlash('error', 'Não foi possível registrar o usuário.');
             }
         }
 
@@ -247,10 +225,6 @@ class PessoaController extends Controller
 
     # ---- SERVIDOR ---- #
 
-    /**
-     * @return string
-     * @throws \yii\base\InvalidConfigException
-     */
     public function actionServidores()
     {
         $pessoa_search = new PessoaSearch();
@@ -269,11 +243,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * Cria um usuário servidor
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
-     */
     public function actionCreateServidor()
     {
         $usuario_model = new Pessoa([
@@ -281,13 +250,17 @@ class PessoaController extends Controller
         ]);
 
         $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
 
         if ($usuario_model->load($post)) {
             $usuario_model->servidor = true;
             $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
             if ($usuario_model->upload() && $usuario_model->save()
                 && $this->relacionarUsuarioInstrutor($usuario_model)) {
+                $session->addFlash('success', 'Usuário registrado com sucesso !');
                 return $this->redirect(['view', 'id' => $usuario_model->id]);
+            } else {
+                $session->addFlash('error', 'Não foi possível registra o usuário.');
             }
         }
 
@@ -315,10 +288,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * Criar um usuário instrutor
-     * @return string|\yii\web\Response
-     */
     public function actionCreateInstrutor()
     {
         $model = new Pessoa([
@@ -339,12 +308,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * Edita um usuário instrutor
-     * @param $id
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
-     */
     public function actionUpdateInstrutor($id)
     {
         $model = $this->findModel($id);
@@ -363,12 +326,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * Visão de um Instrutor
-     * @param $id
-     * @return string
-     * @throws NotFoundHttpException
-     */
     public function actionViewInstrutor($id)
     {
         $instrutor_model = $this->findModel($id);
@@ -388,13 +345,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
     public function actionDeleteInstrutor($id)
     {
         $instrutor_model = $this->findModel($id);
@@ -422,11 +372,15 @@ class PessoaController extends Controller
     {
         $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
         $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
 
         if ($model->load($post)) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->upload() && $model->save()) {
+                $session->addFlash('success', 'Usuário atualizado com sucesso !');
                 return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $session->addFlash('error', "Não foi possível atualizar o usuário.");
             }
         }
 
@@ -445,11 +399,15 @@ class PessoaController extends Controller
     {
         $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
         $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
 
         if ($model->load($post)) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
             if ($model->upload() && $model->save()) {
+                $session->addFlash('success', 'Usuário atualizado com sucesso !');
                 return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $session->addFlash('error', 'Não foi possível atualizar o usuário.');
             }
         }
 
