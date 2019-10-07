@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Equipamento;
 use app\models\EquipamentoSearch;
+use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -29,10 +30,6 @@ class EquipamentoController extends Controller
         ];
     }
 
-    /**
-     * Lists all Equipamento models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new EquipamentoSearch();
@@ -44,12 +41,26 @@ class EquipamentoController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Equipamento model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    public function actionEquipamentos()
+    {
+        $query = Equipamento::find();
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => 4,
+        ]);
+
+        $equipamentos = $query->orderBy('nome')
+                            ->offset($pagination->offset)
+                            ->limit($pagination->limit)
+                            ->all();
+
+        return $this->render('equipamentos', [
+            'equipamentos' => $equipamentos,
+            'pagination' => $pagination,
+        ]);
+    }
+
     public function actionView($id)
     {
         return $this->render('view', [
@@ -57,11 +68,6 @@ class EquipamentoController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Equipamento model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Equipamento();

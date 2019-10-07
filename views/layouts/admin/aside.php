@@ -76,7 +76,7 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li class="">
-                <a href="#">
+                <a href="<?= Url::to(['equipamento/equipamentos']) ?>">
                     <i class="fa fa-wrench"></i>
                     <span>Equipamentos</span>
                 </a>

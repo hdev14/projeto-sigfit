@@ -1,11 +1,9 @@
 <?php
 
-
-/* @var $this yii\web\View */
-
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 
+/* @var $this yii\web\View */
 /* @var $exercicios yii\db\ActiveRecord[] */
 /* @var $exercicio app\models\Exercicio */
 /* @var $pagination yii\data\Pagination */
@@ -43,7 +41,7 @@ $this->registerCss("
             <?= Html::a('Aeróbicos', ['exercicio/aerobicos'], [
                     'class' => 'btn bg-gray'
             ]) ?>
-            <?= Html::a('Anaeróbicos', ['exercicio/aerobicos'], [
+            <?= Html::a('Anaeróbicos', ['exercicio/anaerobicos'], [
                     'class' => 'btn bg-gray'
             ]) ?>
         </div>
@@ -98,7 +96,7 @@ $this->registerCss("
         <?= LinkPager::widget([
             'pagination' => $pagination,
             'options' => [
-                'class' => 'pagination pagination-sm no-margin pull-right'
+                'class' => 'pagination pagination-sm no-margin'
             ]
         ]) ?>
     </div>

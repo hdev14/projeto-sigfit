@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Exercicio */
 /* @var $equipamentos yii\db\ActiveRecord[] */
 
-$this->title = 'Registra Exercício';
+$this->title = 'Registrar novo exercício';
 //$this->params['breadcrumbs'][] = ['label' => 'Exercicios', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
