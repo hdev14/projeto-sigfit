@@ -23,6 +23,13 @@ $this->registerCss("
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    
+    h4.exercicio-titulo {
+        white-space: nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        width: 70%;   
+    }
    
 ");
 ?>
@@ -54,7 +61,8 @@ $this->registerCss("
         <div class="col-md-3">
             <div class="box">
                 <div class="box-header with-border">
-                    <h4 class="box-title">
+                    <h4 class="box-title exercicio-titulo"
+                        title="<?= $exercicio->nome ?>">
                         <?= $exercicio->nome ?>
                     </h4>
                     <div class="box-tools pull-right">
