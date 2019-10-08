@@ -6,6 +6,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Equipamento */
+/* @var $exercicio app\models\Exercicio */
 
 $this->title = 'Informações do Equipamento';
 //$this->params['breadcrumbs'][] = ['label' => 'Equipamentos', 'url' => ['index']];
@@ -75,11 +76,37 @@ $this->registerCss("
                     Exercícios Relacionados
                 </h4>
                 <div class="box-tools">
-
+                    <!-- TODO imp. modal para adição de novos exercício
+                    relacionados com equipamento. -->
                 </div>
             </div>
             <div class="box-body">
-
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th style="width: 50px"></th>
+                    </tr>
+                    <?php foreach($model->exercicios as $exercicio): ?>
+                        <tr>
+                            <td><?= $exercicio->nome ?></td>
+                            <td><?= $exercicio->tipo ?></td>
+                            <td>
+                                <?= Html::a(
+                                    '<i class="fa fa-fw fa-eye"></i>',
+                                    [
+                                        'exercicio/view', 'id' => $exercicio->id
+                                    ],
+                                    [
+                                        'class' => 'btn btn-flat btn-xs bg-gray',
+                                        'title' => 'Marcar equipamento com defeito',
+                                    ]) ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
