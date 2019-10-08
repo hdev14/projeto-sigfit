@@ -52,9 +52,9 @@ class EquipamentoController extends Controller
         ]);
 
         $equipamentos = $query->orderBy('nome')
-                            ->offset($pagination->offset)
-                            ->limit($pagination->limit)
-                            ->all();
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         return $this->render('equipamentos', [
             'equipamentos' => $equipamentos,
@@ -109,6 +109,21 @@ class EquipamentoController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionDefeito($id)
+    {
+        $equipamento = $this->findModel($id);
+        $equipamento->defeito = $equipamento->defeito ? false : true;
+        $session = Yii::$app->session;
+
+        if ($equipamento->save(false))
+            $session->addFlash('success', 'Operação realizada com sucesso !');
+        else
+            $session->addFlash('error', 'Não foi possível efetuar esta operação.');
+
+        return $this->redirect(['view', 'id' => $equipamento->id]);
+    }
+
+
     protected function findModel($id)
     {
         if (($model = Equipamento::findOne($id)) !== null) {
@@ -117,4 +132,6 @@ class EquipamentoController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
 }
