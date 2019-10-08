@@ -49,9 +49,8 @@ $this->registerCss("
                 <?php else: ?>
                     <span class="badge bg-green">sem defeito</span>
                 <?php endif; ?>
-                <img
-                        src="<?= Url::to('@web/uploads/equipamentos/eq.jpeg') ?>"
-                        alt="" class="img-responsive">
+                <img src="<?= Url::to('@web'.$equipamento->imagem ) ?>"
+                     alt="" class="img-responsive">
                 <div class="caption">
                     <h4><?= $equipamento->nome ?></h4>
                     <p class="text-muted equipamento-desc"><?=

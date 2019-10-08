@@ -9,6 +9,7 @@ use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * EquipamentoController implements the CRUD actions for Equipamento model.
@@ -70,24 +71,24 @@ class EquipamentoController extends Controller
 
     public function actionCreate()
     {
-        $model = new Equipamento();
+        $model_equipamento = new Equipamento();
+        $session = Yii::$app->session;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model_equipamento->load(Yii::$app->request->post())) {
+            $model_equipamento->image_file = UploadedFile::getInstance($model_equipamento, 'image_file');
+            if ($model_equipamento->upload() && $model_equipamento->save()) {
+                $session->addFlash('success', 'Equipamento registrado com sucesso !');
+                return $this->redirect(['view', 'id' => $model_equipamento->id]);
+            } else {
+                $session->addFlash('error', 'Não foi possível registrar o equipamento.');
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $model_equipamento,
         ]);
     }
 
-    /**
-     * Updates an existing Equipamento model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -101,13 +102,6 @@ class EquipamentoController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Equipamento model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -115,13 +109,6 @@ class EquipamentoController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Equipamento model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Equipamento the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Equipamento::findOne($id)) !== null) {

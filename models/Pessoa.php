@@ -203,10 +203,6 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
         parent::afterSave($insert, $changedAttributes);
     }
 
-    /**
-     * @return bool
-     * @throws \Exception
-     */
     public function upload()
     {
         if ($this->validate()) {

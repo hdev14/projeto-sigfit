@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use DateTime;
 use yii\web\UploadedFile;
 
 /**
@@ -21,17 +22,11 @@ class Equipamento extends \yii\db\ActiveRecord
     /** @var UploadedFile */
     public $image_file;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'equipamento';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -50,9 +45,6 @@ class Equipamento extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -61,23 +53,32 @@ class Equipamento extends \yii\db\ActiveRecord
             'descricao' => 'Descrição do Equipamento',
             'imagem' => 'Imagem',
             'defeito' => 'Defeito',
+            'image_file' => 'Adicionar Foto'
         ];
     }
 
-
     public function upload()
     {
-        if (!$this->validate()) {
+        if ($this->validate()) {
 
             if (!is_null($this->image_file)) {
-                // TODO Implemente o upload da imagem.
-            } else if (empty($this->imagem)) {
-                $this->imagem = ''; // TODO colocar imagem padrão.
-            }
 
+                $timestamp = (new DateTime())->getTimestamp();
+
+                $this->imagem = '/uploads/equipamentos/'
+                    . $timestamp . '.' . $this->image_file->extension;
+
+                $this->image_file->saveAs(
+                    Yii::getAlias('@webroot') .
+                    $this->imagem
+                );
+
+                $this->image_file = null;
+            } else if (empty($this->imagem)) {
+                $this->imagem = '/uploads/equipamentos/default.png';
+            }
             return true;
         }
-
         return false;
     }
 
