@@ -1,11 +1,20 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Pessoa */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->registerCss("
+    div.img-preview {
+        margin-top: 25px; 
+        margin-bottom: 25px; 
+    }
+");
+$this->registerJsFile('@web/js/upload-usuario.js')
 ?>
 
 <div class="box box-success pessoa-form">
@@ -18,6 +27,23 @@ use yii\widgets\ActiveForm;
 
         <div class="row">
             <div class="col-xs-6">
+
+                <div class="row img-preview">
+                    <div class="col-md-4">
+                        <img id="img-usuario"
+                             src="<?= Url::to(
+                                 ($model->foto) ?
+                                 '@web' . $model->foto :
+                                 '@web/uploads/equipamentos/default.png'
+                             ) ?>" alt=""
+                             class="img-thumbnail">
+                    </div>
+                    <div class="col-md-8">
+                        <?= $form->field($model, 'image_file')->fileInput([
+                            'id' => 'upload-img',
+                        ]) ?>
+                    </div>
+                </div>
 
                 <?= $form->field($model, 'matricula')->textInput([
                     'placeholder' => 'Digite a matrícula.',
@@ -39,6 +65,9 @@ use yii\widgets\ActiveForm;
                     'maxlength' => true
                 ]) ?>
 
+            </div>
+
+            <div class="col-xs-6">
                 <?= $form->field($model, 'periodo_curso')->input('number', [
                     'max' => 9,
                     'min' => 1,
@@ -46,13 +75,9 @@ use yii\widgets\ActiveForm;
                     'placeholder' => '1'
                 ]) ?>
 
-            </div>
-
-            <div class="col-xs-6">
-
                 <?= $form->field($model, 'sexo')->dropDownList([
-                        'masculino' => 'Masculino',
-                        'feminino' => 'Fasculino',
+                    'masculino' => 'Masculino',
+                    'feminino' => 'Fasculino',
                 ], ['prompt' => 'Selecione seu sexo']) ?>
 
                 <?= $form->field($model, 'telefone')->textInput([
@@ -71,8 +96,6 @@ use yii\widgets\ActiveForm;
                     'placeholder' => "Descrição do problema",
                     'rows' => 4
                 ])->label('Problema de Saúde (opcional)') ?>
-
-                <?= $form->field($model, 'image_file')->fileInput() ?>
 
             </div>
             <div class="col-xs-12 form-group text-right">
