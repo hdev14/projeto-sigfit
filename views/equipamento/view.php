@@ -88,14 +88,17 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
 
                     <?php Modal::end(); ?>
                     <!-- MODAL FORM EDITAR EQUIPAMENTO-->
-                    <?= Html::a('<i class="fa fa-fw fa-close"></i>', '#', [
-                        'class' => 'btn btn-box-tool bg-red',
-                        'title' => 'Excluir equipamento',
-                        'data' => [
-                            'confirm' => 'Tem certeza de que deseja excluir este equipamento?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
+                    <?= Html::a(
+                        '<i class="fa fa-fw fa-close"></i>',
+                        ['equipamento/delete', 'id' => $model->id],
+                        [
+                            'class' => 'btn btn-box-tool bg-red',
+                            'title' => 'Excluir equipamento',
+                            'data' => [
+                                'confirm' => 'Tem certeza de que deseja excluir este equipamento?',
+                                'method' => 'post',
+                            ],
+                        ]) ?>
                 </div>
             </div>
             <div class="box-body">

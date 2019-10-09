@@ -75,7 +75,10 @@ class EquipamentoController extends Controller
         $session = Yii::$app->session;
 
         if ($model_equipamento->load(Yii::$app->request->post())) {
-            $model_equipamento->image_file = UploadedFile::getInstance($model_equipamento, 'image_file');
+
+            $model_equipamento->image_file =
+                UploadedFile::getInstance($model_equipamento, 'image_file');
+
             if ($model_equipamento->upload() && $model_equipamento->save()) {
                 $session->addFlash('success', 'Equipamento registrado com sucesso !');
                 return $this->redirect(['view', 'id' => $model_equipamento->id]);
@@ -91,22 +94,41 @@ class EquipamentoController extends Controller
 
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model_equipamento = $this->findModel($id);
+        $session = Yii::$app->session;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model_equipamento->load(Yii::$app->request->post())) {
+
+            $model_equipamento->image_file =
+                UploadedFile::getInstance($model_equipamento, 'image_file');
+
+            if ($model_equipamento->upload() && $model_equipamento->save()) {
+                $session->addFlash('success', 'Equipamento atualizado com sucesso !');
+            } else {
+                $session->addFlash('error', 'Não foi possível atualizar o equipamento.');
+            }
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->redirect(['view', 'id' => $model_equipamento->id]);
     }
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model_equipamento = $this->findModel($id);
+        $session = Yii::$app->session;
+        $result = false;
 
-        return $this->redirect(['index']);
+        foreach ($model_equipamento->exercicios as $exercicio) {
+            $result = $exercicio->delete();
+        }
+
+        $result = $model_equipamento->delete();
+
+        if ($result)
+            $session->addFlash('success', 'Equipamento excluído com sucesso !');
+        else
+            $session->addFlash('error', 'Não foi possível excluir o equipamento.');
+
+        return $this->redirect(['equipamentos']);
     }
 
     public function actionDefeito($id)
