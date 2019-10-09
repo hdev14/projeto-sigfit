@@ -1,7 +1,9 @@
 <?php
 
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -13,11 +15,7 @@ $this->title = 'Informações do Equipamento';
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
-$this->registerCss("
-    #equipamento-info {
-        
-    }
-");
+$this->registerJsFile('@web/js/upload-equipamento.js');
 ?>
 
 <div class="row">
@@ -30,10 +28,66 @@ $this->registerCss("
                     <?php endif; ?>
                 </h4>
                 <div class="box-tools pull-right">
-                    <?= Html::a('<i class="fa fa-fw fa-pencil"></i>', '#', [
-                        'class' => 'btn btn-box-tool bg-aqua',
-                        'title' => 'Editar equipamento',
-                    ]) ?>
+                    <?= Html::a(
+                        ($model->defeito) ? 'Desmarca defeito' : 'Marcar defeito',
+                        ['equipamento/defeito', 'id' => $model->id],
+                        [
+                            'class' => 'btn btn-box-tool bg-gray',
+                            'title' => 'Marcar equipamento com defeito',
+                        ]) ?>
+
+                    <!-- MODAL FORM EDITAR EQUIPAMENTO-->
+                    <?php $modal = Modal::begin([
+                        'header' => 'Preenchar os campos corretamente',
+                        'footer' =>
+                            Html::submitButton('Confirmar', [
+                                'class' => 'btn bg-green btn-flat btn-sm',
+                                'form' => 'form-upload-equip',
+                            ])
+                        ,
+                        'toggleButton' => [
+                            'label' => "<i class='fa fa-fw fa-pencil'></i>",
+                            'class' => 'btn btn-box-tool bg-aqua'
+                        ],
+                    ]); ?>
+                    <div  class="text-center">
+                        <img
+                                id="img-equipamento"
+                                class="img-responsive img-thumbnail"
+                                height="180"
+                                width="180"
+                                src="<?= Url::to('@web'.$model->imagem) ?>"
+                                alt="">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <?php $form = ActiveForm::begin([
+                                'method' => 'post',
+                                'action' => ['equipamento/update', 'id' => $model->id],
+                                'id' => 'form-upload-equip'
+                            ]); ?>
+
+                            <?= $form->field($model, 'image_file')->fileInput([
+                                'id' => 'upload-img',
+                            ]) ?>
+
+                            <?= $form->field($model, 'nome')->textInput([
+                                'maxlength' => true,
+                                'placeholder' => 'Digite o nome do equipamento'
+                            ]) ?>
+
+                            <?= $form->field($model, 'descricao')->textarea([
+                                'maxlength' => true,
+                                'placeholder' => 'Digite uma breve descrição sobre o equipamento'
+                            ]) ?>
+
+                            <?php ActiveForm::end(); ?>
+                        </div>
+                    </div>
+
+                    <?php Modal::end(); ?>
+                    <!-- MODAL FORM EDITAR EQUIPAMENTO-->
                     <?= Html::a('<i class="fa fa-fw fa-close"></i>', '#', [
                         'class' => 'btn btn-box-tool bg-red',
                         'title' => 'Excluir equipamento',
@@ -42,13 +96,6 @@ $this->registerCss("
                             'method' => 'post',
                         ],
                     ]) ?>
-                    <?= Html::a(
-                        ($model->defeito) ? 'Desmarca defeito' : 'Marcar defeito',
-                        ['equipamento/defeito', 'id' => $model->id],
-                        [
-                            'class' => 'btn btn-box-tool bg-gray',
-                            'title' => 'Marcar equipamento com defeito',
-                        ]) ?>
                 </div>
             </div>
             <div class="box-body">
@@ -84,14 +131,24 @@ $this->registerCss("
                 <table class="table table-striped">
                     <tbody>
                     <tr>
-                        <th>Nome</th>
+                        <th style="width: 300px">Nome</th>
                         <th>Tipo</th>
                         <th style="width: 50px"></th>
                     </tr>
                     <?php foreach($model->exercicios as $exercicio): ?>
                         <tr>
                             <td><?= $exercicio->nome ?></td>
-                            <td><?= $exercicio->tipo ?></td>
+                            <td>
+                                <?php if ($exercicio->tipo == 'aerobico'): ?>
+                                    <span class="badge bg-red">
+                                        Aeróbico
+                                    </span>
+                                <?php else: ?>
+                                    <span class="badge bg-aqua">
+                                        Anaeróbico
+                                    </span>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <?= Html::a(
                                     '<i class="fa fa-fw fa-eye"></i>',
@@ -100,7 +157,7 @@ $this->registerCss("
                                     ],
                                     [
                                         'class' => 'btn btn-flat btn-xs bg-gray',
-                                        'title' => 'Marcar equipamento com defeito',
+                                        'title' => 'Mais informações',
                                     ]) ?>
                             </td>
                         </tr>

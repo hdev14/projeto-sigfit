@@ -88,7 +88,7 @@ $this->registerCssFile('@web/css/avaliacao.css');
                             <div class="form-group">
                                 <label for="dobra-tres-2">
                                     <?php if($sexo == 'masculino'): ?>
-                                        Dobra cutânea do abdóme
+                                        Dobra cutânea do abdome
                                     <?php elseif($sexo == 'feminino'): ?>
                                         Dobra cutânea do suprailiaco
                                     <?php endif; ?>
