@@ -20,7 +20,7 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
 
 <div class="row">
     <div class="col-md-7">
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-header no-border">
                 <h4 class="box-title">
                     <?php if ($model->defeito): ?>
@@ -60,31 +60,28 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                                 alt="">
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <?php $form = ActiveForm::begin([
-                                'method' => 'post',
-                                'action' => ['equipamento/update', 'id' => $model->id],
-                                'id' => 'form-upload-equip'
-                            ]); ?>
+                    <?php $form = ActiveForm::begin([
+                        'method' => 'post',
+                        'action' => ['equipamento/update', 'id' => $model->id],
+                        'id' => 'form-upload-equip'
+                    ]); ?>
 
-                            <?= $form->field($model, 'image_file')->fileInput([
-                                'id' => 'upload-img',
-                            ]) ?>
+                    <?= $form->field($model, 'image_file')->fileInput([
+                        'id' => 'upload-img',
+                    ]) ?>
 
-                            <?= $form->field($model, 'nome')->textInput([
-                                'maxlength' => true,
-                                'placeholder' => 'Digite o nome do equipamento'
-                            ]) ?>
+                    <?= $form->field($model, 'nome')->textInput([
+                        'maxlength' => true,
+                        'placeholder' => 'Digite o nome do equipamento'
+                    ]) ?>
 
-                            <?= $form->field($model, 'descricao')->textarea([
-                                'maxlength' => true,
-                                'placeholder' => 'Digite uma breve descrição sobre o equipamento'
-                            ]) ?>
+                    <?= $form->field($model, 'descricao')->textarea([
+                        'maxlength' => true,
+                        'placeholder' => 'Digite uma breve descrição sobre o equipamento'
+                    ]) ?>
 
-                            <?php ActiveForm::end(); ?>
-                        </div>
-                    </div>
+                    <?php ActiveForm::end(); ?>
+
 
                     <?php Modal::end(); ?>
                     <!-- MODAL FORM EDITAR EQUIPAMENTO-->
@@ -120,7 +117,7 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
         </div>
     </div>
     <div class="col-md-5">
-        <div class="box">
+        <div class="box box-success">
             <div class="box-header no-border">
                 <h4 class="box-title">
                     Exercícios Relacionados
@@ -129,7 +126,7 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                     <!-- TODO imp. modal para adição de novos exercício
                     relacionados com equipamento. -->
                     <?= Html::a(
-                        'Adicionar exercício',
+                        '<i class="fa fa-fw fa-plus"></i> Adicionar exercício',
                         [
                             'exercicio/create',
                             'equipamento_id' => $model->id,

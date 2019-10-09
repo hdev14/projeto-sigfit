@@ -135,7 +135,8 @@ $this->registerCss("
                     </p>
                     <?= Html::a('mais informações', [
                         'equipamento/view',
-                        'id' => $model->equipamento->id
+                        'id' => $model->equipamento->id,
+                        'informações sobre o equipamento',
                     ], [
                         'id' => 'equip-info',
                         'class' => 'btn bg-gray btn-xs pull-right'
