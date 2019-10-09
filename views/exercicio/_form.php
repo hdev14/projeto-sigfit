@@ -9,6 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $equipamentos yii\db\ActiveRecord[] */
 /* @var $equipamento app\models\Equipamento */
+/* @var $equipamento_id int */
 
 ?>
 
@@ -31,7 +32,10 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'equipamento_id')->dropDownList(
                     ArrayHelper::map($equipamentos, 'id', 'nome'),
-                    ['prompt' => 'Escolha o equipamento que este exercício pertence']
+                    [
+                        'prompt' => 'Escolha o equipamento que este exercício pertence',
+                        'value' => $equipamento_id
+                    ]
                 ) ?>
 
                 <?= $form->field($model, 'tipo')->radioList([

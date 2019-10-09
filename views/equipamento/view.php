@@ -128,6 +128,16 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                 <div class="box-tools">
                     <!-- TODO imp. modal para adição de novos exercício
                     relacionados com equipamento. -->
+                    <?= Html::a(
+                        'Adicionar exercício',
+                        [
+                            'exercicio/create',
+                            'equipamento_id' => $model->id,
+                        ],
+                        [
+                            'class' => "btn btn-box-tool bg-green btn-flat"
+                        ]
+                    ) ?>
                 </div>
             </div>
             <div class="box-body">

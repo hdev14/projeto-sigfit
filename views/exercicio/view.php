@@ -25,6 +25,9 @@ $this->registerCss("
     div.callout {
         margin-top: 20px;
     }
+    a#equip-info {
+        margin-right: 10px;
+    }
 ");
 ?>
 
@@ -103,12 +106,12 @@ $this->registerCss("
                     <li class="list-group-item">
                         <?php if($model->tipo === 'aerobico'): ?>
                             <span class="badge bg-red">
-                            <?= $model->tipo ?>
-                        </span>
+                                Aeróbico
+                            </span>
                         <?php else: ?>
                             <span class="badge bg-aqua">
-                            <?= $model->tipo ?>
-                        </span>
+                                Anaeróbico
+                            </span>
                         <?php endif; ?>
                         <strong>Tipo</strong>
                     </li>
@@ -129,13 +132,14 @@ $this->registerCss("
                          height="160" width="160">
                     <p class="desc-equipamento">
                         <?= $model->equipamento->descricao ?>
-                        <?= Html::a('mais informações', [
-                            'equipamento/view',
-                            'id' => $model->equipamento->id
-                        ], [
-                            'class' => 'btn bg-gray btn-xs'
-                        ]) ?>
                     </p>
+                    <?= Html::a('mais informações', [
+                        'equipamento/view',
+                        'id' => $model->equipamento->id
+                    ], [
+                        'id' => 'equip-info',
+                        'class' => 'btn bg-gray btn-xs pull-right'
+                    ]) ?>
                 <?php else: ?>
                     <div class="callout callout-warning">
                         <h4>Não possui equipamento</h4>

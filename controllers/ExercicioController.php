@@ -113,7 +113,7 @@ class ExercicioController extends Controller
         ]);
     }
 
-    public function actionCreate()
+    public function actionCreate($equipamento_id = null)
     {
         $model = new Exercicio();
 
@@ -121,9 +121,12 @@ class ExercicioController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        Yii::debug($equipamento_id);
+
         return $this->render('create', [
             'model' => $model,
             'equipamentos' => Equipamento::find()->all(),
+            'equipamento_id' => $equipamento_id
         ]);
     }
 
