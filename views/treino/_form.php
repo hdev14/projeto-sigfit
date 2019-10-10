@@ -1,31 +1,122 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Treino */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $exercicios \yii\db\ActiveRecord[] */
+/* @var $exercicio \app\models\Exercicio */
+
+$this->registerJs(<<<JS
+    const btn_add_exe = document.querySelector('#add-exe')
+        , exercicios = document.querySelector('#exercicios')
+        , inputs_exercicio = document.querySelector("#inputs-exercicio")
+        , select_exercicio = inputs_exercicio.firstElementChild
+        .firstElementChild
+        , select_repeticao = inputs_exercicio.lastElementChild
+        .firstElementChild;
+
+    console.log(btn_add_exe);
+    
+    btn_add_exe.addEventListener('click', function() {
+        let clone_inputs_exercicio = inputs_exercicio.cloneNode(true)
+            , clone_select_exercicio = clone_inputs_exercicio
+                                .firstElementChild.firstElementChild
+            , clone_select_repeticao = clone_inputs_exercicio
+                                .lastElementChild.firstElementChild;
+  
+        clone_select_exercicio.addEventListener('change', (event) => {
+            let id_exercicio = event.target.value;
+            clone_select_repeticao.setAttribute('name', 'exercicio['+id_exercicio+']');
+            select_repeticao.setAttribute('required', 'required');
+        }, false);
+        
+        exercicios.appendChild(clone_inputs_exercicio);
+        console.log(exercicios);
+    });
+    
+    /*
+    * Não foi possível reutilizar esta função pois a lógica é que cada select
+     tenha seu input. */
+    select_exercicio.addEventListener('change', (event) => {
+        let id_exercicio = event.target.value;
+        select_repeticao.setAttribute('name', 'exercicio['+id_exercicio+']');
+        select_repeticao.setAttribute('required', 'required');
+    }, false);
+JS
+);
 ?>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="box box-success">
+            <div class="box-header"></div>
+            <div class="box-body">
+                <?php $form = ActiveForm::begin(); ?>
+                <div class="row">
+                    <div class="col-md-6">
 
-<div class="treino-form">
+                        <?= $form->field($model, 'dia')->dropDownList([
+                            'segunda-feira' => 'Segunda-feira',
+                            'terça-feira' => 'Terça-feira',
+                            'quarta-feira' => 'Quarta-feira',
+                            'quinta-feira' => 'Quinta-feira',
+                            'sexta-feira' => 'Sexta-feira',
+                        ], ['prompt' => '']) ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+                        <?= $form->field($model, 'generico')->textInput() ?>
 
-    <?= $form->field($model, 'dia')->dropDownList([ 'segunda-feira' => 'Segunda-feira', 'terça-feira' => 'Terça-feira', 'quarta-feira' => 'Quarta-feira', 'quinta-feira' => 'Quinta-feira', 'sexta-feira' => 'Sexta-feira', ], ['prompt' => '']) ?>
+                        <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'generico')->textInput() ?>
+                        <?= $form->field($model, 'genero')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'nivel')->dropDownList([
+                            'iniciante' => 'Iniciante',
+                            'intermediario' => 'Intermediario',
+                            'avançado' => 'Avançado',
+                        ], ['prompt' => '']) ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= Html::a('Add exercício', '#', [
+                            'id' => 'add-exe',
+                            'class' => 'btn btn-success'
+                        ]) ?>
+                        <div id="exercicios">
+                            <div id="inputs-exercicio" class="row">
+                                <div class="form-group col-md-7">
+                                    <?= Html::dropDownList('',null,
+                                        ArrayHelper::map($exercicios, 'id', 'nome'),
+                                        [
+                                            'class' => 'form-control',
+                                            'prompt' => 'Escolha o exercício',
+                                        ]
+                                    ) ?>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <?= Html::dropDownList('',null, [
+                                            '3x8' => '3x8',
+                                            '3x10' => '3x10',
+                                            '3x12' => '3x12',
+                                        ],
+                                        [
+                                            'class' => 'form-control',
+                                            'prompt' => 'Número de repetições',
+                                        ]
+                                    ) ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <?= $form->field($model, 'genero')->textInput(['maxlength' => true]) ?>
+                <div class="form-group">
+                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                </div>
 
-    <?= $form->field($model, 'nivel')->dropDownList([ 'iniciante' => 'Iniciante', 'intermediario' => 'Intermediario', 'avançado' => 'Avançado', ], ['prompt' => '']) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

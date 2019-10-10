@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Exercicio;
 use Yii;
 use app\models\Treino;
 use app\models\TreinoSearch;
@@ -65,13 +66,17 @@ class TreinoController extends Controller
     public function actionCreate()
     {
         $model = new Treino();
+        $post =  Yii::$app->request->post();
+        $exercicios = Yii::$app->request->post('exercicio', null);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load($post) && $model->save()) {
+            // TODO adicionar os exercícios ao treino.
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'exercicios' => Exercicio::find()->all(),
         ]);
     }
 
