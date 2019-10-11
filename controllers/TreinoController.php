@@ -72,7 +72,7 @@ class TreinoController extends Controller
         $session = Yii::$app->session;
 
         if ($model->load($post)) {
-
+            $model->generico = true;
             if ($model->save()) {
                 $session->addFlash('success', 'Treino registrado com sucesso !');
 

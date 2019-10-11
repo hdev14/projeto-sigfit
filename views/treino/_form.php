@@ -10,13 +10,20 @@ use yii\widgets\ActiveForm;
 /* @var $exercicios \yii\db\ActiveRecord[] */
 /* @var $exercicio \app\models\Exercicio */
 
+$this->registerCss(<<<CSS
+    #add-exercicio {
+        margin-bottom: 10px;
+    }
+CSS
+);
+
 $this->registerJs(<<<JS
     const add_exercicio = document.querySelector('#add-exercicio')
         , exercicios = document.querySelector('#exercicios')
         , inputs_exercicio = document.querySelector("#inputs-exercicio")
         , select_exercicio = inputs_exercicio.firstElementChild.firstElementChild
         , select_repeticao = inputs_exercicio.lastElementChild.firstElementChild;
-
+    
     add_exercicio.addEventListener('click', function() {
         let clone_inputs_exercicio = inputs_exercicio.cloneNode(true)
             , clone_select_exercicio = clone_inputs_exercicio
@@ -49,35 +56,59 @@ JS
         <div class="box box-success">
             <div class="box-header"></div>
             <div class="box-body">
-                <?php $form = ActiveForm::begin(); ?>
+                <?php $form = ActiveForm::begin([
+                    'id' => 'form-treino'
+                ]); ?>
                 <div class="row">
                     <div class="col-md-6">
 
-                        <?= $form->field($model, 'dia')->dropDownList([
-                            'segunda-feira' => 'Segunda-feira',
-                            'terça-feira' => 'Terça-feira',
-                            'quarta-feira' => 'Quarta-feira',
-                            'quinta-feira' => 'Quinta-feira',
-                            'sexta-feira' => 'Sexta-feira',
-                        ], ['prompt' => '']) ?>
+                        <?= $form->field($model, 'titulo')->textInput([
+                            'maxlength' => true,
+                            'placeholder' => "Digite um título para o treino"
+                        ]) ?>
 
-                        <?= $form->field($model, 'generico')->textInput() ?>
+                        <?= $form->field($model, 'dia')->dropDownList(
+                            [
+                                'segunda-feira' => 'Segunda-feira',
+                                'terça-feira' => 'Terça-feira',
+                                'quarta-feira' => 'Quarta-feira',
+                                'quinta-feira' => 'Quinta-feira',
+                                'sexta-feira' => 'Sexta-feira',
+                            ],
+                            [
+                                'prompt' => 'Escolha um dia que você considere adequado para este treino'
+                            ]
+                        ) ?>
 
-                        <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'genero')->radioList(
+                            [
+                                'm' => 'Masculino',
+                                'f' => 'Feminino'
+                            ],
+                            [
+                                'title' => 'Escolha o gênero que este treino será destinado'
+                            ]
+                        ) ?>
 
-                        <?= $form->field($model, 'genero')->textInput(['maxlength' => true]) ?>
-
-                        <?= $form->field($model, 'nivel')->dropDownList([
-                            'iniciante' => 'Iniciante',
-                            'intermediario' => 'Intermediario',
-                            'avançado' => 'Avançado',
-                        ], ['prompt' => '']) ?>
+                        <?= $form->field($model, 'nivel')->dropDownList(
+                            [
+                                'iniciante' => 'Iniciante',
+                                'intermediario' => 'Intermediario',
+                                'avançado' => 'Avançado',
+                            ],
+                            [
+                                'prompt' => 'Escolha um nível que você considere adequado para este treino'
+                            ]
+                        ) ?>
                     </div>
                     <div class="col-md-6">
-                        <?= Html::a('Add exercício', '#', [
-                            'id' => 'add-exercicio',
-                            'class' => 'btn btn-success'
-                        ]) ?>
+                        <div class="clearfix">
+                            <strong>Adicionar exercício para o treino (opcional)</strong>
+                            <?= Html::a('<i class="fa fa-fw fa-plus"></i>', '#', [
+                                'id' => 'add-exercicio',
+                                'class' => 'btn bg-green btn-sm pull-right'
+                            ]) ?>
+                        </div>
                         <div id="exercicios">
                             <div id="inputs-exercicio" class="row">
                                 <div class="form-group col-md-7">
@@ -91,10 +122,10 @@ JS
                                 </div>
                                 <div class="form-group col-md-5">
                                     <?= Html::dropDownList('',null, [
-                                            '3x8' => '3x8',
-                                            '3x10' => '3x10',
-                                            '3x12' => '3x12',
-                                        ],
+                                        '3x8' => '3x8',
+                                        '3x10' => '3x10',
+                                        '3x12' => '3x12',
+                                    ],
                                         [
                                             'class' => 'form-control',
                                             'prompt' => 'Número de repetições',
@@ -103,14 +134,19 @@ JS
                                 </div>
                             </div>
                         </div>
+                        <p class="text-muted">
+                            <b>OBS:</b> Adicione quantos exercícios forem necessários. Porém
+                            exercícios repetidos não serão considerados.
+                        </p>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-                </div>
-
                 <?php ActiveForm::end(); ?>
+            </div>
+            <div class="box-footer clearfix no-border">
+                <?= Html::submitButton('Confirmar', [
+                    'form' => 'form-treino',
+                    'class' => 'btn bg-green btn-flat pull-right'
+                ]) ?>
             </div>
         </div>
     </div>

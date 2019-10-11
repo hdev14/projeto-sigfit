@@ -35,9 +35,9 @@ class Treino extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dia', 'titulo', 'genero'], 'required'],
+            [['dia', 'titulo', 'genero', 'nivel'], 'required'],
             [['dia', 'nivel'], 'string'],
-            [['generico'], 'integer'],
+            ['generico', 'boolean', 'trueValue' => true, 'falseValue' => false, 'strict' => true],
             [['titulo'], 'string', 'max' => 45],
             [['genero'], 'string', 'max' => 1],
         ];
@@ -50,11 +50,11 @@ class Treino extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'dia' => 'Dia',
+            'dia' => 'Dia recomendado',
             'generico' => 'Generico',
-            'titulo' => 'Titulo',
-            'genero' => 'Genero',
-            'nivel' => 'Nivel',
+            'titulo' => 'Título',
+            'genero' => 'Gênero',
+            'nivel' => 'Nível',
         ];
     }
 
