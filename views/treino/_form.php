@@ -11,17 +11,13 @@ use yii\widgets\ActiveForm;
 /* @var $exercicio \app\models\Exercicio */
 
 $this->registerJs(<<<JS
-    const btn_add_exe = document.querySelector('#add-exe')
+    const add_exercicio = document.querySelector('#add-exercicio')
         , exercicios = document.querySelector('#exercicios')
         , inputs_exercicio = document.querySelector("#inputs-exercicio")
-        , select_exercicio = inputs_exercicio.firstElementChild
-        .firstElementChild
-        , select_repeticao = inputs_exercicio.lastElementChild
-        .firstElementChild;
+        , select_exercicio = inputs_exercicio.firstElementChild.firstElementChild
+        , select_repeticao = inputs_exercicio.lastElementChild.firstElementChild;
 
-    console.log(btn_add_exe);
-    
-    btn_add_exe.addEventListener('click', function() {
+    add_exercicio.addEventListener('click', function() {
         let clone_inputs_exercicio = inputs_exercicio.cloneNode(true)
             , clone_select_exercicio = clone_inputs_exercicio
                                 .firstElementChild.firstElementChild
@@ -35,7 +31,6 @@ $this->registerJs(<<<JS
         }, false);
         
         exercicios.appendChild(clone_inputs_exercicio);
-        console.log(exercicios);
     });
     
     /*
@@ -80,7 +75,7 @@ JS
                     </div>
                     <div class="col-md-6">
                         <?= Html::a('Add exercício', '#', [
-                            'id' => 'add-exe',
+                            'id' => 'add-exercicio',
                             'class' => 'btn btn-success'
                         ]) ?>
                         <div id="exercicios">

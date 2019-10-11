@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Exercicio;
+use app\models\TreinoExercicio;
 use Yii;
 use app\models\Treino;
 use app\models\TreinoSearch;
@@ -68,10 +69,20 @@ class TreinoController extends Controller
         $model = new Treino();
         $post =  Yii::$app->request->post();
         $exercicios = Yii::$app->request->post('exercicio', null);
+        $session = Yii::$app->session;
 
-        if ($model->load($post) && $model->save()) {
-            // TODO adicionar os exercícios ao treino.
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($post)) {
+
+            if ($model->save()) {
+                $session->addFlash('success', 'Treino registrado com sucesso !');
+
+                if ($exercicios !== null)
+                    $this->relacionarTreinoExercicio($model, $exercicios);
+
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $session->addFlash('error', "Não foi possível registra o treino.");
+            }
         }
 
         return $this->render('create', [
@@ -110,7 +121,7 @@ class TreinoController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        // TODO excluir relacionamento com exercícios.
         return $this->redirect(['index']);
     }
 
@@ -128,5 +139,23 @@ class TreinoController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function relacionarTreinoExercicio(Treino $model, array $exercicios) {
+
+        $treino_exercicio = new TreinoExercicio();
+
+        array_walk($exercicios, function ($item, $key) use (
+            $model, $treino_exercicio
+        ) {
+            if (($exercicio_model = Exercicio::findOne($key))) {
+                // Clona o objeto para não precisar instanciar um novo.
+                $clone_treino_exercicio = clone $treino_exercicio;
+                $clone_treino_exercicio->treino_id = $model->id;
+                $clone_treino_exercicio->exercicio_id = $exercicio_model->id;
+                $clone_treino_exercicio->numero_repeticao = $item;
+                return $clone_treino_exercicio->save();
+            }
+        });
     }
 }
