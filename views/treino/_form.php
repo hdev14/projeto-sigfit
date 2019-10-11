@@ -17,7 +17,9 @@ $this->registerCss(<<<CSS
 CSS
 );
 
+// TODO fazer o butão
 $this->registerJs(<<<JS
+    
     const add_exercicio = document.querySelector('#add-exercicio')
         , exercicios = document.querySelector('#exercicios')
         , inputs_exercicio = document.querySelector("#inputs-exercicio")
@@ -48,6 +50,8 @@ $this->registerJs(<<<JS
         select_repeticao.setAttribute('name', 'exercicio['+id_exercicio+']');
         select_repeticao.setAttribute('required', 'required');
     }, false);
+    
+    
 JS
 );
 ?>
