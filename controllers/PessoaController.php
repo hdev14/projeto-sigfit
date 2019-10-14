@@ -451,8 +451,7 @@ class PessoaController extends Controller
 
     protected  function paginar(QueryInterface $query , Pagination $p)
     {
-        return $query->orderBy('nome')->offset($p->offset)->limit($p->limit)
-            ->all();
+        return $query->orderBy('nome')->offset($p->offset)->limit($p->limit)->all();
     }
 
 }

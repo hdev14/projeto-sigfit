@@ -82,6 +82,12 @@ class Treino extends \yii\db\ActiveRecord
         return $this->hasMany(TreinoExercicio::className(), ['treino_id' => 'id']);
     }
 
+    public function getTreinoExercicio($exercicio_id = null)
+    {
+        return $this->hasOne(TreinoExercicio::className(), ['treino_id' => 'id'])
+            ->where('exercicio_id = :id', [':id' => $exercicio_id]);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

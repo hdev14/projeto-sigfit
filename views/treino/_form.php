@@ -17,7 +17,6 @@ $this->registerCss(<<<CSS
 CSS
 );
 
-// TODO fazer o butão
 $this->registerJs(<<<JS
     
     const add_exercicio = document.querySelector('#add-exercicio')
@@ -80,7 +79,7 @@ JS
                                 'sexta-feira' => 'Sexta-feira',
                             ],
                             [
-                                'prompt' => 'Escolha um dia que você considere adequado para este treino'
+                                'prompt' => 'Escolha um dia que você considera adequado para este treino'
                             ]
                         ) ?>
 
@@ -101,7 +100,7 @@ JS
                                 'avançado' => 'Avançado',
                             ],
                             [
-                                'prompt' => 'Escolha um nível que você considere adequado para este treino'
+                                'prompt' => 'Escolha um nível que você considera adequado para este treino'
                             ]
                         ) ?>
                     </div>

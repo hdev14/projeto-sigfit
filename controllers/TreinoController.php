@@ -7,6 +7,7 @@ use app\models\TreinoExercicio;
 use Yii;
 use app\models\Treino;
 use app\models\TreinoSearch;
+use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -46,12 +47,6 @@ class TreinoController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Treino model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -59,11 +54,26 @@ class TreinoController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Treino model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+    public function actionTreinos()
+    {
+        $query = Treino::find();
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => 6,
+        ]);
+
+        $treinos = $query->orderBy('titulo')
+                        ->offset($pagination->offset)
+                        ->limit($pagination->limit)
+                        ->all();
+
+        return $this->render('treinos', [
+            'treinos' => $treinos,
+            'pagination' => $pagination
+        ]);
+    }
+
     public function actionCreate()
     {
         $model = new Treino();
@@ -91,13 +101,6 @@ class TreinoController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Treino model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -111,13 +114,6 @@ class TreinoController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Treino model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -125,13 +121,6 @@ class TreinoController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Treino model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Treino the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Treino::findOne($id)) !== null) {
