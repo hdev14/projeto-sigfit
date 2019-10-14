@@ -54,9 +54,15 @@ class TreinoController extends Controller
         ]);
     }
 
-    public function actionTreinos()
+    public function actionTreinos($nivel = null)
     {
-        $query = Treino::find();
+
+        $query = is_null($nivel) ?
+            Treino::find()->where('generico = 1') :
+            Treino::find()->where(
+                ['and', 'generico = 1', 'nivel = :nivel'],
+                [':nivel' => $nivel]
+            );
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
@@ -64,9 +70,9 @@ class TreinoController extends Controller
         ]);
 
         $treinos = $query->orderBy('titulo')
-                        ->offset($pagination->offset)
-                        ->limit($pagination->limit)
-                        ->all();
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         return $this->render('treinos', [
             'treinos' => $treinos,
