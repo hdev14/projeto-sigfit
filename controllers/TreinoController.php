@@ -88,7 +88,6 @@ class TreinoController extends Controller
         $session = Yii::$app->session;
 
         if ($model->load($post)) {
-            $model->generico = true;
             if ($model->save()) {
                 $session->addFlash('success', 'Treino registrado com sucesso !');
 
@@ -110,14 +109,17 @@ class TreinoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $session = Yii::$app->session;
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($post)) {
+            if ($model->save())
+                $session->addFlash('success', 'Treino atualizado com sucesso !');
+            else
+                $session->addFlash('error', 'Não foi possível atualizar o treino.');
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
     public function actionDelete($id)

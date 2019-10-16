@@ -102,8 +102,8 @@ CSS
                                     <p class="list-group-item-text text-muted">
                                         Sequência recomendada
                                         <span class="label label-info">
-                                        <?= $treino_exercicio->numero_repeticao ?>
-                                    </span>
+                                            <?= $treino_exercicio->numero_repeticao ?>
+                                        </span>
                                         <?= Html::a(
                                             '<i class="fa fa-fw fa-eye"></i>',
                                             [

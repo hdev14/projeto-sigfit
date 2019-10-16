@@ -37,9 +37,10 @@ class Treino extends \yii\db\ActiveRecord
         return [
             [['dia', 'titulo', 'genero', 'nivel'], 'required'],
             [['dia', 'nivel'], 'string'],
-            ['generico', 'boolean', 'trueValue' => true, 'falseValue' => false, 'strict' => true],
+            ['generico', 'boolean', 'trueValue' => true, 'falseValue' => false],
             [['titulo'], 'string', 'max' => 45],
             [['genero'], 'string', 'max' => 1],
+            ['generico', 'default', 'value' => true],
         ];
     }
 
