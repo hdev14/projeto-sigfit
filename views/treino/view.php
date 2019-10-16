@@ -228,11 +228,6 @@ JS
                                     ]) ?>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
                                         <li>
-                                            <!-- TODO Modal para alterar o número de repetições
-                                             OBS: O modal está dentro do dropdown, quando o
-                                             dropdown não está aberto o modal não aparece e buga
-                                             tudo.
-                                             -->
                                             <?= Html::button('Alt. número de rep.', [
                                                 'class' => 'btn-alt-rep',
                                                 'title' => 'Alterar número de repetições',

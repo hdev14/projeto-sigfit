@@ -122,6 +122,9 @@ class TreinoController extends Controller
         return $this->redirect(['view', 'id' => $model->id]);
     }
 
+
+    // TODO FAZER MÉTODO PARA ATUALIZAR NÚMERO DE REPETIÇÕES.
+
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
