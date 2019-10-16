@@ -26,6 +26,18 @@ $this->registerCss(<<<CSS
     }
 CSS
 );
+
+$this->registerJs(<<<JS
+    let btns_alterar_repeticao = document.querySelectorAll('.btn-alt-rep');
+
+    for (let btn_alt_rep of btns_alterar_repeticao) {
+        btn_alt_rep.addEventListener('click', function(event) {
+            let id_modal = event.target.dataset.target;
+            $('#'+id_modal).modal('show');
+        });
+    }
+JS
+);
 ?>
 
 <div class="row">
@@ -167,6 +179,38 @@ CSS
                         <th style="width: 50px"></th>
                     </tr>
                     <?php foreach ($model->treinoExercicios as $treinoExercicio): ?>
+                        <!--MODAL PARA EDIÇÃO DE REPETIÇÕES-->
+                        <?php $modal = Modal::begin([
+                            'header' => 'Preenchar o campo corretamente',
+                            'footer' =>
+                                Html::submitButton('Confirmar', [
+                                    'class' => 'btn bg-green btn-flat btn-sm',
+                                    'form' => 'form-repeticao-exercicio',
+                                ])
+                            ,
+                            'id' => 'modal-alt-num' .
+                                $treinoExercicio->exercicio_id,
+                        ]); ?>
+
+                        <?= Html::beginForm(
+                            ['treino/update-numero-repeticao'],
+                            'post',
+                            ['id' => 'form-repeticao-exercicio']
+                        ) ?>
+
+                        <div class="form-group">
+                            <?= Html::activeLabel($treinoExercicio, 'numero_repeticao') ?>
+                            <?= Html::activeInput('text',$treinoExercicio,'numero_repeticao',[
+                                'class' => 'form-control',
+                                'placeholder' => 'Digite o número de repetições'
+                            ]) ?>
+                        </div>
+
+                        <?= Html::endForm() ?>
+
+                        <?php Modal::end(); ?>
+                        <!--MODAL PARA EDIÇÃO DE REPETIÇÕES-->
+
                         <tr>
                             <td><?= $treinoExercicio->exercicio->nome ?></td>
                             <td><?= $treinoExercicio->numero_repeticao ?></td>
@@ -189,42 +233,14 @@ CSS
                                              dropdown não está aberto o modal não aparece e buga
                                              tudo.
                                              -->
-                                            <?php $modal = Modal::begin([
-                                                'header' => 'Preenchar o campo corretamente',
-                                                'footer' =>
-                                                    Html::submitButton('Confirmar', [
-                                                        'class' => 'btn bg-green btn-flat btn-sm',
-                                                        'form' => 'form-repeticao-exercicio',
-                                                    ])
-                                                ,
-                                                'id' => 'modal-alt-num' .
+                                            <?= Html::button('Alt. número de rep.', [
+                                                'class' => 'btn-alt-rep',
+                                                'title' => 'Alterar número de repetições',
+                                                'data-toggle' => 'modal',
+                                                'data-target' => 'modal-alt-num' .
                                                     $treinoExercicio->exercicio_id,
-                                                'toggleButton' => [
-                                                    'label' => "Alt. número de rep.",
-                                                    'class' => 'btn-alt-rep',
-                                                    'title' => 'Alterar número de repetições'
-                                                ]
-                                            ]); ?>
-
-                                            <?= Html::beginForm(
-                                                ['treino/update-numero-repeticao'],
-                                                'post',
-                                                ['id' => 'form-repeticao-exercicio']
-                                            ) ?>
-
-                                            <div class="form-group">
-                                                <?= Html::activeLabel($treinoExercicio, 'numero_repeticao') ?>
-                                                <?= Html::activeInput('text',$treinoExercicio,'numero_repeticao',[
-                                                    'class' => 'form-control',
-                                                    'placeholder' => 'Digite o número de repetições'
-                                                ]) ?>
-                                            </div>
-                                            asdasdasdas
-
-                                            <?= Html::endForm() ?>
-
-                                            <?php Modal::end(); ?>
-
+                                                'type' => 'button'
+                                            ]) ?>
                                         </li>
                                         <li>
                                             <?= Html::a(
