@@ -59,16 +59,16 @@ CSS
                         <?= $treino->titulo ?>
                         <?php if ($treino->nivel == 'iniciante'): ?>
                             <span class="badge bg-green">
-                                    Iniciante
-                                </span>
+                                Iniciante
+                            </span>
                         <?php elseif ($treino->nivel == 'intermediario'): ?>
                             <span class="badge bg-yellow">
-                                    Intermediário
-                                </span>
-                        <?php elseif ($treino->nivel == 'iniciante'): ?>
+                                Intermediário
+                            </span>
+                        <?php elseif ($treino->nivel == 'avançado'): ?>
                             <span class="badge bg-red">
-                                    Avançado
-                                </span>
+                                Avançado
+                            </span>
                         <?php endif; ?>
                     </h4>
                     <div class="box-tools pull-right">

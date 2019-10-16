@@ -70,7 +70,7 @@ use yii\helpers\Url;
                 </ul>
             </li>
             <li class="">
-                <a href="#">
+                <a href="<?= Url::to(['treino/treinos']) ?>">
                     <i class="fa fa-heartbeat"></i>
                     <span>Treinos</span>
                 </a>
