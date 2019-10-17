@@ -28,6 +28,7 @@ class TreinoController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                     'update-numero-repeticao' => ['POST'],
+                    'add-exercicio' => ['POST'],
                 ],
             ],
         ];
@@ -50,8 +51,11 @@ class TreinoController extends Controller
 
     public function actionView($id)
     {
+        $exercicios = Exercicio::find()->all();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'exercicios' => $exercicios
         ]);
     }
 

@@ -1,12 +1,14 @@
 <?php
 
 use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Treino */
+/* @var $exercicios \yii\db\ActiveRecord[] */
+
 
 $this->title = "Informações do Treino";
 //$this->params['breadcrumbs'][] = ['label' => 'Treinos', 'url' => ['index']];
@@ -168,7 +170,65 @@ JS
                 </ul>
             </div>
             <div class="box-footer clearfix no-border">
-                <h4>Exercicios</h4>
+                <div>
+                    <h4 class="pull-left">Exercicios</h4>
+                    <!--MODAL PARA ADIÇÃO DE EXERCÍCIO-->
+                    <?php $modal = Modal::begin([
+                        'header' => 'Preenchar os campos corretamente',
+                        'footer' =>
+                            Html::submitButton('Confirmar', [
+                                'class' => 'btn bg-green btn-flat btn-sm',
+                                'form' => 'form-add-exercicio',
+                            ])
+                        ,
+                        'toggleButton' => [
+                            'label' => '<i class="fa fa-fw fa-plus"></i> Exercício',
+                            'class' => 'btn bg-green btn-flat btn-xs pull-right',
+                            'title' => 'Adicionar exercício ao treino'
+                        ]
+                    ]); ?>
+
+                    <?= Html::beginForm(
+                        [
+                            'treino/add-exercicio',
+                            'treino_id' => $model->id,
+                        ],
+                        'post',
+                        ['id' => 'form-add-exercicio']
+                    ) ?>
+
+                    <div class="row">
+                        <div class="form-group col-md-7">
+                            <?= Html::dropDownList(
+                                'add-exercicio',
+                                null,
+                                ArrayHelper::map($exercicios, 'id', 'nome'),
+                                [
+                                    'class' => 'form-control',
+                                    'prompt' => 'Escolhar o exerício'
+                                ]
+                            ) ?>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <?= Html::dropDownList('add-exercicio-repeticao', null,
+                                [
+                                    '3x8' => '3x8',
+                                    '3x10' => '3x10',
+                                    '3x12' => '3x12',
+                                ],
+                                [
+                                    'class' => 'form-control',
+                                    'prompt' => 'Número de repetições'
+                                ]
+                            ) ?>
+                        </div>
+                    </div>
+
+                    <?= Html::endForm() ?>
+
+                    <?php Modal::end(); ?>
+                    <!--MODAL PARA ADIÇÃO DE EXERCÍCIO-->
+                </div>
 
                 <table class="table table-hover table-bordered">
                     <tbody>
@@ -180,7 +240,7 @@ JS
                         <th style="width: 30px"></th>
                     </tr>
                     <?php foreach ($model->treinoExercicios as $treinoExercicio): ?>
-                        <!--MODAL PARA EDIÇÃO DE REPETIÇÕES-->
+                        <!--MODAL PARA ADIÇÃO DE TREINO-->
                         <?php $modal = Modal::begin([
                             'header' => 'Preenchar o campo corretamente',
                             'footer' =>
@@ -219,7 +279,7 @@ JS
                         <?= Html::endForm() ?>
 
                         <?php Modal::end(); ?>
-                        <!--MODAL PARA EDIÇÃO DE REPETIÇÕES-->
+                        <!--MODAL PARA ADIÇÃO DE TREINO-->
 
                         <tr>
                             <td><?= $treinoExercicio->exercicio->nome ?></td>

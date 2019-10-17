@@ -124,11 +124,12 @@ JS
                                     ) ?>
                                 </div>
                                 <div class="form-group col-md-5">
-                                    <?= Html::dropDownList('',null, [
-                                        '3x8' => '3x8',
-                                        '3x10' => '3x10',
-                                        '3x12' => '3x12',
-                                    ],
+                                    <?= Html::dropDownList('',null,
+                                        [
+                                            '3x8' => '3x8',
+                                            '3x10' => '3x10',
+                                            '3x12' => '3x12',
+                                        ],
                                         [
                                             'class' => 'form-control',
                                             'prompt' => 'Número de repetições',
