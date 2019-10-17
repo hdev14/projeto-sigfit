@@ -157,7 +157,7 @@ JS
                 </ul>
             </div>
             <div class="box-footer clearfix no-border">
-                <div>
+                <div class="clearfix">
                     <h4 class="pull-left">Exercicios</h4>
                     <!--MODAL PARA ADIÇÃO DE EXERCÍCIO-->
                     <?php $modal = Modal::begin([
@@ -192,7 +192,7 @@ JS
                                 ArrayHelper::map($exercicios, 'id', 'nome'),
                                 [
                                     'class' => 'form-control',
-                                    'prompt' => 'Escolhar o exerício',
+                                    'prompt' => 'Escolhar o exercício',
                                     'required' => true,
                                 ]
                             ) ?>
@@ -218,126 +218,133 @@ JS
                     <?php Modal::end(); ?>
                     <!--MODAL PARA ADIÇÃO DE EXERCÍCIO-->
                 </div>
-
-                <table class="table table-hover table-bordered">
-                    <tbody>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Nº de repetições</th>
-                        <th>Tipo</th>
-                        <th>Equipamento</th>
-                        <th style="width: 30px"></th>
-                    </tr>
-                    <?php foreach ($model->treinoExercicios as $treinoExercicio): ?>
-                        <!--MODAL PARA ADIÇÃO DE TREINO-->
-                        <?php $modal = Modal::begin([
-                            'header' => 'Preenchar o campo corretamente',
-                            'footer' =>
-                                Html::submitButton('Confirmar', [
-                                    'class' => 'btn bg-green btn-flat btn-sm',
-                                    'form' => 'form-repeticao-exercicio' . $treinoExercicio->exercicio_id,
-                                ])
-                            ,
-                            'id' => 'modal-alt-num' .
-                                $treinoExercicio->exercicio_id,
-                        ]); ?>
-
-                        <?= Html::beginForm(
-                            [
-                                'treino/update-numero-repeticao',
-                                'treino_id' => $treinoExercicio->treino_id,
-                                'exercicio_id' => $treinoExercicio->exercicio_id
-                            ],
-                            'post',
-                            ['id' => 'form-repeticao-exercicio' . $treinoExercicio->exercicio_id]
-                        ) ?>
-
-                        <div class="form-group">
-                            <?= Html::activeLabel($treinoExercicio, 'numero_repeticao') ?>
-                            <?= Html::activeDropDownList(
-                                $treinoExercicio,
-                                'numero_repeticao',
-                                ['3x8' => '3x8', '3x10' => '3x10', '3x12' => '3x12'],
-                                [
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Digite o número de repetições'
-                                ]
-                            ) ?>
-                        </div>
-
-                        <?= Html::endForm() ?>
-
-                        <?php Modal::end(); ?>
-                        <!--MODAL PARA ADIÇÃO DE TREINO-->
-
+                <?php if ($model->treinoExercicios !== []): ?>
+                    <table class="table table-hover table-bordered">
+                        <tbody>
                         <tr>
-                            <td><?= $treinoExercicio->exercicio->nome ?></td>
-                            <td><?= $treinoExercicio->numero_repeticao ?></td>
-                            <td>
-                                <?php if ($treinoExercicio->exercicio->tipo == 'aerobico'): ?>
-                                    <span class="badge bg-red">Aeróbico</span>
-                                <?php else: ?>
-                                    <span class="badge bg-aqua">Anaeróbico</span>
-                                <?php endif; ?>
-                            </td>
-                            <td><?= $treinoExercicio->exercicio->equipamento->nome ?></td>
-                            <td>
-                                <div class="dropdown">
-                                    <?= Html::button('<i class="fa fa-bars fa-fw"></i>', [
-                                        'class' => 'btn btn-box-tool dropdown-toggle',
-                                        'id' => 'dropdown-exercicio',
-                                        'data-toggle' => 'dropdown',
-                                        'aria-haspopup' => true,
-                                        'aria-expanded' => true,
-                                        'type' => 'button',
-                                        'title' => 'opções'
-                                    ]) ?>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
-                                        <li>
-                                            <?= Html::a('Alt. número de rep.', null,
-                                                [
-                                                    'class' => 'btn-alt-rep',
-                                                    'title' => 'Alterar número de repetições',
-                                                    'data-target' => 'modal-alt-num' . $treinoExercicio->exercicio_id,
-                                                ]
-                                            ) ?>
-                                        </li>
-                                        <li>
-                                            <?= Html::a(
-                                                'Remover exercício',
-                                                [
-                                                    'treino/remove-exercicio',
-                                                    'treino_id' => $treinoExercicio->treino_id,
-                                                    'exercicio_id' => $treinoExercicio->exercicio_id,
-                                                ],
-                                                [
-                                                    'title' => 'Remover exercício do treino',
-                                                    'data' => [
-                                                        'confirm' => 'Tem certeza que deseja remover este exercício do treino ?',
-                                                        'method' => 'post',
-                                                    ],
-                                                ]
-                                            ) ?>
-                                        </li>
-                                        <li role="separator" class="divider"></li>
-                                        <li>
-                                            <?= Html::a(
-                                                'Mais informações',
-                                                [
-                                                    'exercicio/view',
-                                                    'id' => $treinoExercicio->exercicio->id],
-                                                [
-                                                    'title' => 'Mais informações sobre o exercício'
-                                                ]
-                                            ) ?>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
+                            <th>Nome</th>
+                            <th>Nº de repetições</th>
+                            <th>Tipo</th>
+                            <th>Equipamento</th>
+                            <th style="width: 30px"></th>
                         </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        <?php foreach ($model->treinoExercicios as $treinoExercicio): ?>
+                            <!--MODAL PARA ADIÇÃO DE TREINO-->
+                            <?php $modal = Modal::begin([
+                                'header' => 'Preenchar o campo corretamente',
+                                'footer' =>
+                                    Html::submitButton('Confirmar', [
+                                        'class' => 'btn bg-green btn-flat btn-sm',
+                                        'form' => 'form-repeticao-exercicio' . $treinoExercicio->exercicio_id,
+                                    ])
+                                ,
+                                'id' => 'modal-alt-num' .
+                                    $treinoExercicio->exercicio_id,
+                            ]); ?>
+
+                            <?= Html::beginForm(
+                                [
+                                    'treino/update-numero-repeticao',
+                                    'treino_id' => $treinoExercicio->treino_id,
+                                    'exercicio_id' => $treinoExercicio->exercicio_id
+                                ],
+                                'post',
+                                ['id' => 'form-repeticao-exercicio' . $treinoExercicio->exercicio_id]
+                            ) ?>
+
+                            <div class="form-group">
+                                <?= Html::activeLabel($treinoExercicio, 'numero_repeticao') ?>
+                                <?= Html::activeDropDownList(
+                                    $treinoExercicio,
+                                    'numero_repeticao',
+                                    ['3x8' => '3x8', '3x10' => '3x10', '3x12' => '3x12'],
+                                    [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Digite o número de repetições'
+                                    ]
+                                ) ?>
+                            </div>
+
+                            <?= Html::endForm() ?>
+
+                            <?php Modal::end(); ?>
+                            <!--MODAL PARA ADIÇÃO DE TREINO-->
+
+                            <tr>
+                                <td><?= $treinoExercicio->exercicio->nome ?></td>
+                                <td><?= $treinoExercicio->numero_repeticao ?></td>
+                                <td>
+                                    <?php if ($treinoExercicio->exercicio->tipo == 'aerobico'): ?>
+                                        <span class="badge bg-red">Aeróbico</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-aqua">Anaeróbico</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= $treinoExercicio->exercicio->equipamento->nome ?></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <?= Html::button('<i class="fa fa-bars fa-fw"></i>', [
+                                            'class' => 'btn btn-box-tool dropdown-toggle',
+                                            'id' => 'dropdown-exercicio',
+                                            'data-toggle' => 'dropdown',
+                                            'aria-haspopup' => true,
+                                            'aria-expanded' => true,
+                                            'type' => 'button',
+                                            'title' => 'opções'
+                                        ]) ?>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
+                                            <li>
+                                                <?= Html::a('Alt. número de rep.', null,
+                                                    [
+                                                        'class' => 'btn-alt-rep',
+                                                        'title' => 'Alterar número de repetições',
+                                                        'data-target' => 'modal-alt-num' . $treinoExercicio->exercicio_id,
+                                                    ]
+                                                ) ?>
+                                            </li>
+                                            <li>
+                                                <?= Html::a(
+                                                    'Remover exercício',
+                                                    [
+                                                        'treino/remove-exercicio',
+                                                        'treino_id' => $treinoExercicio->treino_id,
+                                                        'exercicio_id' => $treinoExercicio->exercicio_id,
+                                                    ],
+                                                    [
+                                                        'title' => 'Remover exercício do treino',
+                                                        'data' => [
+                                                            'confirm' => 'Tem certeza que deseja remover este exercício do treino ?',
+                                                            'method' => 'post',
+                                                        ],
+                                                    ]
+                                                ) ?>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li>
+                                                <?= Html::a(
+                                                    'Mais informações',
+                                                    [
+                                                        'exercicio/view',
+                                                        'id' => $treinoExercicio->exercicio->id],
+                                                    [
+                                                        'title' => 'Mais informações sobre o exercício'
+                                                    ]
+                                                ) ?>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="callout">
+                        <p>
+                            Este treino ainda não possui exercícios.
+                        </p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
