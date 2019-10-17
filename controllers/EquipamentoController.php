@@ -115,15 +115,11 @@ class EquipamentoController extends Controller
     {
         $model_equipamento = $this->findModel($id);
         $session = Yii::$app->session;
-        $result = false;
 
-        foreach ($model_equipamento->exercicios as $exercicio) {
+        foreach ($model_equipamento->exercicios as $exercicio)
             $result = $exercicio->delete();
-        }
 
-        $result = $model_equipamento->delete();
-
-        if ($result)
+        if ($model_equipamento->delete())
             $session->addFlash('success', 'Equipamento excluído com sucesso !');
         else
             $session->addFlash('error', 'Não foi possível excluir o equipamento.');
