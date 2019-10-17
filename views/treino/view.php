@@ -15,19 +15,6 @@ $this->title = "Informações do Treino";
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
-$this->registerCss(<<<CSS
-    .dropdown-menu > li > button.btn-alt-rep {
-        display: block;
-        padding: 3px 20px;
-        clear: both;
-        font-weight: 400;
-        line-height: 1.42857143;
-        color: #333333;
-        white-space: nowrap;
-        border: none;
-    }
-CSS
-);
 
 $this->registerJs(<<<JS
     let btns_alterar_repeticao = document.querySelectorAll('.btn-alt-rep');
@@ -307,14 +294,13 @@ JS
                                     ]) ?>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
                                         <li>
-                                            <?= Html::button('Alt. número de rep.', [
-                                                'class' => 'btn-alt-rep',
-                                                'title' => 'Alterar número de repetições',
-                                                'data-toggle' => 'modal',
-                                                'data-target' => 'modal-alt-num' .
-                                                    $treinoExercicio->exercicio_id,
-                                                'type' => 'button'
-                                            ]) ?>
+                                            <?= Html::a('Alt. número de rep.', null,
+                                                [
+                                                    'class' => 'btn-alt-rep',
+                                                    'title' => 'Alterar número de repetições',
+                                                    'data-target' => 'modal-alt-num' . $treinoExercicio->exercicio_id,
+                                                ]
+                                            ) ?>
                                         </li>
                                         <li>
                                             <?= Html::a(
