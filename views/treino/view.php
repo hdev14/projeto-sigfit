@@ -185,7 +185,7 @@ JS
                             'footer' =>
                                 Html::submitButton('Confirmar', [
                                     'class' => 'btn bg-green btn-flat btn-sm',
-                                    'form' => 'form-repeticao-exercicio',
+                                    'form' => 'form-repeticao-exercicio' . $treinoExercicio->exercicio_id,
                                 ])
                             ,
                             'id' => 'modal-alt-num' .
@@ -193,17 +193,26 @@ JS
                         ]); ?>
 
                         <?= Html::beginForm(
-                            ['treino/update-numero-repeticao'],
+                            [
+                                'treino/update-numero-repeticao',
+                                'treino_id' => $treinoExercicio->treino_id,
+                                'exercicio_id' => $treinoExercicio->exercicio_id
+                            ],
                             'post',
-                            ['id' => 'form-repeticao-exercicio']
+                            ['id' => 'form-repeticao-exercicio' . $treinoExercicio->exercicio_id]
                         ) ?>
 
                         <div class="form-group">
                             <?= Html::activeLabel($treinoExercicio, 'numero_repeticao') ?>
-                            <?= Html::activeInput('text',$treinoExercicio,'numero_repeticao',[
-                                'class' => 'form-control',
-                                'placeholder' => 'Digite o número de repetições'
-                            ]) ?>
+                            <?= Html::activeDropDownList(
+                                $treinoExercicio,
+                                'numero_repeticao',
+                                ['3x8' => '3x8', '3x10' => '3x10', '3x12' => '3x12'],
+                                [
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Digite o número de repetições'
+                                ]
+                            ) ?>
                         </div>
 
                         <?= Html::endForm() ?>

@@ -27,6 +27,7 @@ class TreinoController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'update-numero-repeticao' => ['POST'],
                 ],
             ],
         ];
@@ -83,7 +84,7 @@ class TreinoController extends Controller
     public function actionCreate()
     {
         $model = new Treino();
-        $post =  Yii::$app->request->post();
+        $post = Yii::$app->request->post();
         $exercicios = Yii::$app->request->post('exercicio', null);
         $session = Yii::$app->session;
 
@@ -124,6 +125,28 @@ class TreinoController extends Controller
 
 
     // TODO FAZER MÉTODO PARA ATUALIZAR NÚMERO DE REPETIÇÕES.
+    public function actionUpdateNumeroRepeticao($treino_id, $exercicio_id)
+    {
+        /* @var $model_treino_exercicio TreinoExercicio */
+        $model_treino_exercicio = TreinoExercicio::find()->where(
+            ['and', 'treino_id = :treino_id', 'exercicio_id = :exercicio_id'],
+            [':treino_id' => $treino_id, ':exercicio_id' => $exercicio_id]
+        )->one();
+        $session = Yii::$app->session;
+        $novo_numero_repeticao = Yii::$app->request->post('TreinoExercicio')['numero_repeticao'];
+
+        if (!is_null($model_treino_exercicio)) {
+            $model_treino_exercicio->numero_repeticao = $novo_numero_repeticao;
+            if ($model_treino_exercicio->save())
+                $session->addFlash('success', 'Número de repetições atualizado com sucesso !');
+            else
+                $session->addFlash('error', 'Não foi possível atualizar o número de repetições.');
+        } else {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->redirect(['view', 'id' => $model_treino_exercicio->treino_id]);
+    }
 
     public function actionDelete($id)
     {

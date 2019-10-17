@@ -47,7 +47,7 @@ class TreinoExercicio extends \yii\db\ActiveRecord
         return [
             'treino_id' => 'Treino ID',
             'exercicio_id' => 'Exercicio ID',
-            'numero_repeticao' => 'Numero Repeticao',
+            'numero_repeticao' => 'Número de repetições',
         ];
     }
 
