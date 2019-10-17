@@ -319,9 +319,13 @@ JS
                                         <li>
                                             <?= Html::a(
                                                 'Remover exercício',
-                                                ['delete', 'id' => $treinoExercicio->exercicio->id],
                                                 [
-                                                    'title' => 'Excluir exercício',
+                                                    'treino/remove-exercicio',
+                                                    'treino_id' => $treinoExercicio->treino_id,
+                                                    'exercicio_id' => $treinoExercicio->exercicio_id,
+                                                ],
+                                                [
+                                                    'title' => 'Remover exercício do treino',
                                                     'data' => [
                                                         'confirm' => 'Tem certeza que deseja remover este exercício do treino ?',
                                                         'method' => 'post',

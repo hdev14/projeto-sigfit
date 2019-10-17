@@ -29,6 +29,7 @@ class TreinoController extends Controller
                     'delete' => ['POST'],
                     'update-numero-repeticao' => ['POST'],
                     'add-exercicio' => ['POST'],
+                    'remove-exercicio' => ['POST'],
                 ],
             ],
         ];
@@ -148,6 +149,24 @@ class TreinoController extends Controller
         return $this->redirect(['view', 'id' => $treino_id]);
     }
 
+    public function actionRemoveExercicio($treino_id, $exercicio_id)
+    {
+        $model_treino_exercicio = TreinoExercicio::find()->where(
+            ['and', 'treino_id = :treino_id', 'exercicio_id = :exercicio_id'],
+            [':treino_id' => $treino_id, ':exercicio_id' => $exercicio_id]
+        )->one();
+        $session = Yii::$app->session;
+
+        if (is_null($model_treino_exercicio)) throw new NotFoundHttpException();
+
+        if ($model_treino_exercicio->delete())
+            $session->addFlash('success', 'Exercício removido com sucesso !');
+        else
+            $session->addFlash('error', 'Não foi possível remover o exercício.');
+
+        return $this->redirect(['view', 'id' => $treino_id]);
+    }
+
     public function actionUpdateNumeroRepeticao($treino_id, $exercicio_id)
     {
         /* @var $model_treino_exercicio TreinoExercicio */
@@ -158,15 +177,14 @@ class TreinoController extends Controller
         $session = Yii::$app->session;
         $novo_numero_repeticao = Yii::$app->request->post('TreinoExercicio')['numero_repeticao'];
 
-        if (!is_null($model_treino_exercicio)) {
-            $model_treino_exercicio->numero_repeticao = $novo_numero_repeticao;
-            if ($model_treino_exercicio->save())
-                $session->addFlash('success', 'Número de repetições atualizado com sucesso !');
-            else
-                $session->addFlash('error', 'Não foi possível atualizar o número de repetições.');
-        } else {
-            throw new NotFoundHttpException();
-        }
+        if (is_null($model_treino_exercicio)) throw new NotFoundHttpException();
+
+        $model_treino_exercicio->numero_repeticao = $novo_numero_repeticao;
+
+        if ($model_treino_exercicio->save())
+            $session->addFlash('success', 'Número de repetições atualizado com sucesso !');
+        else
+            $session->addFlash('error', 'Não foi possível atualizar o número de repetições.');
 
         return $this->redirect(['view', 'id' => $model_treino_exercicio->treino_id]);
     }
