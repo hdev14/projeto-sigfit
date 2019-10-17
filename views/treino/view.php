@@ -200,12 +200,13 @@ JS
                     <div class="row">
                         <div class="form-group col-md-7">
                             <?= Html::dropDownList(
-                                'add-exercicio',
+                                'add-exercicio-id',
                                 null,
                                 ArrayHelper::map($exercicios, 'id', 'nome'),
                                 [
                                     'class' => 'form-control',
-                                    'prompt' => 'Escolhar o exerício'
+                                    'prompt' => 'Escolhar o exerício',
+                                    'required' => true,
                                 ]
                             ) ?>
                         </div>
@@ -218,7 +219,8 @@ JS
                                 ],
                                 [
                                     'class' => 'form-control',
-                                    'prompt' => 'Número de repetições'
+                                    'prompt' => 'Número de repetições',
+                                    'required' => true,
                                 ]
                             ) ?>
                         </div>

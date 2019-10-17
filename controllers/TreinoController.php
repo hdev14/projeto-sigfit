@@ -2,9 +2,9 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Exercicio;
 use app\models\TreinoExercicio;
-use Yii;
 use app\models\Treino;
 use app\models\TreinoSearch;
 use yii\data\Pagination;
@@ -127,6 +127,26 @@ class TreinoController extends Controller
         return $this->redirect(['view', 'id' => $model->id]);
     }
 
+
+    public function actionAddExercicio($treino_id = null)
+    {
+        if (is_null($treino_id)) throw new NotFoundHttpException();
+
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
+
+        $model_treino_exercicio = new TreinoExercicio();
+        $model_treino_exercicio->treino_id = $treino_id;
+        $model_treino_exercicio->exercicio_id = $post['add-exercicio-id'];
+        $model_treino_exercicio->numero_repeticao = $post['add-exercicio-repeticao'];
+
+        if ($model_treino_exercicio->save())
+            $session->addFlash('success', 'Exercício adicionado ao treino !');
+        else
+            $session->addFlash('error', 'Não possível adicionar o exercício ao treino.');
+
+        return $this->redirect(['view', 'id' => $treino_id]);
+    }
 
     public function actionUpdateNumeroRepeticao($treino_id, $exercicio_id)
     {
