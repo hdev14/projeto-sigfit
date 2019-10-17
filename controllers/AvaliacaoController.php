@@ -152,26 +152,18 @@ class AvaliacaoController extends Controller
         $avaliacao_model = $this->findModelAvaliacao($id);
         $usuario_id = $avaliacao_model->pessoa_id;
         $session = Yii::$app->session;
-        $resultado = false;
 
-        $pesos = $avaliacao_model->getPesos()->all();
-        foreach ($pesos as $peso) {
+        // EXCLUIR ATRIBUTOS MULTI-VALORADOS
+        foreach ($avaliacao_model->pesos as $peso)
             $resultado = $peso->delete();
-        }
 
-        $imcs = $avaliacao_model->getImcs()->all();
-        foreach ($imcs as $imc) {
+        foreach ($avaliacao_model->imcs as $imc)
             $resultado = $imc->delete();
-        }
 
-        $pdgs = $avaliacao_model->getPercentualGorduras()->all();
-        foreach ($pdgs as $pdg) {
+        foreach ($avaliacao_model->percentualGorduras as $pdg)
             $resultado = $pdg->delete();
-        }
 
-        $resultado = $avaliacao_model->delete();
-
-        if ($resultado !== false)
+        if ($avaliacao_model->delete())
             $session->addFlash('success', 'Avaliação excluída !');
         else
             $session->addFlash('error', 'Não foi possível excluir a avaliação.');
