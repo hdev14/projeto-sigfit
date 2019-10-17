@@ -124,7 +124,6 @@ class TreinoController extends Controller
     }
 
 
-    // TODO FAZER MÉTODO PARA ATUALIZAR NÚMERO DE REPETIÇÕES.
     public function actionUpdateNumeroRepeticao($treino_id, $exercicio_id)
     {
         /* @var $model_treino_exercicio TreinoExercicio */

@@ -42,7 +42,7 @@ JS
 
 <div class="row">
     <div class="col-md-6">
-        <div class="box">
+        <div class="box box-success">
             <div class="box-header">
                 <h4 class="box-title">
                     <?= $model->titulo ?>
@@ -169,14 +169,15 @@ JS
             </div>
             <div class="box-footer clearfix no-border">
                 <h4>Exercicios</h4>
-                <table class="table table-hover">
+
+                <table class="table table-hover table-bordered">
                     <tbody>
                     <tr>
                         <th>Nome</th>
-                        <th>Número de repetições</th>
+                        <th>Nº de repetições</th>
                         <th>Tipo</th>
                         <th>Equipamento</th>
-                        <th style="width: 50px"></th>
+                        <th style="width: 30px"></th>
                     </tr>
                     <?php foreach ($model->treinoExercicios as $treinoExercicio): ?>
                         <!--MODAL PARA EDIÇÃO DE REPETIÇÕES-->
@@ -223,7 +224,13 @@ JS
                         <tr>
                             <td><?= $treinoExercicio->exercicio->nome ?></td>
                             <td><?= $treinoExercicio->numero_repeticao ?></td>
-                            <td><?= $treinoExercicio->exercicio->tipo ?></td>
+                            <td>
+                                <?php if ($treinoExercicio->exercicio->tipo == 'aerobico'): ?>
+                                    <span class="badge bg-red">Aeróbico</span>
+                                <?php else: ?>
+                                    <span class="badge bg-aqua">Anaeróbico</span>
+                                <?php endif; ?>
+                            </td>
                             <td><?= $treinoExercicio->exercicio->equipamento->nome ?></td>
                             <td>
                                 <div class="dropdown">
@@ -234,6 +241,7 @@ JS
                                         'aria-haspopup' => true,
                                         'aria-expanded' => true,
                                         'type' => 'button',
+                                        'title' => 'opções'
                                     ]) ?>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
                                         <li>
