@@ -325,7 +325,7 @@ JS
                                                     'Mais informações',
                                                     [
                                                         'exercicio/view',
-                                                        'id' => $treinoExercicio->exercicio->id],
+                                                        'id' => $treinoExercicio->exercicio_id],
                                                     [
                                                         'title' => 'Mais informações sobre o exercício'
                                                     ]

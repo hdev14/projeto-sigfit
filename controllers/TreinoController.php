@@ -62,7 +62,6 @@ class TreinoController extends Controller
 
     public function actionTreinos($nivel = null)
     {
-
         $query = is_null($nivel) ?
             Treino::find()->where('generico = 1') :
             Treino::find()->where(
@@ -191,9 +190,19 @@ class TreinoController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        // TODO excluir relacionamento com exercícios.
-        return $this->redirect(['index']);
+        /* @var $model_treino Treino */
+        $model_treino = $this->findModel($id);
+        $session = Yii::$app->session;
+
+        foreach ($model_treino->treinoExercicios as $treinoExercicio)
+            $treinoExercicio->delete();
+
+        if ($model_treino->delete())
+            $session->addFlash('success', 'Treino excluído com sucessso !');
+        else
+            $session->addFlash('error', 'Não foi possível excluir o treino.');
+
+        return $this->redirect(['treinos']);
     }
 
     protected function findModel($id)
