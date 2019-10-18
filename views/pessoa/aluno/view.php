@@ -14,16 +14,6 @@ $this->title = 'Perfil do Usuário';
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
-$this->registerCss(<<<CSS
-    small#subtitle-horario {
-        display: block;
-        padding: 5px 0;
-    }
-    .small-box:hover {
-        color: black;
-    }
-CSS
-);
 $this->registerJs("
     $('#tabs a').click(function (e) {
         e.preventDefault();
@@ -236,70 +226,7 @@ $this->registerJs("
         </div>
 
     </div>
-    <div class="col-md-12">
-        <div class="box box-success">
-            <div class="box-header">
-                <h4 class="box-title">
-                    <?= $model->horario_treino ?>
-                    <small id="subtitle-horario" class="text-muted">
-                        horário de treino
-                    </small>
-                </h4>
-                <div class="box-tools pull-right">
-
-                </div>
-            </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-2 col-md-offset-1 border-right">
-                        <h5 class="text-center">Segunda</h5>
-                        <div class="small-box bg-gray">
-                            <div class="inner">
-                                <div class="clearfix">
-                                    <span class="label label-danger">Avançado</span>
-                                    <!--
-                                    TODO substitui por um HTML::a
-                                    Botão para remover o treino do usuário.
-                                    -->
-                                    <button class="btn btn-xs pull-right">
-                                        x
-                                    </button>
-                                </div>
-
-                                <h5>Treino 1</h5>
-                            </div>
-                            <a class="small-box-footer btn btn-flat btn-xs">
-                                <b>ver exercícios</b>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-2 border-right">
-                        <h5 class="text-center">Terça</h5>
-                    </div>
-                    <div class="col-md-2 border-right">
-                        <h5 class="text-center">Quarta</h5>
-                        <div class="small-box bg-gray">
-                            <div class="inner">
-                                <span class="label label-success">Iniciante</span>
-                                <h5>Treino 1</h5>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-md-2 border-right">
-                        <h5 class="text-center">Quinta</h5>
-                    </div>
-                    <div class="col-md-2">
-                        <h5 class="text-center">Sexta</h5>
-                        <div class="small-box bg-gray">
-                            <div class="inner">
-                                <span class="label label-warning">Intermediário</span>
-                                <h5>Treino 1</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?= $this->render('../../partial/_treinos', [
+            'model' => $model
+    ]) ?>
 </div>

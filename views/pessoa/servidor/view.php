@@ -212,5 +212,8 @@ $this->registerJs("
             ]) ?>
         <?php endif; ?>
     </div>
+    <?= $this->render('../../partial/_treinos', [
+            'model' => $model,
+    ]) ?>
 </div>
 
