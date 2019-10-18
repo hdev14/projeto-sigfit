@@ -20,7 +20,7 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
 
 <div class="row">
     <div class="col-md-7">
-        <div class="box box-primary">
+        <div class="box box-success">
             <div class="box-header no-border">
                 <h4 class="box-title">
                     <?php if ($model->defeito): ?>
@@ -177,30 +177,4 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
             </div>
         </div>
     </div>
-</div>
-
-<div class="equipamento-view">
-
-
-
-
-    <!--    <p>
-             Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary'])
-             Html::a('Delete', ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-
-            ])
-        </p>
-
-         DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'id',
-                'nome',
-                'descricao',
-                'imagem:ntext',
-                'defeito',
-            ],
-        ]) -->
-
 </div>

@@ -68,7 +68,7 @@ $this->registerJs("
 
 ?>
 
-<div class="box ">
+<div class="box">
     <div class="box-header">
         <?= Html::a('<i class="fa fa-fw fa-pencil"></i>', [
             'avaliacao/update',

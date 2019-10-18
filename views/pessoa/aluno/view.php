@@ -226,20 +226,3 @@ $this->registerJs("
         <?php endif; ?>
     </div>
 </div>
-
-<!-- DetailView::widget([
-               'model' => $model,
-               'attributes' => [
-                   'id',
-                   'matricula',
-                   'nome',
-                   'email:email',
-                   'curso',
-                   'periodo_curso',
-                   'horario_treino',
-                   'problema_saude:ntext',
-                   'faltas',
-                   'espera',
-                   'telefone',
-               ],
-           ]) -->

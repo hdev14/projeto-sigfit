@@ -20,7 +20,7 @@ $this->registerCssFile('@web/css/avaliacao.css');
 <p id="sexo" style="display: none"><?= $sexo ?></p>
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
-        <div class="box box-primary">
+        <div class="box box-success">
             <div class="box-header">
                 <h3 class="box-title">Preencha os campos corretamente</h3>
                 <div class="box-tools pull-right">
@@ -198,7 +198,3 @@ $this->registerCssFile('@web/css/avaliacao.css');
         </div>
     </div>
 </div>
-
-<script>
-
-</script>
