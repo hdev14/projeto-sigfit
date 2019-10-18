@@ -46,7 +46,7 @@ $this->registerCss("
                     ])
                 ,
                 'toggleButton' => [
-                    'label' => "<i class='fa fa-fw fa-pencil'></i>",
+                    'label' => "<i class='fa fa-pencil fa-lg'></i>",
                     'class' => 'btn btn-box-tool',
                     'title' => 'Editar exercício',
                 ],
@@ -86,7 +86,7 @@ $this->registerCss("
             <!--MODAL EDITAR EXERCÍCIO-->
 
             <?= Html::a(
-                "<i class='fa fa-fw fa-trash'></i>",
+                "<i class='fa fa-trash fa-lg'></i>",
                 ['exercicio/delete', 'id' => $model->id],
                 [
                     'class' => 'btn btn-box-tool',

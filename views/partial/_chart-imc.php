@@ -68,13 +68,13 @@ $this->registerJs("
 
 ?>
 
-<div class="box">
+<div class="box box-solid">
     <div class="box-header">
         <?= Html::a('<i class="fa fa-fw fa-pencil"></i>', [
             'avaliacao/update',
             'id' =>  $avaliacao->id
         ], [
-            'class' => 'btn bg-aqua btn-xs',
+            'class' => 'btn bg-gray btn-xs',
             'title' => 'Editar avaliação física'
         ]) ?>
 
@@ -84,7 +84,7 @@ $this->registerJs("
                 'confirm' => 'Tem certeza de que deseja excluir esta avaliação?',
                 'method' => 'post',
             ],
-            'class' => 'btn bg-red btn-xs',
+            'class' => 'btn bg-gray btn-xs',
             'title' => 'Excluir avaliação física'
         ]) ?>
         <div class="box-tools pull-right">
@@ -95,7 +95,7 @@ $this->registerJs("
     </div>
     <div class="box-body">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-9 col-md-offset-1">
 
                 <canvas id="<?= 'imc-chart' . $avaliacao->id ?>"></canvas>
 

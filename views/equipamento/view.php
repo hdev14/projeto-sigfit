@@ -39,7 +39,7 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                             ])
                         ,
                         'toggleButton' => [
-                            'label' => "<i class='fa fa-fw fa-pencil'></i>",
+                            'label' => "<i class='fa fa-fw fa-pencil fa-lg'></i>",
                             'class' => 'btn btn-box-tool',
                             'title' => 'Editar equipamento'
                         ],
@@ -79,7 +79,7 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                     <!-- MODAL FORM EDITAR EQUIPAMENTO-->
 
                     <?= Html::a(
-                        '<i class="fa fa-fw fa-trash"></i>',
+                        '<i class="fa fa-fw fa-trash fa-lg"></i>',
                         ['equipamento/delete', 'id' => $model->id],
                         [
                             'class' => 'btn btn-box-tool',

@@ -53,7 +53,7 @@ CSS
 <div class="row">
     <?php foreach ($treinos as $treino): ?>
         <div class="col-md-4">
-            <div class="box">
+            <div class="box box-solid">
                 <div class="box-header">
                     <h4 class="box-title">
                         <?= $treino->titulo ?>
