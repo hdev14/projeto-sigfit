@@ -21,20 +21,13 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
 <div class="row">
     <div class="col-md-7">
         <div class="box box-success">
-            <div class="box-header no-border">
+            <div class="box-header with-border">
                 <h4 class="box-title">
                     <?php if ($model->defeito): ?>
                         <small class="label label-danger">com defeito</small>
                     <?php endif; ?>
                 </h4>
                 <div class="box-tools pull-right">
-                    <?= Html::a(
-                        ($model->defeito) ? 'Desmarca defeito' : 'Marcar defeito',
-                        ['equipamento/defeito', 'id' => $model->id],
-                        [
-                            'class' => 'btn btn-box-tool bg-gray',
-                            'title' => 'Marcar equipamento com defeito',
-                        ]) ?>
 
                     <!-- MODAL FORM EDITAR EQUIPAMENTO-->
                     <?php $modal = Modal::begin([
@@ -47,7 +40,8 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                         ,
                         'toggleButton' => [
                             'label' => "<i class='fa fa-fw fa-pencil'></i>",
-                            'class' => 'btn btn-box-tool bg-aqua'
+                            'class' => 'btn btn-box-tool',
+                            'title' => 'Editar equipamento'
                         ],
                     ]); ?>
                     <div  class="text-center">
@@ -81,20 +75,20 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                     ]) ?>
 
                     <?php ActiveForm::end(); ?>
-
-
                     <?php Modal::end(); ?>
                     <!-- MODAL FORM EDITAR EQUIPAMENTO-->
+
                     <?= Html::a(
                         '<i class="fa fa-fw fa-trash"></i>',
                         ['equipamento/delete', 'id' => $model->id],
                         [
-                            'class' => 'btn btn-box-tool bg-red',
+                            'class' => 'btn btn-box-tool',
                             'title' => 'Excluir equipamento',
                             'data' => [
                                 'confirm' => 'Tem certeza de que deseja excluir este equipamento?',
                                 'method' => 'post',
                             ],
+                            'type' => 'button'
                         ]) ?>
                 </div>
             </div>
@@ -113,6 +107,15 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="box-footer clearfix no-border">
+                <?= Html::a(
+                    ($model->defeito) ? 'Desmarca defeito' : 'Marcar defeito',
+                    ['equipamento/defeito', 'id' => $model->id],
+                    [
+                        'class' => 'btn btn-sm btn-flat bg-red pull-right',
+                        'title' => 'Marcar equipamento com defeito',
+                    ]) ?>
             </div>
         </div>
     </div>

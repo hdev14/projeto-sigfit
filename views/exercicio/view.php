@@ -32,9 +32,11 @@ $this->registerCss("
 ?>
 
 <div class="box box-success">
-    <div class="box-header no-border">
+    <div class="box-header with-border">
+        <h4 class="box-title"></h4>
         <div class="box-tools pull-right">
-            <!--MODAL EDITAR-->
+
+            <!--MODAL EDITAR EXERCÍCIO-->
             <?php $modal = Modal::begin([
                 'header' => 'Preenchar os campos corretamente',
                 'footer' =>
@@ -45,7 +47,7 @@ $this->registerCss("
                 ,
                 'toggleButton' => [
                     'label' => "<i class='fa fa-fw fa-pencil'></i>",
-                    'class' => 'btn btn-box-tool bg-aqua',
+                    'class' => 'btn btn-box-tool',
                     'title' => 'Editar exercício',
                 ],
             ]); ?>
@@ -80,15 +82,14 @@ $this->registerCss("
             ]) ?>
 
             <?php ActiveForm::end(); ?>
-
             <?php Modal::end() ?>
-            <!--MODAL EDITAR-->
+            <!--MODAL EDITAR EXERCÍCIO-->
 
             <?= Html::a(
-                "<i class='fa fa-fw fa-close'></i>",
+                "<i class='fa fa-fw fa-trash'></i>",
                 ['exercicio/delete', 'id' => $model->id],
                 [
-                    'class' => 'btn btn-box-tool bg-red',
+                    'class' => 'btn btn-box-tool',
                     'title' => 'Excluir exercício',
                     'data' => [
                         'confirm' => 'Tem certeza de que deseja excluir este aluno?',

@@ -170,7 +170,7 @@ JS
                         ,
                         'toggleButton' => [
                             'label' => '<i class="fa fa-fw fa-plus"></i> Exercício',
-                            'class' => 'btn bg-green btn-flat btn-xs pull-right',
+                            'class' => 'btn bg-green btn-flat btn-sm pull-right',
                             'title' => 'Adicionar exercício ao treino'
                         ]
                     ]); ?>
