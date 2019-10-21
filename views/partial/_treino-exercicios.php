@@ -23,7 +23,7 @@ use yii\helpers\Html;
             <span class="label label-default">
                 <?= $treinoExercicio->numero_repeticao ?>
             </span>
-            <?= Html::a(
+             <?= Html::a(
                 '<i class="fa fa-fw fa-eye"></i>',
                 ['exercicio/view', 'id' => $treinoExercicio->exercicio_id],
                 ['btn btn-sm bg-gray btn-flat']

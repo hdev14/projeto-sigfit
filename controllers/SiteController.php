@@ -103,8 +103,9 @@ class SiteController extends Controller
                 $this->redirect(['pessoa/usuarios']);
         }
 
-        $session = Yii::$app->session;
+
         $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
         $login_suap = new LoginSuapForm();
 
         if ($login_suap->load($post) && $login_suap->validate()) {
@@ -119,7 +120,7 @@ class SiteController extends Controller
                 );
             } else if ($this->salvarToken($token, $login_suap->matricula)
                 && $login_suap->login($token)) {
-                //$session->set('token', $token);
+                $session->set('token', $token);
                 return Yii::$app->user->can('crud-instrutor') ?
                     $this->redirect(['pessoa/instrutores']) :
                     $this->redirect(['pessoa/usuarios']);
