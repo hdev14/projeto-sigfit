@@ -119,7 +119,7 @@ class SiteController extends Controller
                 );
             } else if ($this->salvarToken($token, $login_suap->matricula)
                 && $login_suap->login($token)) {
-                $session->addFlash('token', $token);
+                //$session->set('token', $token);
                 return Yii::$app->user->can('crud-instrutor') ?
                     $this->redirect(['pessoa/instrutores']) :
                     $this->redirect(['pessoa/usuarios']);
