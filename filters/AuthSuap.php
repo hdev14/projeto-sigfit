@@ -21,7 +21,7 @@ class AuthSuap extends ActionFilter
         $usuario = Pessoa::findOne($usuario_id);
         $token = Yii::$app->session->get('token', null);
 
-        if (!(($usuario !== null) && ($usuario->token === $token[0]))) {
+        if (!(($usuario !== null) && ($usuario->token === $token))) {
             throw new ForbiddenHttpException("Você não tem permissão de acessar está página.");
         }
 

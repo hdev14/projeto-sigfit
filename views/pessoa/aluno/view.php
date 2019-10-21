@@ -48,15 +48,18 @@ $this->registerJs("
                             'class' => 'btn btn-box-tool',
                             'title' => 'Editar usuário'
                         ]) ?>
-                    <?= Html::a('<i class="fa fa-fw fa-user-times fa-lg"></i>', ['delete', 'id' =>
-                        $model->id], [
-                        'class' => 'btn btn-box-tool',
-                        'title' => 'Excluir usuário',
-                        'data' => [
-                            'confirm' => 'Tem certeza de que deseja excluir este exercício?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
+                    <?= Html::a(
+                        '<i class="fa fa-fw fa-user-times fa-lg"></i>',
+                        ['delete', 'id' => $model->id],
+                        [
+                            'class' => 'btn btn-box-tool',
+                            'title' => 'Excluir usuário',
+                            'data' => [
+                                'confirm' => 'Tem certeza de que deseja excluir este exercício?',
+                                'method' => 'post',
+                            ],
+                        ]
+                    ) ?>
                 </div>
             </div>
             <div class="box-body box-profile">
@@ -227,7 +230,8 @@ $this->registerJs("
 
     </div>
     <?= $this->render('../../partial/_treinos', [
-            'horario_treino' => $model->horario_treino,
-            'treinos' => $model->treinos,
+        'horario_treino' => $model->horario_treino,
+        'treinos' => $model->treinos,
+        'usuario_id' => $model->id,
     ]) ?>
 </div>

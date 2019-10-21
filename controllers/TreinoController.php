@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\PessoaTreino;
 use Yii;
 use app\models\Exercicio;
 use app\models\TreinoExercicio;
@@ -30,6 +31,7 @@ class TreinoController extends Controller
                     'update-numero-repeticao' => ['POST'],
                     'add-exercicio' => ['POST'],
                     'remove-exercicio' => ['POST'],
+                    'remove-treino' => ['POST'],
                 ],
             ],
         ];
@@ -58,6 +60,23 @@ class TreinoController extends Controller
             'model' => $this->findModel($id),
             'exercicios' => $exercicios
         ]);
+    }
+
+    public function actionRemoveTreino($treino_id = null, $usuario_id = null)
+    {
+        $pessoa_treino = PessoaTreino::find()->where(
+            ['and', 'pessoa_id = :pessoa_id', 'treino_id = :treino_id'],
+            [':pessoa_id' => $usuario_id, ':treino_id' => $treino_id]
+        )->one();
+
+        $session = Yii::$app->session;
+
+        if ($pessoa_treino->delete())
+            $session->addFlash('success', 'Treino removido com sucesso !');
+        else
+            $session->addFlash('error', 'Não foi possível remover o treino.');
+
+        return $this->redirect(['pessoa/view', 'id' => $usuario_id]);
     }
 
     public function actionTreinos($nivel = null)

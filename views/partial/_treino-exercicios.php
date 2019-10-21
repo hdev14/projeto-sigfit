@@ -19,15 +19,20 @@ use yii\helpers\Html;
 <ul class="list-group list-group-unbordered">
     <?php foreach ($treino->treinoExercicios as $treinoExercicio): ?>
         <li class="list-group-item">
-            <?= $treinoExercicio->exercicio->nome ?>
-            <span class="label label-default">
-                <?= $treinoExercicio->numero_repeticao ?>
-            </span>
-             <?= Html::a(
-                '<i class="fa fa-fw fa-eye"></i>',
-                ['exercicio/view', 'id' => $treinoExercicio->exercicio_id],
-                ['btn btn-sm bg-gray btn-flat']
-            ) ?>
+            <h5 class="list-group-item-heading">
+                <?= $treinoExercicio->exercicio->nome ?>
+            </h5>
+            <p class="list-group-item-text text-muted">
+                Número de repetições
+                <span class="label bg-gray">
+                    <?= $treinoExercicio->numero_repeticao ?>
+                </span>
+                <?= Html::a(
+                    '<i class="fa fa-fw fa-eye"></i>',
+                    ['exercicio/view', 'id' => $treinoExercicio->exercicio_id],
+                    ['class' => 'btn btn-xs bg-gray btn-flat pull-right']
+                ) ?>
+            </p>
         </li>
     <?php endforeach; ?>
 </ul>

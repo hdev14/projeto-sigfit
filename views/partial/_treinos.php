@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $horario_treino string */
 /* @var $treinos \yii\db\ActiveRecord[] */
 /* @var $treino \app\models\Treino */
+/* @var $usuario_id integer */
 
 $this->registerCss(<<<CSS
     small#subtitle-horario {
@@ -81,15 +82,23 @@ foreach ($treinos as $treino) {
                                 <div class="clearfix">
 
                                     <?= $this->render('_treino-nivel', [
-                                            'treino' => $treino_segunda,
+                                        'treino' => $treino_segunda,
                                     ]) ?>
 
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-close"></i>',
-                                        null, // TODO ação para remover treino do usuário
+                                        [
+                                            'treino/remove-treino',
+                                            'treino_id' => $treino_segunda->id,
+                                            'usuario_id' => $usuario_id
+                                        ],
                                         [
                                             'class' => 'btn btn-xs bg-gray pull-right',
-                                            'title' => 'Remover treino deste usuário'
+                                            'title' => 'Remover treino deste usuário',
+                                            'data' => [
+                                                'confirm' => 'Tem certeza de que deseja remover este treino?',
+                                                'method' => 'post',
+                                            ],
                                         ]
                                     ) ?>
                                 </div>
@@ -106,7 +115,7 @@ foreach ($treinos as $treino) {
                             </div>
 
                             <?= $this->render('_treino-exercicios', [
-                                    'treino' => $treino_segunda,
+                                'treino' => $treino_segunda,
                             ]) ?>
 
                         </div>
@@ -131,7 +140,7 @@ foreach ($treinos as $treino) {
                                 <div class="clearfix">
 
                                     <?= $this->render('_treino-nivel', [
-                                            'treino' => $treino_terca,
+                                        'treino' => $treino_terca,
                                     ]) ?>
 
                                     <?= Html::a(
@@ -150,9 +159,11 @@ foreach ($treinos as $treino) {
                                     </a>
                                 </h5>
                             </div>
-                            <button class="small-box-footer btn btn-flat btn-xs btn-block">
-                                <b>ver exercícios</b>
-                            </button>
+
+                            <?= $this->render('_treino-exercicios', [
+                                'treino' => $treino_terca,
+                            ]) ?>
+
                         </div>
                     <?php else: ?>
                         <div class="small-box bg-gray-light">
@@ -175,7 +186,7 @@ foreach ($treinos as $treino) {
                                 <div class="clearfix">
 
                                     <?= $this->render('_treino-nivel', [
-                                            'treino' => $treino_quarta,
+                                        'treino' => $treino_quarta,
                                     ]) ?>
 
                                     <?= Html::a(
@@ -194,9 +205,11 @@ foreach ($treinos as $treino) {
                                     </a>
                                 </h5>
                             </div>
-                            <button class="small-box-footer btn btn-flat btn-xs btn-block">
-                                <b>ver exercícios</b>
-                            </button>
+
+                            <?= $this->render('_treino-exercicios', [
+                                'treino' => $treino_quarta,
+                            ]) ?>
+
                         </div>
                     <?php else: ?>
                         <div class="small-box bg-gray-light">
@@ -219,7 +232,7 @@ foreach ($treinos as $treino) {
                                 <div class="clearfix">
 
                                     <?= $this->render('_treino-nivel', [
-                                            'treino' => $treino_quinta,
+                                        'treino' => $treino_quinta,
                                     ]) ?>
 
                                     <?= Html::a(
@@ -238,9 +251,11 @@ foreach ($treinos as $treino) {
                                     </a>
                                 </h5>
                             </div>
-                            <button class="small-box-footer btn btn-flat btn-xs btn-block">
-                                <b>ver exercícios</b>
-                            </button>
+
+                            <?= $this->render('_treino-exercicios', [
+                                'treino' => $treino_quinta,
+                            ]) ?>
+
                         </div>
                     <?php else: ?>
                         <div class="small-box bg-gray-light">
@@ -263,7 +278,7 @@ foreach ($treinos as $treino) {
                                 <div class="clearfix">
 
                                     <?= $this->render('_treino-nivel', [
-                                            'treino' => $treino_sexta,
+                                        'treino' => $treino_sexta,
                                     ]) ?>
 
                                     <?= Html::a(
@@ -282,9 +297,11 @@ foreach ($treinos as $treino) {
                                     </a>
                                 </h5>
                             </div>
-                            <button class="small-box-footer btn btn-flat btn-xs btn-block">
-                                <b>ver exercícios</b>
-                            </button>
+
+                            <?= $this->render('_treino-exercicios', [
+                                'treino' => $treino_sexta,
+                            ]) ?>
+
                         </div>
                     <?php else: ?>
                         <div class="small-box bg-gray-light">
