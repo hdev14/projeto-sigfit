@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
@@ -123,10 +124,26 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                    <a href="#" title="Clique para mais informações"
-                                       class="add-treino-link ">
-                                        <i class="fa fa-fw fa-plus fa-2x"></i>
-                                    </a>
+                                    <?= Html::a(
+                                        '<i class="fa fa-fw fa-plus fa-2x"></i>',
+                                        ['treino/create', 'dia' => 'segunda-feira'],
+                                        ['class' => 'add-treino-link']
+                                    ) ?>
+
+                                    <!--TODO Fazer modal para adicionar treino escolhendo primeiro
+                                    os treinos genericos, depois tendo a opção para treinos
+                                    personalizados.-->
+
+                                    <!--$modal = Modal::begin([
+                                        'header' => "<h4>Escolha um treino ou adi</h4>",
+                                        'toggleButton' => [
+                                            'label' => '<i class="fa fa-fw fa-plus fa-2x"></i>',
+                                            'class' => 'add-treino-link'
+                                        ],
+                                    ]);
+
+                                    Modal::end();-->
+
                                 </h5>
                             </div>
                         </div>
@@ -145,10 +162,18 @@ foreach ($treinos as $treino) {
 
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-close"></i>',
-                                        null,
+                                        [
+                                            'treino/remove-treino',
+                                            'treino_id' => $treino_terca->id,
+                                            'usuario_id' => $usuario_id
+                                        ],
                                         [
                                             'class' => 'btn btn-xs bg-gray pull-right',
-                                            'title' => 'Remover treino deste usuário'
+                                            'title' => 'Remover treino deste usuário',
+                                            'data' => [
+                                                'confirm' => 'Tem certeza de que deseja remover este treino?',
+                                                'method' => 'post',
+                                            ],
                                         ]
                                     ) ?>
                                 </div>
@@ -169,10 +194,11 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                    <a href="#" title="Clique para mais informações"
-                                       class="add-treino-link ">
-                                        <i class="fa fa-fw fa-plus fa-2x"></i>
-                                    </a>
+                                    <?= Html::a(
+                                        '<i class="fa fa-fw fa-plus fa-2x"></i>',
+                                        ['treino/create', 'dia' => 'terça-feira'],
+                                        ['class' => 'add-treino-link']
+                                    ) ?>
                                 </h5>
                             </div>
                         </div>
@@ -191,10 +217,18 @@ foreach ($treinos as $treino) {
 
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-close"></i>',
-                                        null,
+                                        [
+                                            'treino/remove-treino',
+                                            'treino_id' => $treino_quarta->id,
+                                            'usuario_id' => $usuario_id
+                                        ],
                                         [
                                             'class' => 'btn btn-xs bg-gray pull-right',
-                                            'title' => 'Remover treino deste usuário'
+                                            'title' => 'Remover treino deste usuário',
+                                            'data' => [
+                                                'confirm' => 'Tem certeza de que deseja remover este treino?',
+                                                'method' => 'post',
+                                            ],
                                         ]
                                     ) ?>
                                 </div>
@@ -215,10 +249,11 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                    <a href="#" title="Clique para mais informações"
-                                       class="add-treino-link ">
-                                        <i class="fa fa-fw fa-plus fa-2x"></i>
-                                    </a>
+                                    <?= Html::a(
+                                        '<i class="fa fa-fw fa-plus fa-2x"></i>',
+                                        ['treino/create', 'dia' => 'quarta-feira'],
+                                        ['class' => 'add-treino-link']
+                                    ) ?>
                                 </h5>
                             </div>
                         </div>
@@ -237,10 +272,18 @@ foreach ($treinos as $treino) {
 
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-close"></i>',
-                                        null,
+                                        [
+                                            'treino/remove-treino',
+                                            'treino_id' => $treino_quinta->id,
+                                            'usuario_id' => $usuario_id
+                                        ],
                                         [
                                             'class' => 'btn btn-xs bg-gray pull-right',
-                                            'title' => 'Remover treino deste usuário'
+                                            'title' => 'Remover treino deste usuário',
+                                            'data' => [
+                                                'confirm' => 'Tem certeza de que deseja remover este treino?',
+                                                'method' => 'post',
+                                            ],
                                         ]
                                     ) ?>
                                 </div>
@@ -261,10 +304,11 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                    <a href="#" title="Clique para mais informações"
-                                       class="add-treino-link ">
-                                        <i class="fa fa-fw fa-plus fa-2x"></i>
-                                    </a>
+                                    <?= Html::a(
+                                        '<i class="fa fa-fw fa-plus fa-2x"></i>',
+                                        ['treino/create', 'dia' => 'quinta-feira'],
+                                        ['class' => 'add-treino-link']
+                                    ) ?>
                                 </h5>
                             </div>
                         </div>
@@ -283,10 +327,18 @@ foreach ($treinos as $treino) {
 
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-close"></i>',
-                                        null,
+                                        [
+                                            'treino/remove-treino',
+                                            'treino_id' => $treino_sexta->id,
+                                            'usuario_id' => $usuario_id
+                                        ],
                                         [
                                             'class' => 'btn btn-xs bg-gray pull-right',
-                                            'title' => 'Remover treino deste usuário'
+                                            'title' => 'Remover treino deste usuário',
+                                            'data' => [
+                                                'confirm' => 'Tem certeza de que deseja remover este treino?',
+                                                'method' => 'post',
+                                            ],
                                         ]
                                     ) ?>
                                 </div>
@@ -307,10 +359,11 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                    <a href="#" title="Clique para mais informações"
-                                       class="add-treino-link ">
-                                        <i class="fa fa-fw fa-plus fa-2x"></i>
-                                    </a>
+                                    <?= Html::a(
+                                        '<i class="fa fa-fw fa-plus fa-2x"></i>',
+                                        ['treino/create', 'dia' => 'sexta-feira'],
+                                        ['class' => 'add-treino-link']
+                                    ) ?>
                                 </h5>
                             </div>
                         </div>
