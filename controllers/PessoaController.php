@@ -97,7 +97,7 @@ class PessoaController extends Controller
     {
         $model = $this->findModel($id);
 
-
+        Yii::debug($model->treinos);
         if ($model->servidor) {
             return $this->render('servidor/view', [ 'model' => $model]);
         }

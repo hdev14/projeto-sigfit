@@ -227,6 +227,7 @@ $this->registerJs("
 
     </div>
     <?= $this->render('../../partial/_treinos', [
-            'model' => $model
+            'horario_treino' => $model->horario_treino,
+            'treinos' => $model->treinos,
     ]) ?>
 </div>

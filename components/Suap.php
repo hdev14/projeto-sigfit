@@ -24,7 +24,7 @@ class Suap extends Component
     {
         $this->client = new Client([
             'base_uri' => 'https://suap.ifrn.edu.br/api/v2/',
-            'timeout' => 10,
+            'timeout' => 20,
         ]);
         parent::__construct($config);
     }
