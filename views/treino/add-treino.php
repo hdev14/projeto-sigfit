@@ -9,6 +9,15 @@ use yii\helpers\ArrayHelper;
 /* @var $dia string */
 
 $this->title = "Adicionar treino";
+
+$this->registerCss(<<<CSS
+
+    small#subtitle {
+        display: block;
+    }
+
+CSS
+);
 ?>
 
 <div class="row">
@@ -18,12 +27,20 @@ $this->title = "Adicionar treino";
                 <h4 class="box-title">
                     Selecione um treino
                 </h4>
+                <small id="subtitle" class="text-muted">
+                    Nome do Treino | Dia | Exercícios
+                </small>
             </div>
             <div class="box-body">
 
-                <?php $form = Html::beginForm(['treino/add-treino'], 'post',[
-                    'id' => 'form-add-treino'
-                ]); ?>
+                <?= Html::beginForm(
+                    [
+                        'treino/add-treino',
+                        'usuario_id' => $usuario_id
+                    ],
+                    'post',
+                    ['id' => 'form-add-treino']
+                ) ?>
 
                 <div class="form-group">
                     <?= Html::label(
@@ -33,7 +50,17 @@ $this->title = "Adicionar treino";
                     ) ?>
                     <?= Html::dropDownList(
                         'treino', null,
-                        ArrayHelper::map($treinos, 'id', 'titulo'),
+                        ArrayHelper::map($treinos, 'id', function($treino) {
+                            /* @var $treino \app\models\Treino */
+                            /* @var $exercicio \app\models\Exercicio */
+                            $exercicios =  "";
+                            foreach ($treino->exercicios as $exercicio) {
+                                $exercicios .= "- $exercicio->nome ";
+                            }
+                            $exercicios = $exercicios === "" ? " | Treino sem exercícios" :
+                                $exercicios;
+                            return "$treino->titulo | $treino->dia $exercicios";
+                        }),
                         [
                             'id' => 'select-treino',
                             'class' => 'form-control',
@@ -42,7 +69,7 @@ $this->title = "Adicionar treino";
                     ) ?>
                 </div>
 
-                <?php Html::endForm(); ?>
+                <?= Html::endForm() ?>
             </div>
             <div class="box-footer clearfix">
                 <div class="pull-right">
@@ -60,7 +87,6 @@ $this->title = "Adicionar treino";
                         'class' => 'btn btn-flat bg-green'
                     ]) ?>
                 </div>
-
             </div>
         </div>
     </div>

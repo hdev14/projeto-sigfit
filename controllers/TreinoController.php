@@ -68,11 +68,19 @@ class TreinoController extends Controller
         if (is_null($usuario_id)) throw new NotFoundHttpException();
 
         $treinos = Treino::find()->all();
-        $treino_escolhido = Yii::$app->request->post('treino', null);
+        $treino_id = Yii::$app->request->post('treino', null)[0];
         $session = Yii::$app->session;
 
-        if (!is_null($treino_escolhido)) {
-
+        if ($treino_id !== null) {
+            $usuario = Pessoa::findOne($usuario_id);
+            $treino = Treino::findOne($treino_id);
+            if ($usuario !== null && $treino !== null) {
+                $this->relacionarTreinoPessoa($treino, $usuario);
+                $session->addFlash('success', 'Treino adicionado com sucesso !');
+            } else {
+                $session->addFlash('error', 'Não foi possível adicionar o treino.');
+            }
+            return $this->redirect(['pessoa/view', 'id' => $usuario->id]);
         }
 
         return $this->render('add-treino', [
