@@ -67,19 +67,22 @@ class TreinoController extends Controller
     {
         if (is_null($usuario_id)) throw new NotFoundHttpException();
 
-        $treinos = Treino::find()->all();
-        $treino_id = Yii::$app->request->post('treino', null)[0];
+        $treinos = Treino::find()->where(['dia' => $dia])->all();
+        $treino = Yii::$app->request->post('treino', null);
         $session = Yii::$app->session;
 
-        if ($treino_id !== null) {
+        if ($treino !== null) {
+
             $usuario = Pessoa::findOne($usuario_id);
-            $treino = Treino::findOne($treino_id);
+            $treino_escolhido = Treino::findOne($treino);
+
             if ($usuario !== null && $treino !== null) {
-                $this->relacionarTreinoPessoa($treino, $usuario);
+                $this->relacionarTreinoPessoa($treino_escolhido, $usuario);
                 $session->addFlash('success', 'Treino adicionado com sucesso !');
             } else {
                 $session->addFlash('error', 'Não foi possível adicionar o treino.');
             }
+
             return $this->redirect(['pessoa/view', 'id' => $usuario->id]);
         }
 
@@ -271,17 +274,17 @@ class TreinoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    protected function relacionarTreinoPessoa(Treino $model, Pessoa $usuario)
+    protected function relacionarTreinoPessoa(Treino $treino, Pessoa $usuario)
     {
         /* @var pessoaTreino PessoaTreino */
         foreach ($usuario->pessoaTreinos as $pessoaTreino) {
-            if ($pessoaTreino->treino->dia === $model->dia)
+            if ($pessoaTreino->treino->dia === $treino->dia)
                 $pessoaTreino->delete();
         }
 
-        $model->generico = false;
-        $model->link('pessoas', $usuario);
-        $model->save();
+        $treino->generico = false;
+        $treino->link('pessoas', $usuario);
+        $treino->save();
     }
 
     protected function relacionarTreinoExercicio(Treino $model, array $exercicios) {

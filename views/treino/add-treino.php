@@ -64,7 +64,8 @@ CSS
                         [
                             'id' => 'select-treino',
                             'class' => 'form-control',
-                            'multiple' => true,
+                            'required' => 'required',
+                            'prompt' => 'Selecione o treino por nome, dia e exercícios.'
                         ]
                     ) ?>
                 </div>
@@ -74,7 +75,7 @@ CSS
             <div class="box-footer clearfix">
                 <div class="pull-right">
                     <?= Html::a(
-                        'Registrar',
+                        'Registrar novo',
                         [
                             'treino/create',
                             'usuario_id' => $usuario_id,
