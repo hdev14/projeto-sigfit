@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Pessoa;
 use app\models\PessoaTreino;
 use Yii;
 use app\models\Exercicio;
@@ -62,6 +63,25 @@ class TreinoController extends Controller
         ]);
     }
 
+    public function actionAddTreino($usuario_id = null, $dia = null)
+    {
+        if (is_null($usuario_id)) throw new NotFoundHttpException();
+
+        $treinos = Treino::find()->all();
+        $treino_escolhido = Yii::$app->request->post('treino', null);
+        $session = Yii::$app->session;
+
+        if (!is_null($treino_escolhido)) {
+
+        }
+
+        return $this->render('add-treino', [
+            'treinos' => $treinos,
+            'usuario_id' => $usuario_id,
+            'dia' => $dia
+        ]);
+    }
+
     public function actionRemoveTreino($treino_id = null, $usuario_id = null)
     {
         $pessoa_treino = PessoaTreino::find()->where(
@@ -104,16 +124,21 @@ class TreinoController extends Controller
         ]);
     }
 
-    public function actionCreate()
+    public function actionCreate($usuario_id = null, $dia = null)
     {
         $model = new Treino();
+        $usuario = Pessoa::findOne($usuario_id);
         $post = Yii::$app->request->post();
         $exercicios = Yii::$app->request->post('exercicio', null);
         $session = Yii::$app->session;
 
         if ($model->load($post)) {
             if ($model->save()) {
+
                 $session->addFlash('success', 'Treino registrado com sucesso !');
+
+                if ($usuario !== null)
+                    $this->relacionarTreinoPessoa($model, $usuario);
 
                 if ($exercicios !== null)
                     $this->relacionarTreinoExercicio($model, $exercicios);
@@ -123,6 +148,11 @@ class TreinoController extends Controller
                 $session->addFlash('error', "Não foi possível registra o treino.");
             }
         }
+
+        if ($usuario !== null)
+            $model->genero = $usuario->sexo === 'masculino' ? 'm' : 'f';
+
+        $model->dia = $dia;
 
         return $this->render('create', [
             'model' => $model,
@@ -231,6 +261,19 @@ class TreinoController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function relacionarTreinoPessoa(Treino $model, Pessoa $usuario)
+    {
+        /* @var pessoaTreino PessoaTreino */
+        foreach ($usuario->pessoaTreinos as $pessoaTreino) {
+            if ($pessoaTreino->treino->dia === $model->dia)
+                $pessoaTreino->delete();
+        }
+
+        $model->generico = false;
+        $model->link('pessoas', $usuario);
+        $model->save();
     }
 
     protected function relacionarTreinoExercicio(Treino $model, array $exercicios) {

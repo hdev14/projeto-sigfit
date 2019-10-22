@@ -124,12 +124,6 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                    <?= Html::a(
-                                        '<i class="fa fa-fw fa-plus fa-2x"></i>',
-                                        ['treino/create', 'dia' => 'segunda-feira'],
-                                        ['class' => 'add-treino-link']
-                                    ) ?>
-
                                     <!--TODO Fazer modal para adicionar treino escolhendo primeiro
                                     os treinos genericos, depois tendo a opção para treinos
                                     personalizados.-->
@@ -143,6 +137,19 @@ foreach ($treinos as $treino) {
                                     ]);
 
                                     Modal::end();-->
+
+                                    <?= Html::a(
+                                        '<i class="fa fa-fw fa-plus fa-2x"></i>',
+                                        [
+                                            'treino/add-treino',
+                                            'usuario_id' => $usuario_id,
+                                            'dia' => 'segunda-feira'
+                                        ],
+                                        [
+                                            'class' => 'add-treino-link',
+                                            'title' => 'Adicionar treino'
+                                        ]
+                                    ) ?>
 
                                 </h5>
                             </div>
@@ -178,10 +185,14 @@ foreach ($treinos as $treino) {
                                     ) ?>
                                 </div>
                                 <h5>
-                                    <a href="#"  title="Clique para mais informações"
-                                       class="titulo-treino-link">
-                                        <strong><?= $treino_terca->titulo ?></strong>
-                                    </a>
+                                    <?= Html::a(
+                                        "<strong>$treino_terca->titulo</strong>",
+                                        ['treino/view', 'id' => $treino_terca->id],
+                                        [
+                                            'class' => 'titulo-treino-link',
+                                            'title' => 'Clique para mais detalhes',
+                                        ]
+                                    ) ?>
                                 </h5>
                             </div>
 
@@ -194,10 +205,17 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                    <?= Html::a(
+                                   <?= Html::a(
                                         '<i class="fa fa-fw fa-plus fa-2x"></i>',
-                                        ['treino/create', 'dia' => 'terça-feira'],
-                                        ['class' => 'add-treino-link']
+                                        [
+                                            'treino/add-treino',
+                                            'usuario_id' => $usuario_id,
+                                            'dia' => 'terça-feira'
+                                        ],
+                                        [
+                                            'class' => 'add-treino-link',
+                                            'title' => 'Adicionar treino'
+                                        ]
                                     ) ?>
                                 </h5>
                             </div>
@@ -251,8 +269,15 @@ foreach ($treinos as $treino) {
                                 <h5 class="text-center">
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-plus fa-2x"></i>',
-                                        ['treino/create', 'dia' => 'quarta-feira'],
-                                        ['class' => 'add-treino-link']
+                                        [
+                                            'treino/add-treino',
+                                            'usuario_id' => $usuario_id,
+                                            'dia' => 'quarta-feira'
+                                        ],
+                                        [
+                                            'class' => 'add-treino-link',
+                                            'title' => 'Adicionar treino'
+                                        ]
                                     ) ?>
                                 </h5>
                             </div>
@@ -306,8 +331,15 @@ foreach ($treinos as $treino) {
                                 <h5 class="text-center">
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-plus fa-2x"></i>',
-                                        ['treino/create', 'dia' => 'quinta-feira'],
-                                        ['class' => 'add-treino-link']
+                                        [
+                                            'treino/add-treino',
+                                            'usuario_id' => $usuario_id,
+                                            'dia' => 'quinta-feira'
+                                        ],
+                                        [
+                                            'class' => 'add-treino-link',
+                                            'title' => 'Adicionar treino'
+                                        ]
                                     ) ?>
                                 </h5>
                             </div>
@@ -361,8 +393,15 @@ foreach ($treinos as $treino) {
                                 <h5 class="text-center">
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-plus fa-2x"></i>',
-                                        ['treino/create', 'dia' => 'sexta-feira'],
-                                        ['class' => 'add-treino-link']
+                                        [
+                                            'treino/add-treino',
+                                            'usuario_id' => $usuario_id,
+                                            'dia' => 'sexta-feira'
+                                        ],
+                                        [
+                                            'class' => 'add-treino-link',
+                                            'title' => 'Adicionar treino'
+                                        ]
                                     ) ?>
                                 </h5>
                             </div>
