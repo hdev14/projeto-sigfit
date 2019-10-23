@@ -18,7 +18,6 @@ $this->registerCss(<<<CSS
         display: block;
     }    
 
-
 CSS
 );
 

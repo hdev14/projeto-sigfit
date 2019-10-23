@@ -27,12 +27,21 @@ $this->registerJs(<<<JS
     }
 JS
 );
+
+$this->registerCss(<<<CSS
+
+       small#subtitle-exercicio {
+        display: block;
+       } 
+
+CSS
+);
 ?>
 
 <div class="row">
     <div class="col-md-6">
         <div class="box box-success">
-            <div class="box-header">
+            <div class="box-header with-border">
                 <h4 class="box-title">
                     <?= $model->titulo ?>
                     <?php if ($model->generico): ?>
@@ -41,20 +50,19 @@ JS
                 </h4>
                 <div class="box-tools pull-right">
                     <?php $modal = Modal::begin([
-                        'header' => 'Preenchar os campos corretamente',
+                        'header' => '<b>Preenchar os campos corretamente</b>',
                         'footer' =>
                             Html::submitButton('Confirmar', [
-                                'class' => 'btn bg-green btn-flat btn-sm',
+                                'class' => 'btn bg-green',
                                 'form' => 'form-editar-treino',
                             ])
                         ,
                         'toggleButton' => [
-                            'label' => "<i class='fa fa-fw fa-pencil'></i>",
+                            'label' => "<i class='fa fa-fw fa-pencil fa-lg'></i>",
                             'class' => 'btn btn-box-tool',
                             'title' => 'Editar treino'
                         ],
                     ]); ?>
-
                     <?php $form = ActiveForm::begin([
                         'action' => ['treino/update', 'id' => $model->id],
                         'id' => 'form-editar-treino'
@@ -79,13 +87,8 @@ JS
                     ) ?>
 
                     <?= $form->field($model, 'genero')->radioList(
-                        [
-                            'm' => 'Masculino',
-                            'f' => 'Feminino'
-                        ],
-                        [
-                            'title' => 'Escolha o gênero que este treino será destinado'
-                        ]
+                        ['m' => 'Masculino', 'f' => 'Feminino'],
+                        ['title' => 'Escolha o gênero que este treino será destinado']
                     ) ?>
 
                     <?= $form->field($model, 'nivel')->dropDownList(
@@ -94,17 +97,14 @@ JS
                             'intermediario' => 'Intermediario',
                             'avançado' => 'Avançado',
                         ],
-                        [
-                            'prompt' => 'Escolha um nível que você considera adequado para este treino'
-                        ]
+                        ['prompt' => 'Escolha um nível que você considera adequado para este treino']
                     ) ?>
 
                     <?php ActiveForm::end(); ?>
-
                     <?php Modal::end(); ?>
 
                     <?= Html::a(
-                        '<i class="fa fa-trash fa-lg"></i>',
+                        '<i class="fa fa-trash fa-fw fa-lg"></i>',
                         ['delete', 'id' => $model->id],
                         [
                             'class' => 'btn btn-box-tool',
@@ -134,6 +134,7 @@ JS
                         <?php elseif ($model->nivel == 'avançado'): ?>
                             <span class="badge bg-red">Avançado</span>
                         <?php endif; ?>
+
                         <b>Nível do treino</b>
                     </li>
                     <li class="list-group-item">
@@ -158,19 +159,22 @@ JS
             </div>
             <div class="box-footer clearfix no-border">
                 <div class="clearfix">
-                    <h4 class="pull-left">Exercicios</h4>
+                    <h4 class="pull-left">
+                        Lista de exercícios
+                    </h4>
+
                     <!--MODAL PARA ADIÇÃO DE EXERCÍCIO-->
                     <?php $modal = Modal::begin([
                         'header' => 'Preenchar os campos corretamente',
                         'footer' =>
                             Html::submitButton('Confirmar', [
-                                'class' => 'btn bg-green btn-flat btn-sm',
+                                'class' => 'btn bg-green',
                                 'form' => 'form-add-exercicio',
                             ])
                         ,
                         'toggleButton' => [
-                            'label' => '<i class="fa fa-fw fa-plus"></i> Exercício',
-                            'class' => 'btn bg-green btn-flat btn-sm pull-right',
+                            'label' => "<i class='fa fa-fw fa-plus'></i> Adicionar Exercício",
+                            'class' => 'btn bg-green btn-sm pull-right',
                             'title' => 'Adicionar exercício ao treino'
                         ]
                     ]); ?>
@@ -217,6 +221,7 @@ JS
 
                     <?php Modal::end(); ?>
                     <!--MODAL PARA ADIÇÃO DE EXERCÍCIO-->
+
                 </div>
                 <?php if ($model->treinoExercicios !== []): ?>
                     <table class="table table-hover table-bordered">
@@ -229,12 +234,12 @@ JS
                             <th style="width: 30px"></th>
                         </tr>
                         <?php foreach ($model->treinoExercicios as $treinoExercicio): ?>
-                            <!--MODAL PARA ADIÇÃO DE TREINO-->
+                            <!--MODAL PARA EDIÇÃO DO NÚMERO DE REPETIÇÕES-->
                             <?php $modal = Modal::begin([
-                                'header' => 'Preenchar o campo corretamente',
+                                'header' => '<b>Preenchar o campo corretamente</b>',
                                 'footer' =>
                                     Html::submitButton('Confirmar', [
-                                        'class' => 'btn bg-green btn-flat btn-sm',
+                                        'class' => 'btn bg-green',
                                         'form' => 'form-repeticao-exercicio' . $treinoExercicio->exercicio_id,
                                     ])
                                 ,
@@ -266,9 +271,8 @@ JS
                             </div>
 
                             <?= Html::endForm() ?>
-
                             <?php Modal::end(); ?>
-                            <!--MODAL PARA ADIÇÃO DE TREINO-->
+                            <!--MODAL PARA EDIÇÃO DO NÚMERO DE REPETIÇÕES-->
 
                             <tr>
                                 <td><?= $treinoExercicio->exercicio->nome ?></td>
@@ -280,7 +284,13 @@ JS
                                         <span class="badge bg-aqua">Anaeróbico</span>
                                     <?php endif; ?>
                                 </td>
-                                <td><?= $treinoExercicio->exercicio->equipamento->nome ?></td>
+                                <td>
+                                    <?php if ($treinoExercicio->exercicio->equipamento !== null): ?>
+                                        <?= $treinoExercicio->exercicio->equipamento->nome ?>
+                                    <?php else: ?>
+                                        Sem equipamento
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <div class="dropdown">
                                         <?= Html::button('<i class="fa fa-bars fa-fw"></i>', [

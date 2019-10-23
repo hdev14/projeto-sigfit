@@ -9,6 +9,7 @@ $this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Equipamentos', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="equipamento-create">
 
     <?= $this->render('_form', [

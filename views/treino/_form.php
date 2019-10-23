@@ -14,6 +14,9 @@ $this->registerCss(<<<CSS
     #add-exercicio {
         margin-bottom: 10px;
     }
+    .box-header small {
+        display: block;
+    }
 CSS
 );
 
@@ -57,7 +60,14 @@ JS
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
         <div class="box box-success">
-            <div class="box-header"></div>
+            <div class="box-header">
+                <h4 class="box-title">
+                    Registrar treino
+                </h4>
+                <small class="text-muted">
+                    Preencha os campos corretamente
+                </small>
+            </div>
             <div class="box-body">
                 <?php $form = ActiveForm::begin([
                     'id' => 'form-treino'
@@ -78,19 +88,12 @@ JS
                                 'quinta-feira' => 'Quinta-feira',
                                 'sexta-feira' => 'Sexta-feira',
                             ],
-                            [
-                                'prompt' => 'Escolha um dia que você considera adequado para este treino'
-                            ]
+                            ['prompt' => 'Escolha um dia que você considera adequado para este treino']
                         ) ?>
 
                         <?= $form->field($model, 'genero')->radioList(
-                            [
-                                'm' => 'Masculino',
-                                'f' => 'Feminino'
-                            ],
-                            [
-                                'title' => 'Escolha o gênero que este treino será destinado'
-                            ]
+                            ['m' => 'Masculino', 'f' => 'Feminino'],
+                            ['title' => 'Escolha o gênero que este treino será destinado']
                         ) ?>
 
                         <?= $form->field($model, 'nivel')->dropDownList(
@@ -99,14 +102,12 @@ JS
                                 'intermediario' => 'Intermediario',
                                 'avançado' => 'Avançado',
                             ],
-                            [
-                                'prompt' => 'Escolha um nível que você considera adequado para este treino'
-                            ]
+                            ['prompt' => 'Escolha um nível que você considera adequado para este treino']
                         ) ?>
                     </div>
                     <div class="col-md-6">
                         <div class="clearfix">
-                            <strong>Adicionar exercício para o treino (opcional)</strong>
+                            <strong>Adicione um exercício para o treino (opcional)</strong>
                             <?= Html::a('<i class="fa fa-fw fa-plus"></i>', '#', [
                                 'id' => 'add-exercicio',
                                 'class' => 'btn bg-green btn-sm pull-right'
@@ -149,7 +150,7 @@ JS
             <div class="box-footer clearfix no-border">
                 <?= Html::submitButton('Confirmar', [
                     'form' => 'form-treino',
-                    'class' => 'btn bg-green btn-flat pull-right'
+                    'class' => 'btn bg-green pull-right'
                 ]) ?>
             </div>
         </div>

@@ -10,6 +10,8 @@ use app\models\TreinoExercicio;
 use app\models\Treino;
 use app\models\TreinoSearch;
 use yii\data\Pagination;
+use yii\helpers\Html;
+use yii\helpers\HtmlPurifier;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -195,8 +197,10 @@ class TreinoController extends Controller
 
         $model_treino_exercicio = new TreinoExercicio();
         $model_treino_exercicio->treino_id = $treino_id;
-        $model_treino_exercicio->exercicio_id = $post['add-exercicio-id'];
-        $model_treino_exercicio->numero_repeticao = $post['add-exercicio-repeticao'];
+        $model_treino_exercicio->exercicio_id =
+            filter_input(INPUT_POST, 'add-exercicio-id', FILTER_SANITIZE_NUMBER_INT);
+        $model_treino_exercicio->numero_repeticao =
+            filter_input(INPUT_POST, 'add-exercicio-repeticao', FILTER_SANITIZE_STRING);
 
         if ($model_treino_exercicio->save())
             $session->addFlash('success', 'Exercício adicionado ao treino !');
@@ -231,11 +235,12 @@ class TreinoController extends Controller
             ['and', 'treino_id = :treino_id', 'exercicio_id = :exercicio_id'],
             [':treino_id' => $treino_id, ':exercicio_id' => $exercicio_id]
         )->one();
-        $session = Yii::$app->session;
-        $novo_numero_repeticao = Yii::$app->request->post('TreinoExercicio')['numero_repeticao'];
 
         if (is_null($model_treino_exercicio)) throw new NotFoundHttpException();
 
+        $session = Yii::$app->session;
+        $post_numero_repeticao = Yii::$app->request->post('TreinoExercicio')['numero_repeticao'];
+        $novo_numero_repeticao = filter_var($post_numero_repeticao, FILTER_SANITIZE_STRING);
         $model_treino_exercicio->numero_repeticao = $novo_numero_repeticao;
 
         if ($model_treino_exercicio->save())

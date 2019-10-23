@@ -4,8 +4,9 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Treino */
+/* @var $exercicios \yii\db\ActiveRecord[] */
 
-$this->title = 'Registrar Treino';
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Treinos', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
