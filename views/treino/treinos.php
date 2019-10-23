@@ -44,7 +44,7 @@ CSS
             '<i class="fa fa-plus"></i> Novo Treino',
             ['treino/create'],
             [
-                'class' => 'btn btn-flat bg-green btn-sm pull-right',
+                'class' => 'btn bg-green btn-sm pull-right',
                 'title' => 'Novo treino'
             ]
         ) ?>
@@ -57,6 +57,7 @@ CSS
                 <div class="box-header">
                     <h4 class="box-title">
                         <?= $treino->titulo ?>
+
                         <?php if ($treino->nivel == 'iniciante'): ?>
                             <span class="badge bg-green">
                                 Iniciante
@@ -70,14 +71,15 @@ CSS
                                 Avançado
                             </span>
                         <?php endif; ?>
+
                     </h4>
                     <div class="box-tools pull-right">
                         <?= Html::a(
-                            '<i class="fa fa-fw  fa-gears"></i>',
+                            '<i class="fa fa-fw fa-bars"></i>',
                             ['treino/view', 'id' => $treino->id],
                             [
                                 'class' => 'btn btn-box-tool',
-                                'title' => 'configurações'
+                                'title' => 'detalhes'
                             ]
                         ) ?>
                         <?= Html::button('<i class="fa fa-minus"></i>', [
