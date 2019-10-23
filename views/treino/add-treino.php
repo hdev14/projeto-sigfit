@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 /* @var $usuario_id integer */
 /* @var $dia string */
 
-$this->title = "Adicionar treino";
+$this->title = '';
 
 $this->registerCss(<<<CSS
 
@@ -25,10 +25,10 @@ CSS
         <div class="box box-success">
             <div class="box-header">
                 <h4 class="box-title">
-                    Selecione um treino
+                    Adicionar treino
                 </h4>
                 <small id="subtitle" class="text-muted">
-                    Nome do Treino | Dia | Exercícios
+                    Selecione um treino por: nome, dia e exercícios
                 </small>
             </div>
             <div class="box-body">
@@ -57,7 +57,7 @@ CSS
                             foreach ($treino->exercicios as $exercicio) {
                                 $exercicios .= "- $exercicio->nome ";
                             }
-                            $exercicios = $exercicios === "" ? " | Treino sem exercícios" :
+                            $exercicios = $exercicios === "" ? " - Treino sem exercícios" :
                                 $exercicios;
                             return "$treino->titulo | $treino->dia $exercicios";
                         }),

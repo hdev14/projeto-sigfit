@@ -144,7 +144,7 @@ $this->registerJs("
                                     'avaliacao/create',
                                     'usuario_id' => $model->id
                                 ], [
-                                    'class' => 'btn bg-green btn-sm btn-flat',
+                                    'class' => 'btn bg-green btn-sm',
                                     'style' => 'margin-left: 5px',
                                     'title' => 'Nova avaliação física'
                                 ]) ?>
@@ -213,7 +213,9 @@ $this->registerJs("
         <?php endif; ?>
     </div>
     <?= $this->render('../../partial/_treinos', [
-            'model' => $model,
+        'horario_treino' => $model->horario_treino,
+        'treinos' => $model->treinos,
+        'usuario_id' => $model->id,
     ]) ?>
 </div>
 

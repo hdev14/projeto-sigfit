@@ -251,10 +251,14 @@ foreach ($treinos as $treino) {
                                     ) ?>
                                 </div>
                                 <h5>
-                                    <a href="#"  title="Clique para mais informações"
-                                       class="titulo-treino-link">
-                                        <strong><?= $treino_quarta->titulo ?></strong>
-                                    </a>
+                                    <?= Html::a(
+                                        "<strong>$treino_quarta->titulo</strong>",
+                                        ['treino/view', 'id' => $treino_quarta->id],
+                                        [
+                                            'class' => 'titulo-treino-link',
+                                            'title' => 'Clique para mais detalhes',
+                                        ]
+                                    ) ?>
                                 </h5>
                             </div>
 
@@ -313,10 +317,14 @@ foreach ($treinos as $treino) {
                                     ) ?>
                                 </div>
                                 <h5>
-                                    <a href="#"  title="Clique para mais informações"
-                                       class="titulo-treino-link">
-                                        <strong><?= $treino_quinta->titulo ?></strong>
-                                    </a>
+                                    <?= Html::a(
+                                        "<strong>$treino_quinta->titulo</strong>",
+                                        ['treino/view', 'id' => $treino_quinta->id],
+                                        [
+                                            'class' => 'titulo-treino-link',
+                                            'title' => 'Clique para mais detalhes',
+                                        ]
+                                    ) ?>
                                 </h5>
                             </div>
 
@@ -375,10 +383,14 @@ foreach ($treinos as $treino) {
                                     ) ?>
                                 </div>
                                 <h5>
-                                    <a href="#"  title="Clique para mais informações"
-                                       class="titulo-treino-link">
-                                        <strong><?= $treino_sexta->titulo ?></strong>
-                                    </a>
+                                    <?= Html::a(
+                                        "<strong>$treino_sexta->titulo</strong>",
+                                        ['treino/view', 'id' => $treino_sexta->id],
+                                        [
+                                            'class' => 'titulo-treino-link',
+                                            'title' => 'Clique para mais detalhes',
+                                        ]
+                                    ) ?>
                                 </h5>
                             </div>
 
