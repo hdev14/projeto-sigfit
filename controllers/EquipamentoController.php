@@ -96,18 +96,19 @@ class EquipamentoController extends Controller
     {
         $model_equipamento = $this->findModel($id);
         $session = Yii::$app->session;
+        $post = Yii::$app->request->post();
 
-        if ($model_equipamento->load(Yii::$app->request->post())) {
+        if ($model_equipamento->load($post)) {
 
             $model_equipamento->image_file =
                 UploadedFile::getInstance($model_equipamento, 'image_file');
 
-            if ($model_equipamento->upload() && $model_equipamento->save()) {
+            if ($model_equipamento->upload() && $model_equipamento->save())
                 $session->addFlash('success', 'Equipamento atualizado com sucesso !');
-            } else {
+            else
                 $session->addFlash('error', 'Não foi possível atualizar o equipamento.');
-            }
         }
+
         return $this->redirect(['view', 'id' => $model_equipamento->id]);
     }
 
@@ -117,7 +118,7 @@ class EquipamentoController extends Controller
         $session = Yii::$app->session;
 
         foreach ($model_equipamento->exercicios as $exercicio)
-            $result = $exercicio->delete();
+            $exercicio->delete();
 
         if ($model_equipamento->delete())
             $session->addFlash('success', 'Equipamento excluído com sucesso !');
@@ -150,6 +151,4 @@ class EquipamentoController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-
 }

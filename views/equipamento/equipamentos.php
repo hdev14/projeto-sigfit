@@ -15,7 +15,7 @@ use yii\widgets\LinkPager;
 
 $this->title = "Equipamentos";
 
-$this->registerCss("
+$this->registerCss(<<<CSS
     
     div.header { margin-bottom: 10px; }
     
@@ -28,7 +28,9 @@ $this->registerCss("
         top: 10px;
         left: 10px;
     }
-");
+
+CSS
+);
 
 ?>
 <div class="header row">
@@ -36,7 +38,7 @@ $this->registerCss("
         <?= Html::a(
             '<i class="fa fa-plus"></i> Novo Equipamento',
             ['equipamento/create'],
-            ['class' => 'btn bg-green btn-flat btn-sm pull-right']
+            ['class' => 'btn bg-green btn-sm pull-right']
         ) ?>
     </div>
 </div>
@@ -44,13 +46,14 @@ $this->registerCss("
     <?php foreach ($equipamentos as $equipamento): ?>
         <div class="col-md-3">
             <div class="thumbnail">
+
                 <?php if ($equipamento->defeito): ?>
                     <span class="badge bg-red">com defeito</span>
-                <?php else: ?>
-                    <span class="badge bg-green">sem defeito</span>
                 <?php endif; ?>
+
                 <img src="<?= Url::to('@web'.$equipamento->imagem ) ?>"
                      alt="" class="img-responsive">
+
                 <div class="caption">
                     <h4><?= $equipamento->nome ?></h4>
                     <p class="text-muted equipamento-desc"><?=
@@ -65,6 +68,7 @@ $this->registerCss("
                             ]) ?>
                     </p>
                 </div>
+
             </div>
         </div>
     <?php endforeach; ?>

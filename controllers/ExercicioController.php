@@ -31,10 +31,6 @@ class ExercicioController extends Controller
         ];
     }
 
-    /**
-     * Lists all Exercicio models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new ExercicioSearch();
@@ -52,13 +48,14 @@ class ExercicioController extends Controller
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
-            'pageSize' => 9,
+            'pageSize' => 12,
         ]);
 
         $exercicios = $query->orderBy('nome')
-                            ->offset($pagination->offset)
-                            ->limit($pagination->limit)
-                            ->all();
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
         return $this->render('exercicios', [
             'exercicios' => $exercicios,
             'pagination' => $pagination
@@ -75,9 +72,9 @@ class ExercicioController extends Controller
         ]);
 
         $exercicios_aerobicos = $query->orderBy('nome')
-                                        ->offset($pagination->offset)
-                                        ->limit($pagination->limit)
-                                        ->all();
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         return $this->render('exercicios', [
             'exercicios' => $exercicios_aerobicos,
@@ -95,9 +92,9 @@ class ExercicioController extends Controller
         ]);
 
         $exercicios_anaerobicos = $query->orderBy('nome')
-                                        ->offset($pagination->offset)
-                                        ->limit($pagination->limit)
-                                        ->all();
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         return $this->render('exercicios', [
             'exercicios' => $exercicios_anaerobicos,
@@ -116,17 +113,22 @@ class ExercicioController extends Controller
     public function actionCreate($equipamento_id = null)
     {
         $model = new Exercicio();
+        $session = Yii::$app->session;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                $session->addFlash('success', 'Exercício registrado com sucesso !');
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $session->addFlash('error', 'Não foi possível registrar o exercício.');
+            }
         }
 
-        Yii::debug($equipamento_id);
+        $model->equipamento_id = $equipamento_id;
 
         return $this->render('create', [
             'model' => $model,
             'equipamentos' => Equipamento::find()->all(),
-            'equipamento_id' => $equipamento_id
         ]);
     }
 
@@ -136,11 +138,10 @@ class ExercicioController extends Controller
         $session = Yii::$app->session;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model->save()) {
+            if ($model->save())
                 $session->addFlash('success', 'Exercício atualizado com sucesso !');
-            } else {
+            else
                 $session->addFlash('error', 'Não foi possível editar o exercício.');
-            }
         }
 
         return $this->redirect(['exercicio/view', 'id' => $model->id]);
@@ -148,8 +149,13 @@ class ExercicioController extends Controller
 
     public function actionDelete($id)
     {
+        $exercicio = $this->findModel($id);
         $session = Yii::$app->session;
-        if ($this->findModel($id)->delete())
+
+        foreach ($exercicio->treinoExercicios as $treinoExercicio)
+            $treinoExercicio->delete();
+
+        if ($exercicio->delete())
             $session->addFlash('success', 'Exercício excluído com sucesso !');
         else
             $session->addFlash('error', "Não foi possível excluir o exercício.");
@@ -157,13 +163,6 @@ class ExercicioController extends Controller
         return $this->redirect(['exercicios']);
     }
 
-    /**
-     * Finds the Exercicio model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Exercicio the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Exercicio::findOne($id)) !== null) {

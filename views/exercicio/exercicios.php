@@ -8,8 +8,7 @@ use yii\widgets\LinkPager;
 /* @var $exercicio app\models\Exercicio */
 /* @var $pagination yii\data\Pagination */
 
-
-$this->title =  "Exercícios";
+$this->title = "Exercícios";
 
 $this->registerCss("
     div.links {
@@ -50,14 +49,14 @@ $this->registerCss("
         <?= Html::a(
             '<i class="fa fa-plus"></i> Novo Exercício',
             ['exercicio/create'],
-            ['class' => 'btn bg-green btn-flat btn-sm pull-right']
+            ['class' => 'btn bg-green btn-sm pull-right']
         ) ?>
     </div>
 </div>
 <div class="row">
     <?php foreach($exercicios as $exercicio): ?>
         <div class="col-md-3">
-            <div class="box">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h4 class="box-title exercicio-titulo"
                         title="<?= $exercicio->nome ?>">
@@ -84,9 +83,7 @@ $this->registerCss("
                     <?= Html::a(
                         'Mais informações',
                         ['exercicio/view', 'id' => $exercicio->id],
-                        [
-                            'class' => 'btn bg-gray btn-xs pull-right'
-                        ]
+                        ['class' => 'btn bg-gray btn-xs pull-right']
                     ) ?>
                 </div>
             </div>
@@ -101,6 +98,5 @@ $this->registerCss("
         ]) ?>
     </div>
 </div>
-<div class="row"></div>
 
 

@@ -38,10 +38,10 @@ $this->registerCss("
 
             <!--MODAL EDITAR EXERCÍCIO-->
             <?php $modal = Modal::begin([
-                'header' => 'Preenchar os campos corretamente',
+                'header' => '<b>Preenchar os campos corretamente</b>',
                 'footer' =>
                     Html::submitButton('Confirmar', [
-                        'class' => 'btn bg-green btn-flat btn-sm',
+                        'class' => 'btn bg-green btn-flat',
                         'form' => 'modal-form-editar',
                     ])
                 ,

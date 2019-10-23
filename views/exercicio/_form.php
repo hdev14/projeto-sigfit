@@ -18,12 +18,15 @@ use yii\widgets\ActiveForm;
         <div class="box box-success">
             <div class="box-header with-border">
                 <h4 class="box-title">
-                    Preencha os campos corretamente
+                    Registrar exercício
                 </h4>
+                <p class="text-muted">
+                    Preencha os campos corretamente
+                </p>
             </div>
             <div class="box-body">
 
-                <?php $form = ActiveForm::begin(); ?>
+                <?php $form = ActiveForm::begin([ 'id' => 'form-exercicio']); ?>
 
                 <?= $form->field($model, 'nome')->textInput([
                     'maxlength' => true,
@@ -32,10 +35,7 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'equipamento_id')->dropDownList(
                     ArrayHelper::map($equipamentos, 'id', 'nome'),
-                    [
-                        'prompt' => 'Escolha o equipamento que este exercício pertence',
-                        'value' => $equipamento_id
-                    ]
+                    ['prompt' => 'Escolha o equipamento que este exercício pertence']
                 ) ?>
 
                 <?= $form->field($model, 'tipo')->radioList([
@@ -49,13 +49,17 @@ use yii\widgets\ActiveForm;
                 ]) ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Confirmar', [
-                        'class' => 'btn bg-green btn-flat pull-right'
-                    ]) ?>
+
                 </div>
 
                 <?php ActiveForm::end(); ?>
 
+            </div>
+            <div class="box-footer clearfix">
+                <?= Html::submitButton('Confirmar', [
+                    'class' => 'btn bg-green pull-right',
+                    'form' => 'form-exercicio',
+                ]) ?>
             </div>
         </div>
     </div>

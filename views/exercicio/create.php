@@ -7,16 +7,16 @@ use yii\helpers\Html;
 /* @var $equipamentos yii\db\ActiveRecord[] */
 /* @var $equipamento_id int */
 
-$this->title = 'Registrar novo exercício';
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Exercicios', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="exercicio-create">
 
     <?= $this->render('_form', [
         'model' => $model,
         'equipamentos' => $equipamentos,
-        'equipamento_id' => $equipamento_id
     ]) ?>
 
 </div>

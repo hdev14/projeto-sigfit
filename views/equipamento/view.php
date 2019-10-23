@@ -16,6 +16,16 @@ $this->title = 'Informações do Equipamento';
 \yii\web\YiiAsset::register($this);
 
 $this->registerJsFile('@web/js/upload-equipamento.js');
+
+$this->registerCss(<<<CSS
+
+    .box-header small {
+        display: block; 
+    }
+
+CSS
+);
+
 ?>
 
 <div class="row">
@@ -28,6 +38,14 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                     <?php endif; ?>
                 </h4>
                 <div class="box-tools pull-right">
+
+                    <?= Html::a(
+                        ($model->defeito) ? 'Desmarcar defeito' : 'Marcar defeito',
+                        ['equipamento/defeito', 'id' => $model->id],
+                        [
+                            'class' => ($model->defeito) ? 'btn btn-xs bg-gray' : 'btn btn-xs bg-red',
+                            'title' => 'Marcar equipamento com defeito',
+                        ]) ?>
 
                     <!-- MODAL FORM EDITAR EQUIPAMENTO-->
                     <?php $modal = Modal::begin([
@@ -90,6 +108,7 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                             ],
                             'type' => 'button'
                         ]) ?>
+
                 </div>
             </div>
             <div class="box-body">
@@ -108,34 +127,26 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                     </div>
                 </div>
             </div>
-            <div class="box-footer clearfix no-border">
-                <?= Html::a(
-                    ($model->defeito) ? 'Desmarca defeito' : 'Marcar defeito',
-                    ['equipamento/defeito', 'id' => $model->id],
-                    [
-                        'class' => 'btn btn-sm btn-flat bg-red pull-right',
-                        'title' => 'Marcar equipamento com defeito',
-                    ]) ?>
-            </div>
         </div>
     </div>
     <div class="col-md-5">
         <div class="box box-success">
-            <div class="box-header no-border">
+            <div class="box-header with-border">
                 <h4 class="box-title">
-                    Exercícios Relacionados
+                    Exercícios
                 </h4>
-                <div class="box-tools">
-                    <!-- TODO imp. modal para adição de novos exercício
-                    relacionados com equipamento. -->
+                <small class="text-muted">
+                    Exercícios específicos deste equipamento
+                </small>
+                <div class="box-tools pull-right">
                     <?= Html::a(
-                        '<i class="fa fa-fw fa-plus"></i> Adicionar exercício',
+                        '<i class="fa fa-fw fa-plus"></i> Adicionar Exercício',
                         [
                             'exercicio/create',
                             'equipamento_id' => $model->id,
                         ],
                         [
-                            'class' => "btn btn-box-tool bg-green btn-flat"
+                            'class' => "btn btn-sm bg-green"
                         ]
                     ) ?>
                 </div>

@@ -1,25 +1,25 @@
 <?php
 
+/* @var $this \yii\web\View*/
+
 use yii\widgets\Breadcrumbs;
+use yii\helpers\Inflector;
 
 ?>
 <div class="content-wrapper">
     <section class="content-header">
-        <?php if (isset($this->blocks['content-header'])) { ?>
+        <?php if (isset($this->blocks['content-header'])): ?>
             <h1><?= $this->blocks['content-header'] ?></h1>
-        <?php } else { ?>
+        <?php else: ?>
             <h1>
-                <?php
-                if ($this->title !== null) {
-                    echo  $this->title;
-                } else {
-                    echo \yii\helpers\Inflector::camel2words(
-                        \yii\helpers\Inflector::id2camel($this->context->module->id)
-                    );
-                    echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
-                } ?>
+                <?php if ($this->title !== null): ?>
+                    <?= $this->title ?>
+                <?php else: ?>
+                    <?= Inflector::camel2words(Inflector::id2camel($this->context->module->id)) ?>
+                    <?= ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '' ?>
+                <?php endif; ?>
             </h1>
-        <?php } ?>
+        <?php endif; ?>
         <?= Breadcrumbs::widget(
             [
                 'tag' => 'ol',
