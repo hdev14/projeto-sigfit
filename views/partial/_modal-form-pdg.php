@@ -121,7 +121,7 @@ $this->registerJs("
     <div class="form-group">
         <label for="<?= 'dobra-tres-2-'.$avaliacao_id ?>">
             <?php if($sexo == 'masculino'): ?>
-                Dobra cutânea do abdóme
+                Dobra cutânea do abdome
             <?php elseif($sexo == 'feminino'): ?>
                 Dobra cutânea do suprailiaco
             <?php endif; ?>

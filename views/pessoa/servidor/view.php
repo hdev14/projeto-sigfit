@@ -42,12 +42,13 @@ $this->registerJs("
             <div class="box-header">
                 <h3 class="box-title"></h3>
                 <div class="box-tools pull-right">
-                    <?= Html::a('<i class="fa fa-pencil fa-lg"></i>', ['update', 'id' => $model->id],
+                    <?= Html::a('<i class="fa fa-fw fa-pencil fa-lg"></i>', ['update', 'id' =>
+                        $model->id],
                         [
                             'class' => 'btn btn-box-tool',
                             'title' => 'Editar usuário'
                         ]) ?>
-                    <?= Html::a('<i class="fa fa-user-times fa-lg"></i>', ['delete', 'id' =>
+                    <?= Html::a('<i class="fa fa-fw fa-user-times fa-lg"></i>', ['delete', 'id' =>
                         $model->id], [
                         'class' => 'btn btn-box-tool',
                         'title' => 'Excluir usuário',
@@ -143,7 +144,7 @@ $this->registerJs("
                                     'avaliacao/create',
                                     'usuario_id' => $model->id
                                 ], [
-                                    'class' => 'btn bg-green btn-sm btn-flat',
+                                    'class' => 'btn bg-green btn-sm',
                                     'style' => 'margin-left: 5px',
                                     'title' => 'Nova avaliação física'
                                 ]) ?>
@@ -175,7 +176,7 @@ $this->registerJs("
                                             </a>
                                         </li>
                                         <li class="pull-left header">
-                                            <h5><?= $avaliacao->titulo ?></h5>
+                                            <h5><b><?= $avaliacao->titulo ?></b></h5>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
@@ -211,5 +212,10 @@ $this->registerJs("
             ]) ?>
         <?php endif; ?>
     </div>
+    <?= $this->render('../../partial/_treinos', [
+        'horario_treino' => $model->horario_treino,
+        'treinos' => $model->treinos,
+        'usuario_id' => $model->id,
+    ]) ?>
 </div>
 

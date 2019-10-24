@@ -103,8 +103,9 @@ class SiteController extends Controller
                 $this->redirect(['pessoa/usuarios']);
         }
 
-        $post = Yii::$app->request->post();
 
+        $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
         $login_suap = new LoginSuapForm();
 
         if ($login_suap->load($post) && $login_suap->validate()) {
@@ -112,14 +113,14 @@ class SiteController extends Controller
             $token = $login_suap->autenticarUsuario();
 
             if (!$token) {
-                $session = Yii::$app->session;
+
                 $session->addFlash(
                     'autenticacao_error',
                     'Matrícula ou senha inválida.'
                 );
             } else if ($this->salvarToken($token, $login_suap->matricula)
                 && $login_suap->login($token)) {
-
+                $session->set('token', $token);
                 return Yii::$app->user->can('crud-instrutor') ?
                     $this->redirect(['pessoa/instrutores']) :
                     $this->redirect(['pessoa/usuarios']);

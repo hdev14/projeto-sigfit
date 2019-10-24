@@ -35,11 +35,12 @@ class Treino extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dia', 'titulo', 'genero'], 'required'],
+            [['dia', 'titulo', 'genero', 'nivel'], 'required'],
             [['dia', 'nivel'], 'string'],
-            [['generico'], 'integer'],
+            ['generico', 'boolean', 'trueValue' => true, 'falseValue' => false],
             [['titulo'], 'string', 'max' => 45],
             [['genero'], 'string', 'max' => 1],
+            ['generico', 'default', 'value' => true],
         ];
     }
 
@@ -49,12 +50,12 @@ class Treino extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'dia' => Yii::t('app', 'Dia'),
-            'generico' => Yii::t('app', 'Generico'),
-            'titulo' => Yii::t('app', 'Titulo'),
-            'genero' => Yii::t('app', 'Genero'),
-            'nivel' => Yii::t('app', 'Nivel'),
+            'id' => 'ID',
+            'dia' => 'Dia recomendado',
+            'generico' => 'Generico',
+            'titulo' => 'Título',
+            'genero' => 'Gênero',
+            'nivel' => 'Nível',
         ];
     }
 
@@ -80,6 +81,12 @@ class Treino extends \yii\db\ActiveRecord
     public function getTreinoExercicios()
     {
         return $this->hasMany(TreinoExercicio::className(), ['treino_id' => 'id']);
+    }
+
+    public function getTreinoExercicio($exercicio_id = null)
+    {
+        return $this->hasOne(TreinoExercicio::className(), ['treino_id' => 'id'])
+            ->where('exercicio_id = :id', [':id' => $exercicio_id]);
     }
 
     /**

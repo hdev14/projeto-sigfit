@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use DateTime;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "equipamento".
@@ -17,17 +19,14 @@ use Yii;
  */
 class Equipamento extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
+    /** @var UploadedFile */
+    public $image_file;
+
     public static function tableName()
     {
         return 'equipamento';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -36,21 +35,51 @@ class Equipamento extends \yii\db\ActiveRecord
             [['defeito'], 'integer'],
             [['nome'], 'string', 'max' => 45],
             [['descricao'], 'string', 'max' => 200],
+            [
+                ['image_file'],
+                'file',
+                'skipOnEmpty' => true,
+                'extensions' => ['png', 'jpeg', 'jpg'],
+                'maxSize' => 1024*1024
+            ],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'nome' => Yii::t('app', 'Nome'),
-            'descricao' => Yii::t('app', 'Descricao'),
-            'imagem' => Yii::t('app', 'Imagem'),
-            'defeito' => Yii::t('app', 'Defeito'),
+            'id' => 'ID',
+            'nome' => 'Nome do Equipamento',
+            'descricao' => 'Descrição do Equipamento',
+            'imagem' => 'Imagem',
+            'defeito' => 'Defeito',
+            'image_file' => 'Adicionar Foto'
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+
+            if (!is_null($this->image_file)) {
+
+                $timestamp = (new DateTime())->getTimestamp();
+
+                $this->imagem = '/uploads/equipamentos/'
+                    . $timestamp . '.' . $this->image_file->extension;
+
+                $this->image_file->saveAs(
+                    Yii::getAlias('@webroot') .
+                    $this->imagem
+                );
+
+                $this->image_file = null;
+            } else if (empty($this->imagem)) {
+                $this->imagem = '/uploads/equipamentos/default.png';
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

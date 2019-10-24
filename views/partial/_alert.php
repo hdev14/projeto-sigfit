@@ -10,7 +10,7 @@ use yii\bootstrap\Alert;
         'body' => $error[0],
     ]) ?>
 <?php elseif ($error = Yii::$app->session->getFlash('error')): ?>
-    <<?= Alert::widget([
+    <?= Alert::widget([
         'options' => ['class' => 'alert-danger alert-dismissible'],
         'body' => $error[0],
     ]) ?>

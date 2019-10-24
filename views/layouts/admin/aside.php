@@ -70,19 +70,19 @@ use yii\helpers\Url;
                 </ul>
             </li>
             <li class="">
-                <a href="#">
+                <a href="<?= Url::to(['treino/treinos']) ?>">
                     <i class="fa fa-heartbeat"></i>
                     <span>Treinos</span>
                 </a>
             </li>
             <li class="">
-                <a href="#">
+                <a href="<?= Url::to(['equipamento/equipamentos']) ?>">
                     <i class="fa fa-wrench"></i>
                     <span>Equipamentos</span>
                 </a>
             </li>
             <li class="">
-                <a href="#">
+                <a href="<?= Url::to(['exercicio/exercicios']) ?>">
                     <i class="fa fa-bolt"></i>
                     <span>Exercícios</span>
                 </a>
