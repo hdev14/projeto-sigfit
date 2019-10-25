@@ -9,28 +9,39 @@ use \yii\helpers\Url;
 /* @var $instrutor app\models\Pessoa */
 /* @var $pagination yii\data\Pagination */
 
-$this->title = "Instrutores";
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
+$this->registerCss(<<<CSS
+    div#novo-instrutor {
+        margin-bottom: 10px;
+    }
+    div.box-header small {
+        display: block;
+    }
+
+CSS
+);
 ?>
 <div class="row">
+    <div id="novo-instrutor" class="col-md-6 col-md-offset-6">
+        <?= Html::a('<i class="fa fa-user-plus fa-lg"></i> Novo Instrutor',
+            ['pessoa/create-instrutor'],
+            ['class' => 'btn btn-box-tool bg-green pull-right']
+        ) ?>
+    </div>
     <div class="col-md-12">
         <div class="box box-success">
-            <div class="box-header with-border">
-                <h3 class="box-title"></h3>
-                <div class="box-tools pull-right">
-                    <div class="box-tools pull-right">
-                        <?= Html::a('<i class="fa fa-user-plus fa-lg"></i> Novo Instrutor',
-                            ['pessoa/create-instrutor'],
-                            [
-                                'class' => 'btn btn-box-tool bg-green btn-flat'
-                            ]
-                        ) ?>
-                    </div>
-                </div>
+            <div class="box-header no-border">
+                <h4 class="box-title">
+                    Instrutores
+                </h4>
+                <small class="text-muted">
+                    Lista com todos os instrutores cadastrados
+                </small>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-hover">
+                <table class="table table-hover table-striped">
                     <tbody>
                     <tr>
                         <th style="width: 150px">Matrícula</th>
