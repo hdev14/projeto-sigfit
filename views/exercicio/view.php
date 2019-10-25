@@ -134,7 +134,7 @@ $this->registerCss("
                     <p class="desc-equipamento">
                         <?= $model->equipamento->descricao ?>
                     </p>
-                    <?= Html::a('mais informações', [
+                    <?= Html::a('Mais Informações <i class="fa fa-fw fa-info-circle"></i>', [
                         'equipamento/view',
                         'id' => $model->equipamento->id,
                         'informações sobre o equipamento',

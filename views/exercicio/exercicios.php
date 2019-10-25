@@ -8,7 +8,7 @@ use yii\widgets\LinkPager;
 /* @var $exercicio app\models\Exercicio */
 /* @var $pagination yii\data\Pagination */
 
-$this->title = "Exercícios";
+$this->title = '';
 
 $this->registerCss("
     div.links {
@@ -75,13 +75,13 @@ $this->registerCss("
                     </div>
                 </div>
                 <div class="box-body ">
-                    <p class="desc">
+                    <p class="desc text-muted">
                         <?= $exercicio->descricao ?>
                     </p>
                 </div>
                 <div class="box-footer no-border">
                     <?= Html::a(
-                        'Mais informações',
+                        'Mais Informações <i class="fa fa-fw fa-info-circle"></i>',
                         ['exercicio/view', 'id' => $exercicio->id],
                         ['class' => 'btn bg-gray btn-xs pull-right']
                     ) ?>
