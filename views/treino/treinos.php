@@ -9,7 +9,7 @@ use yii\widgets\LinkPager;
 /* @var $exercicio \app\models\Exercicio*/
 /* @var $pagination \yii\data\Pagination */
 
-$this->title = "Treinos";
+$this->title = '';
 
 $this->registerCss(<<<CSS
     h6.exercicio-titulo {
@@ -75,14 +75,14 @@ CSS
                     </h4>
                     <div class="box-tools pull-right">
                         <?= Html::a(
-                            '<i class="fa fa-fw fa-bars"></i>',
+                            '<i class="fa fa-fw fa-search"></i>',
                             ['treino/view', 'id' => $treino->id],
                             [
                                 'class' => 'btn btn-box-tool',
                                 'title' => 'detalhes'
                             ]
                         ) ?>
-                        <?= Html::button('<i class="fa fa-minus"></i>', [
+                        <?= Html::button('<i class="fa fa-fw fa-minus"></i>', [
                             'class' => 'btn btn-box-tool',
                             'data-widget' => 'collapse',
                         ]) ?>
