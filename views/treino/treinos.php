@@ -102,7 +102,7 @@ CSS
                                         <?= $treino_exercicio->exercicio->nome ?>
                                     </h6>
                                     <p class="list-group-item-text text-muted">
-                                        Sequência recomendada
+                                        Número de repetições recomendada
                                         <span class="label label-info">
                                             <?= $treino_exercicio->numero_repeticao ?>
                                         </span>
