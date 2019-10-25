@@ -22,17 +22,20 @@ $this->registerCss(<<<CSS
     p.desc-equipamento {
         padding: 10px 0;
     }
+    
     #desc-exercicio {
         resize: none;
     }
+    
     div.callout {
         margin-top: 20px;
     }
+    
     a#equip-info {
         margin-right: 10px;
         color: #1e282c;
     }
-
+    
     a#equip-info:hover {
         color: rgba(30, 40, 44, 0.8);
     }
@@ -53,7 +56,7 @@ CSS
                         'header' => '<b>Preenchar os campos corretamente</b>',
                         'footer' =>
                             Html::submitButton('Confirmar', [
-                                'class' => 'btn bg-green btn-flat',
+                                'class' => 'btn bg-green',
                                 'form' => 'modal-form-editar',
                             ])
                         ,
@@ -168,8 +171,7 @@ CSS
                     </div>
 
                 <?php else: ?>
-                    <div class="callout callout-warning">
-                        <h4>Não possui equipamento</h4>
+                    <div class="callout callout-default">
                         <p>
                             Este exercício não necessita de equipamento ou
                             não possui um.

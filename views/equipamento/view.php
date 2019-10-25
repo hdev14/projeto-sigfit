@@ -19,6 +19,10 @@ $this->registerCss(<<<CSS
     h4.box-title small.label {
         padding: 2px 5px;
     }
+
+    #desc-equipamento {
+        resize: none;
+    }
 CSS
 );
 $this->registerJsFile('@web/js/upload-equipamento.js');
@@ -40,7 +44,7 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
                         'header' => 'Preenchar os campos corretamente',
                         'footer' =>
                             Html::submitButton('Confirmar', [
-                                'class' => 'btn bg-green btn-flat btn-sm',
+                                'class' => 'btn bg-green',
                                 'form' => 'form-upload-equip',
                             ])
                         ,
@@ -77,7 +81,8 @@ $this->registerJsFile('@web/js/upload-equipamento.js');
 
                     <?= $form->field($model, 'descricao')->textarea([
                         'maxlength' => true,
-                        'placeholder' => 'Digite uma breve descrição sobre o equipamento'
+                        'placeholder' => 'Digite uma breve descrição sobre o equipamento',
+                        'id' => 'desc-equipamento'
                     ]) ?>
 
                     <?php ActiveForm::end(); ?>
