@@ -15,12 +15,6 @@ $this->title = '';
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
-$this->registerCss(<<<CSS
-    #btn-add-exercicio {
-        margin-top: 10px;
-    }
-CSS
-);
 $this->registerJs(<<<JS
     let btns_alterar_repeticao = document.querySelectorAll('.btn-alt-rep');
 
@@ -171,8 +165,7 @@ JS
                         ,
                         'toggleButton' => [
                             'label' => "<i class='fa fa-fw fa-plus'></i> Adicionar Exercício",
-                            'class' => 'btn bg-green btn-xs pull-right',
-                            'id' => 'btn-add-exercicio',
+                            'class' => 'btn bg-green btn-sm pull-right',
                             'title' => 'Adicionar exercício ao treino'
                         ]
                     ]); ?>
