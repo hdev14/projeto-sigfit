@@ -8,21 +8,27 @@ use \yii\helpers\Url;
 /* @var $usuario \app\models\Pessoa */
 /* @var $pagination \yii\data\Pagination */
 
-$this->title = "Usuários Instruídos";
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
+
+$this->registerCssFile('@web/css/box-subtitle.css');
+
 ?>
+
 <?= $this->render('../partial/_btn-group') ?>
 
 <div class="row">
     <div class="col-md-12 ">
         <div class="box box-success">
-            <div class="box-header with-border">
-                <h3 class="box-title">Todos</h3>
-                <?= $this->render('../partial/_btn-registro') ?>
+            <div class="box-header no-border">
+                <h4 class="box-title">Usuários Instruídos</h4>
+                <small class="text-muted">
+                    Lista de todos os usuários instruídos
+                </small>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-hover">
+                <table class="table table-striped table-hover">
                     <tbody>
                     <tr>
                         <th style="width: 150px">Matrícula</th>

@@ -42,7 +42,12 @@ use yii\helpers\Inflector;
     <div class="pull-right hidden-xs">
         <b>Version</b> 2.0
     </div>
-    <strong>Copyright &copy; <?=date("Y")?>.</strong> All rights reserved.
+    <small>
+        Desenvolvido <i class="fa fa-code"></i> com &#x1F49A; por
+        <a class="text-muted" style="font-weight: bold" href="https://github.com/HermersonDev"
+           target="_blank">@hdev_</a>
+        <strong>&#169; <?=date("Y")?></strong>
+    </small>
 </footer>
 
 <!-- Add the sidebar's background. This div must be placed

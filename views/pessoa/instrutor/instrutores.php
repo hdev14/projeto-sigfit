@@ -12,22 +12,14 @@ use \yii\helpers\Url;
 $this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Alunos';
-$this->registerCss(<<<CSS
-    div#novo-instrutor {
-        margin-bottom: 10px;
-    }
-    div.box-header small {
-        display: block;
-    }
-
-CSS
-);
+$this->registerCssFile('@web/css/btns.css');
+$this->registerCssFile('@web/css/box-subtitle.css');
 ?>
 <div class="row">
-    <div id="novo-instrutor" class="col-md-6 col-md-offset-6">
+    <div id="btns" class="col-md-6 col-md-offset-6">
         <?= Html::a('<i class="fa fa-user-plus fa-lg"></i> Novo Instrutor',
             ['pessoa/create-instrutor'],
-            ['class' => 'btn btn-box-tool bg-green pull-right']
+            ['class' => 'btn btn-sm bg-green pull-right']
         ) ?>
     </div>
     <div class="col-md-12">
