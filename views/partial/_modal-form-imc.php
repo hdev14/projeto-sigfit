@@ -37,7 +37,7 @@ $this->registerJs("
         ])
     ,
     'toggleButton' => [
-        'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar IMC",
+        'label' => "<i class='fa fa-fw fa-plus-circle'></i> Adicionar IMC",
         'class' => 'btn bg-gray btn-xs'
     ],
 ]); ?>

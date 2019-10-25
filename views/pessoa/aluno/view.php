@@ -138,7 +138,7 @@ $this->registerJs("
             <div class="col-md-12">
                 <?php if ($model->avaliacaos): ?>
                     <div class="box box-success">
-                        <div class="box-header">
+                        <div class="box-header with-border">
                             <h3 class="box-title">Avaliações Físicas</h3>
                             <small>
                                 Gráficos dos dados coletados nas avaliações físicas

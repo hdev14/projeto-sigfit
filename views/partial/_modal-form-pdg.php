@@ -77,7 +77,7 @@ $this->registerJs("
         ])
     ,
     'toggleButton' => [
-        'label' => "<i class='fa fa-fw fa-plus'></i>Adicionar P. de Gordura",
+        'label' => "<i class='fa fa-fw fa-plus-circle'></i>Adicionar P. de Gordura",
         'class' => 'btn bg-gray btn-xs'
     ],
 ]); ?>
