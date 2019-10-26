@@ -7,21 +7,26 @@ use \yii\helpers\Url;
 /* @var $servidores \yii\db\ActiveQuery */
 /* @var $servidor \app\models\Pessoa */
 
-$this->title = "Servidores Instruídos";
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
 //$this->params['breadcrumbs'][] = 'Servidores';
+
+$this->registerCssFile('@web/css/box-subtitle.css');
 ?>
 
 <?= $this->render('../../partial/_btn-group') ?>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
-            <div class="box-header with-border">
-                <h3 class="box-title">Servidores</h3>
-                <?= $this->render('../../partial/_btn-registro') ?>
+            <div class="box-header no-border">
+                <h3 class="box-title">Servidores Instruídos</h3>
+                <small class="text-muted">
+                    Lista de todos os servidores instruídos
+                </small>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-hover">
+                <table class="table table-striped table-hover">
                     <tbody>
                     <tr>
                         <th style="width: 150px">Matrícula</th>

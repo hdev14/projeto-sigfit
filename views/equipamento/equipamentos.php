@@ -13,12 +13,12 @@ use yii\widgets\LinkPager;
 /* @var $equipamento Equipamento */
 /* @var $pagination Pagination */
 
-$this->title = "Equipamentos";
+$this->title = '';
+
+$this->registerCssFile('@web/css/btns.css');
 
 $this->registerCss(<<<CSS
-    
-    div.header { margin-bottom: 10px; }
-    
+
     p.equipamento-desc {
        height: 80px;
     }
@@ -33,7 +33,7 @@ CSS
 );
 
 ?>
-<div class="header row">
+<div id="btns" class="row">
     <div class="col-md-6 col-md-offset-6">
         <?= Html::a(
             '<i class="fa fa-plus"></i> Novo Equipamento',
@@ -61,7 +61,7 @@ CSS
                         ?></p>
                     <p class=" text-right">
                         <?= Html::a(
-                            'mais informações',
+                            'Mais Informações <i class="fa fa-fw fa-info-circle"></i>',
                             ['equipamento/view', 'id' => $equipamento->id],
                             [
                                 'class' => 'btn bg-gray btn-xs'

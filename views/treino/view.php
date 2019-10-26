@@ -10,11 +10,10 @@ use yii\widgets\ActiveForm;
 /* @var $exercicios \yii\db\ActiveRecord[] */
 
 
-$this->title = "Informações do Treino";
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Treinos', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-
 
 $this->registerJs(<<<JS
     let btns_alterar_repeticao = document.querySelectorAll('.btn-alt-rep');
@@ -28,20 +27,12 @@ $this->registerJs(<<<JS
 JS
 );
 
-$this->registerCss(<<<CSS
-
-       small#subtitle-exercicio {
-        display: block;
-       } 
-
-CSS
-);
 ?>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-10 col-md-offset-1">
         <div class="box box-success">
-            <div class="box-header with-border">
+            <div class="box-header no-border">
                 <h4 class="box-title">
                     <?= $model->titulo ?>
                     <?php if ($model->generico): ?>
@@ -224,7 +215,7 @@ CSS
 
                 </div>
                 <?php if ($model->treinoExercicios !== []): ?>
-                    <table class="table table-hover table-bordered">
+                    <table class="table table-hover table-striped">
                         <tbody>
                         <tr>
                             <th>Nome</th>
@@ -359,31 +350,3 @@ CSS
         </div>
     </div>
 </div>
-<!--<div class="treino-view">
-
-    <h1> Html::encode($this->title) </h1>
-
-    <p>
-         Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary'])
-         Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ])
-    </p>
-
-     DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'dia',
-            'generico',
-            'titulo',
-            'genero',
-            'nivel',
-        ],
-    ])
-
-</div>-->

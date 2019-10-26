@@ -10,22 +10,22 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Equipamento */
 /* @var $exercicio app\models\Exercicio */
 
-$this->title = 'Informações do Equipamento';
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Equipamentos', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
-$this->registerJsFile('@web/js/upload-equipamento.js');
-
 $this->registerCss(<<<CSS
-
-    .box-header small {
-        display: block; 
+    h4.box-title small.label {
+        padding: 2px 5px;
     }
 
+    #desc-equipamento {
+        resize: none;
+    }
 CSS
 );
-
+$this->registerJsFile('@web/js/upload-equipamento.js');
 ?>
 
 <div class="row">
@@ -33,26 +33,18 @@ CSS
         <div class="box box-success">
             <div class="box-header with-border">
                 <h4 class="box-title">
+                    <?= $model->nome ?>
                     <?php if ($model->defeito): ?>
-                        <small class="label label-danger">com defeito</small>
+                        <small class="label label-danger">defeito</small>
                     <?php endif; ?>
                 </h4>
                 <div class="box-tools pull-right">
-
-                    <?= Html::a(
-                        ($model->defeito) ? 'Desmarcar defeito' : 'Marcar defeito',
-                        ['equipamento/defeito', 'id' => $model->id],
-                        [
-                            'class' => ($model->defeito) ? 'btn btn-xs bg-gray' : 'btn btn-xs bg-red',
-                            'title' => 'Marcar equipamento com defeito',
-                        ]) ?>
-
                     <!-- MODAL FORM EDITAR EQUIPAMENTO-->
                     <?php $modal = Modal::begin([
                         'header' => 'Preenchar os campos corretamente',
                         'footer' =>
                             Html::submitButton('Confirmar', [
-                                'class' => 'btn bg-green btn-flat btn-sm',
+                                'class' => 'btn bg-green',
                                 'form' => 'form-upload-equip',
                             ])
                         ,
@@ -89,26 +81,46 @@ CSS
 
                     <?= $form->field($model, 'descricao')->textarea([
                         'maxlength' => true,
-                        'placeholder' => 'Digite uma breve descrição sobre o equipamento'
+                        'placeholder' => 'Digite uma breve descrição sobre o equipamento',
+                        'id' => 'desc-equipamento'
                     ]) ?>
 
                     <?php ActiveForm::end(); ?>
                     <?php Modal::end(); ?>
                     <!-- MODAL FORM EDITAR EQUIPAMENTO-->
 
-                    <?= Html::a(
-                        '<i class="fa fa-fw fa-trash fa-lg"></i>',
-                        ['equipamento/delete', 'id' => $model->id],
-                        [
-                            'class' => 'btn btn-box-tool',
-                            'title' => 'Excluir equipamento',
-                            'data' => [
-                                'confirm' => 'Tem certeza de que deseja excluir este equipamento?',
-                                'method' => 'post',
-                            ],
-                            'type' => 'button'
+                    <div class="dropdown pull-right">
+                        <?= Html::button('<i class="fa fa-bars fa-fw"></i>', [
+                            'class' => 'btn btn-box-tool dropdown-toggle',
+                            'id' => 'dropdown-exercicio',
+                            'data-toggle' => 'dropdown',
+                            'aria-haspopup' => true,
+                            'aria-expanded' => true,
+                            'type' => 'button',
+                            'title' => 'opções'
                         ]) ?>
-
+                        <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
+                            <li>
+                                <?= Html::a(
+                                    ($model->defeito) ? 'Desmarcar defeito' : 'Marcar defeito',
+                                    ['equipamento/defeito', 'id' => $model->id],
+                                    ['title' => 'Marcar equipamento com defeito']
+                                ) ?>
+                            </li>
+                            <li>
+                                <?= Html::a(
+                                    'Excluir Equipamento',
+                                    ['equipamento/delete', 'id' => $model->id],
+                                    [
+                                        'title' => 'Excluir equipamento',
+                                        'data' => [
+                                            'confirm' => 'Tem certeza de que deseja excluir este equipamento?',
+                                            'method' => 'post',
+                                        ],
+                                    ]) ?>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="box-body">
@@ -121,7 +133,7 @@ CSS
                     </div>
                     <div class="col-md-7">
                         <div id="equipamento-info">
-                            <h4><?= $model->nome ?></h4>
+                            <h4>Descrição</h4>
                             <p><?= $model->descricao ?></p>
                         </div>
                     </div>
@@ -180,7 +192,7 @@ CSS
                                         'exercicio/view', 'id' => $exercicio->id
                                     ],
                                     [
-                                        'class' => 'btn btn-flat btn-xs bg-gray',
+                                        'class' => 'btn btn-xs bg-gray',
                                         'title' => 'Mais informações',
                                     ]) ?>
                             </td>

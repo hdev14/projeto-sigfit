@@ -9,10 +9,12 @@ use yii\helpers\Url;
 
 $f = Yii::$app->formatter;
 
-$this->title = 'Perfil do Usuário';
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$this->registerCssFile('@web/css/box-subtitle.css');
 
 $this->registerJs("
     $('#tabs a').click(function (e) {
@@ -122,8 +124,11 @@ $this->registerJs("
     <div class="col-md-9">
         <?php if ($model->avaliacaos): ?>
             <div class="box box-success">
-                <div class="box-header">
+                <div class="box-header with-border">
                     <h3 class="box-title">Avaliações Físicas</h3>
+                    <small>
+                        Gráficos dos dados coletados nas avaliações físicas
+                    </small>
                     <div class="box-tools pull-right">
                         <div class="input-group input-group-sm hidden-xs">
                             <select id="avaliacao-op"
@@ -139,7 +144,7 @@ $this->registerJs("
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <?= Html::a('<i class="fa fa-fw fa-plus"></i> Nova avaliação',
+                            <?= Html::a('<i class="fa fa-fw fa-plus"></i> Nova Avaliação',
                                 [
                                     'avaliacao/create',
                                     'usuario_id' => $model->id
