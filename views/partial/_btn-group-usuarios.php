@@ -11,15 +11,15 @@ $this->registerCssFile('@web/css/btns.css');
     <div class="col-md-6">
         <div class="btn-group btn-group-sm" role="group" >
            <a class="btn bg-gray "
-              href="<?= Url::to(['pessoa/usuarios']) ?>">
+              href="<?= Url::to(['pessoa/usuarios', 'espera' => $espera]) ?>">
                 Todos
             </a>
             <a class="btn bg-gray "
-               href="<?= Url::to(['pessoa/alunos']) ?>">
+               href="<?= Url::to(['pessoa/alunos', 'espera' => $espera]) ?>">
                 Alunos
             </a>
             <a class="btn bg-gray "
-               href="<?= Url::to(['pessoa/servidores']) ?>">
+               href="<?= Url::to(['pessoa/servidores', 'espera' => $espera]) ?>">
                 Servidores
             </a>
         </div>

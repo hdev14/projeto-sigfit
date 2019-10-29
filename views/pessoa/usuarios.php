@@ -25,10 +25,19 @@ $this->registerCssFile('@web/css/box-subtitle.css');
     <div class="col-md-12 ">
         <div class="box box-success">
             <div class="box-header no-border">
-                <h4 class="box-title">Usuários Instruídos</h4>
-                <small class="text-muted">
-                    Lista de todos os usuários instruídos
-                </small>
+
+                <?php if($espera): ?>
+                    <h4 class="box-title">Fila de Espera</h4>
+                    <small class="text-muted">
+                        Lista de usuários registrado que estão esperando novas vagas.
+                    </small>
+                <?php else: ?>
+                    <h4 class="box-title">Usuários Instruídos</h4>
+                    <small class="text-muted">
+                        Lista de todos os usuários instruídos
+                    </small>
+                <?php endif; ?>
+
             </div>
             <div class="box-body">
                 <table class="table table-striped table-hover">

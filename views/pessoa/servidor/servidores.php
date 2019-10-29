@@ -16,17 +16,26 @@ $this->registerCssFile('@web/css/box-subtitle.css');
 ?>
 
 <?= $this->render('../../partial/_btn-group-usuarios', [
-        'espera' => $espera
+    'espera' => $espera
 ]) ?>
 
 <div class="row">
     <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header no-border">
-                <h3 class="box-title">Servidores Instruídos</h3>
-                <small class="text-muted">
-                    Lista de todos os servidores instruídos
-                </small>
+
+                <?php if($espera): ?>
+                    <h4 class="box-title">Fila de Espera - Servidores</h4>
+                    <small class="text-muted">
+                        Lista de servidores registrado que estão esperando novas vagas.
+                    </small>
+                <?php else: ?>
+                    <h4 class="box-title">Servidores Instruídos</h4>
+                    <small class="text-muted">
+                        Lista de todos os servidores instruídos
+                    </small>
+                <?php endif; ?>
+
             </div>
             <div class="box-body">
                 <table class="table table-striped table-hover">
