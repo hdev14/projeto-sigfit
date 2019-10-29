@@ -2,10 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\Avaliacao;
 use app\models\UsuarioInstrutor;
-use app\models\UsuarioInstrutorSearch;
-use DateTime;
 use Yii;
 use app\models\Pessoa;
 use app\models\PessoaSearch;
@@ -13,7 +10,6 @@ use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use yii\db\QueryInterface;
 use yii\filters\AccessControl;
-use yii\filters\AccessRule;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -238,6 +234,8 @@ class PessoaController extends Controller
         ]);
 
         $servidores = $this->paginar($query, $pagination);
+
+        Yii::debug($servidores);
 
         return $this->render('servidor/servidores', [
             'servidores' => $servidores,
