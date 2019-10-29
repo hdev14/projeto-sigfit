@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Html;
 use \yii\widgets\LinkPager;
 use \yii\helpers\Url;
 
@@ -77,23 +78,25 @@ $this->registerCssFile('@web/css/box-subtitle.css');
                                 <?php endif; ?>
                                 <td><?= $usuario->telefone ?></td>
                                 <td>
-                                    <a href="<?= Url::to([
-                                        'pessoa/view',
-                                        'id' => $usuario->id
-                                    ]) ?> "
-                                       class="btn btn-xs btn-flat bg-gray"
-                                       title="Visualizar usuário">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
 
-                                    <a href="<?= Url::to([
-                                        'pessoa/update',
-                                        'id' => $usuario->id
-                                    ]) ?> "
-                                       class="btn btn-xs btn-flat bg-aqua"
-                                       title="Editar usuário">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
+                                    <?= Html::a(
+                                        '<i class="fa fa-eye"></i>',
+                                        ['pessoa/view', 'id' => $usuario->id],
+                                        [
+                                            'class' => 'btn btn-xs btn-flat bg-gray',
+                                            'title' => 'Visualizar usuário'
+                                        ]
+                                    ) ?>
+
+                                    <?= Html::a(
+                                        '<i class="fa fa-pencil"></i>',
+                                        ['pessoa/update', 'id' => $usuario->id],
+                                        [
+                                            'class' => 'btn btn-xs btn-flat bg-aqua',
+                                            'title' => 'Editar usuário'
+                                        ]
+                                    ) ?>
+
                                 </td>
                             </tr>
                         <?php } ?>

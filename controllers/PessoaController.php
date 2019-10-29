@@ -309,9 +309,10 @@ class PessoaController extends Controller
 
         if ($model->load($post)) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
-            if ($model->upload() && $model->save()) {
+
+            if ($model->upload() && $model->save())
                 return $this->redirect(['view-instrutor', 'id' => $model->id]);
-            }
+
         }
 
         return $this->render('instrutor/update', [
@@ -343,17 +344,28 @@ class PessoaController extends Controller
         $instrutor_model = $this->findModel($id);
         $instrutor_usuarios = $instrutor_model->instrutorUsuarios;
 
-        # Exclui os registros na tabela de relacionamento.
-        foreach ($instrutor_usuarios as $iu) {
+        foreach ($instrutor_usuarios as $iu)
             $iu->delete();
-        }
+
 
         $instrutor_model->delete();
 
         return $this->redirect(['instrutores']);
     }
 
-    // TODO Fazer ação para retirar o usuário da fila de espera.
+    public function actionRetirarEspera($id)
+    {
+        $usuario = Pessoa::findOne($id);
+        $usuario->espera = $usuario->verificarHorarioDisponivel();
+        $session = Yii::$app->session;
+
+        if (!$usuario->espera && $usuario->save(false))
+            $session->addFlash('success', 'Usuário foi retirado da fila de espera !');
+        else
+            $session->addFlash('error','Usuário não pode ser retirado da fila de espera, por que horário de treino está lotado.');
+
+        $this->redirect(['pessoa/view', 'id' => $id]);
+    }
 
     # ---- MÉTODOS AUXILIARES ---- #
 

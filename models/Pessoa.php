@@ -185,7 +185,8 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function beforeSave($insert)
     {
-        $this->espera = $this->verificarHorarioDisponivel();
+        if ($this->isNewRecord)
+            $this->espera = $this->verificarHorarioDisponivel();
 
         return parent::beforeSave($insert);
     }
@@ -340,19 +341,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
             ->viaTable('usuario_instrutor', ['usuario_id' => 'id']);
     }
 
-    protected function adicionarRoleInstrutor()
-    {
-        $auth = Yii::$app->authManager;
-
-        if (!key_exists('instrutor', $auth->getRolesByUser($this->id))
-            && $this->scenario === Pessoa::SCENARIO_REGISTRO_INSTRUTOR) {
-
-            $instrutor_role = $auth->getRole('instrutor');
-            $auth->assign($instrutor_role, $this->id);
-        }
-    }
-
-    protected function verificarHorarioDisponivel()
+    public function verificarHorarioDisponivel()
     {
         $usuarios_com_mesmo_horario = Pessoa::find()->where(
             'horario_treino = :horario_treino',
@@ -366,4 +355,18 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
 
         return true;
     }
+
+    protected function adicionarRoleInstrutor()
+    {
+        $auth = Yii::$app->authManager;
+
+        if (!key_exists('instrutor', $auth->getRolesByUser($this->id))
+            && $this->scenario === Pessoa::SCENARIO_REGISTRO_INSTRUTOR) {
+
+            $instrutor_role = $auth->getRole('instrutor');
+            $auth->assign($instrutor_role, $this->id);
+        }
+    }
+
+
 }
