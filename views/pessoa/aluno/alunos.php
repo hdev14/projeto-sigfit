@@ -6,6 +6,7 @@ use \yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $alunos \yii\db\ActiveQuery */
 /* @var $aluno \app\models\Pessoa */
+/* @var $espera bool */
 
 $this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['pessoa/index']];
@@ -14,7 +15,9 @@ $this->title = '';
 $this->registerCssFile('@web/css/box-subtitle.css');
 ?>
 
-<?= $this->render('../../partial/_btn-group') ?>
+<?= $this->render('../../partial/_btn-group-usuarios', [
+    'espera' => $espera
+]) ?>
 
 <div class="row">
     <div class="col-md-12">

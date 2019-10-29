@@ -1,5 +1,6 @@
 <?php
 /* @var $this \yii\web\View */
+/* @var $espera bool */
 
 use yii\helpers\Url;
 

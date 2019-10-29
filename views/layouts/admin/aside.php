@@ -63,7 +63,7 @@ use yii\helpers\Url;
                         </a>
                     </li>
                     <li class="active">
-                        <a href="index2.html">
+                        <a href="<?= Url::to(['pessoa/usuarios', 'espera' => true]) ?>">
                             <i class="fa fa-list "></i> Fila de Espera
                         </a>
                     </li>

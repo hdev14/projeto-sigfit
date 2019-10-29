@@ -136,7 +136,6 @@ class PessoaController extends Controller
         return $this->updateAluno($model);
     }
 
-
     public function actionDelete($id)
     {
         $usuario = $this->findModel($id);
@@ -171,6 +170,7 @@ class PessoaController extends Controller
         return $this->render('usuarios', [
             'usuarios' => $usuarios,
             'pagination' => $pagination,
+            'espera' => $espera
         ]);
     }
 
@@ -191,6 +191,7 @@ class PessoaController extends Controller
         return $this->render('aluno/alunos', [
             'alunos' => $alunos,
             'pagination' => $pagination,
+            'espera' => $espera
         ]);
     }
 
@@ -207,7 +208,12 @@ class PessoaController extends Controller
             $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
             if ($usuario_model->upload() && $usuario_model->save()
                 && $this->relacionarUsuarioInstrutor($usuario_model)) {
-                $session->addFlash('success', 'Usuário registrado com sucesso !');
+
+                $mensagem = $usuario_model->espera ?
+                    'Usuário registrado, porém está na fila de espera.' :
+                    'Usuário registrado com sucesso !';
+                $session->addFlash('success', $mensagem);
+
                 return $this->redirect(['view', 'id' => $usuario_model->id]);
             } else {
                 $session->addFlash('error', 'Não foi possível registrar o usuário.');
@@ -236,6 +242,7 @@ class PessoaController extends Controller
         return $this->render('servidor/servidores', [
             'servidores' => $servidores,
             'pagination' => $pagination,
+            'espera' => $espera
         ]);
     }
 
@@ -359,7 +366,7 @@ class PessoaController extends Controller
 
     # ---- MÉTODOS AUXILIARES ---- #
 
-     /**
+    /**
      * @param Pessoa $model
      * @return string|\yii\web\Response
      * @throws \Exception

@@ -75,11 +75,6 @@ class PessoaSearch extends Pessoa
         return $dataProvider;
     }
 
-    /**
-     * @param $instrutor_id
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
-     */
     public function searchUsuarios($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
@@ -87,11 +82,6 @@ class PessoaSearch extends Pessoa
         return $query;
     }
 
-    /**
-     * @param $instrutor_id
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
-     */
     public function searchAlunos($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
@@ -102,11 +92,6 @@ class PessoaSearch extends Pessoa
         return $query;
     }
 
-    /**
-     * @param $instrutor_id
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
-     */
     public function searchServidores($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
@@ -117,9 +102,6 @@ class PessoaSearch extends Pessoa
         return $query;
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function searchInstrutores() {
 
         $query = Pessoa::find()->join(
