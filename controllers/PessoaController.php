@@ -2,10 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\Avaliacao;
 use app\models\UsuarioInstrutor;
-use app\models\UsuarioInstrutorSearch;
-use DateTime;
 use Yii;
 use app\models\Pessoa;
 use app\models\PessoaSearch;
@@ -13,7 +10,6 @@ use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use yii\db\QueryInterface;
 use yii\filters\AccessControl;
-use yii\filters\AccessRule;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -139,11 +135,8 @@ class PessoaController extends Controller
     public function actionDelete($id)
     {
         $usuario = $this->findModel($id);
-        $usuario_instrutor = $usuario->usuarioInstrutores;
 
-        # Exclui os registros na tabela de relacionamento.
-        foreach ($usuario_instrutor as $ui)
-            $ui->delete();
+        $this->excluirRelacionamentos($usuario);
 
         $session = Yii::$app->session;
 
@@ -238,6 +231,8 @@ class PessoaController extends Controller
         ]);
 
         $servidores = $this->paginar($query, $pagination);
+
+        Yii::debug($servidores);
 
         return $this->render('servidor/servidores', [
             'servidores' => $servidores,
@@ -419,11 +414,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * @param $usuario_model \app\models\Pessoa
-     * @return bool
-     * @throws NotFoundHttpException
-     */
     protected function relacionarUsuarioInstrutor($usuario_model)
     {
         $instrutor = $this->findModel(Yii::$app->user->getId());
@@ -438,11 +428,27 @@ class PessoaController extends Controller
 
     }
 
-    /**
-     * @param $id
-     * @return Pessoa|null
-     * @throws NotFoundHttpException
-     */
+    protected function excluirRelacionamentos(Pessoa $usuario)
+    {
+        $usuario_instrutores = $usuario->usuarioInstrutores;
+        $usuario_treinos = $usuario->pessoaTreinos;
+        $usuario_avalicoes = $usuario->avaliacaos;
+
+        foreach ($usuario_instrutores as $ui)
+            $ui->delete();
+
+        foreach ($usuario_treinos as $ut)
+            $ut->delete();
+
+        foreach ($usuario_avalicoes as $ua)
+            $ua->delete();
+    }
+
+    protected function paginar(QueryInterface $query , Pagination $p)
+    {
+        return $query->orderBy('nome')->offset($p->offset)->limit($p->limit)->all();
+    }
+
     protected function findModel($id)
     {
         if (($model = Pessoa::findOne($id)) !== null) {
@@ -451,10 +457,4 @@ class PessoaController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-
-    protected  function paginar(QueryInterface $query , Pagination $p)
-    {
-        return $query->orderBy('nome')->offset($p->offset)->limit($p->limit)->all();
-    }
-
 }
