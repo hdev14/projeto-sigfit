@@ -103,11 +103,6 @@ class PessoaController extends Controller
 
     }
 
-    /**
-     * Creates a new Pessoa model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Pessoa();
@@ -358,14 +353,10 @@ class PessoaController extends Controller
         return $this->redirect(['instrutores']);
     }
 
+    // TODO Fazer ação para retirar o usuário da fila de espera.
 
     # ---- MÉTODOS AUXILIARES ---- #
 
-    /**
-     * @param Pessoa $model
-     * @return string|\yii\web\Response
-     * @throws \Exception
-     */
     protected function updateAluno(Pessoa $model)
     {
         $model->scenario = Pessoa::SCENARIO_REGISTRO_USUARIO;
@@ -387,12 +378,6 @@ class PessoaController extends Controller
         ]);
     }
 
-    /**
-     * Edita um servidor
-     * @param $id
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
-     */
     protected function updateServidor(Pessoa $model)
     {
         $model->scenario = Pessoa::SCENARIO_REGISTRO_SERVIDOR;
