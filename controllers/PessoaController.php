@@ -156,11 +156,11 @@ class PessoaController extends Controller
         return $this->redirect(['usuarios']);
     }
 
-    public function actionUsuarios()
+    public function actionUsuarios($espera = false)
     {
         $pessoa_search = new PessoaSearch();
         /** @var $query QueryInterface */
-        $query = $pessoa_search->searchUsuarios(Yii::$app->user->getId());
+        $query = $pessoa_search->searchUsuarios(Yii::$app->user->getId(), $espera);
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
@@ -176,11 +176,11 @@ class PessoaController extends Controller
 
     # ---- ALUNO ---- #
 
-    public function actionAlunos()
+    public function actionAlunos($espera = false)
     {
         $pessoa_search = new PessoaSearch();
         /** @var $query QueryInterface */
-        $query = $pessoa_search->searchAlunos(Yii::$app->user->getId());
+        $query = $pessoa_search->searchAlunos(Yii::$app->user->getId(), $espera);
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
@@ -221,11 +221,11 @@ class PessoaController extends Controller
 
     # ---- SERVIDOR ---- #
 
-    public function actionServidores()
+    public function actionServidores($espera = false)
     {
         $pessoa_search = new PessoaSearch();
         /** @var $query QueryInterface */
-        $query = $pessoa_search->searchServidores(Yii::$app->user->getId());
+        $query = $pessoa_search->searchServidores(Yii::$app->user->getId(), $espera);
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),

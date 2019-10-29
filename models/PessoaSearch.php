@@ -80,10 +80,10 @@ class PessoaSearch extends Pessoa
      * @return \yii\db\ActiveQuery
      * @throws \yii\base\InvalidConfigException
      */
-    public function searchUsuarios($instrutor_id)
+    public function searchUsuarios($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
-        $query = $instrutor->getUsuarios();
+        $query = $instrutor->getUsuarios()->where('espera = :espera', [':espera' => $espera]);
         return $query;
     }
 
@@ -92,10 +92,13 @@ class PessoaSearch extends Pessoa
      * @return \yii\db\ActiveQuery
      * @throws \yii\base\InvalidConfigException
      */
-    public function searchAlunos($instrutor_id)
+    public function searchAlunos($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
-        $query = $instrutor->getUsuarios()->where(['servidor' => false]);
+        $query = $instrutor->getUsuarios()->where(
+            ['and', 'servidor = 0', 'espera = :espera'],
+            [':espera' => $espera]
+        );
         return $query;
     }
 
@@ -104,10 +107,13 @@ class PessoaSearch extends Pessoa
      * @return \yii\db\ActiveQuery
      * @throws \yii\base\InvalidConfigException
      */
-    public function searchServidores($instrutor_id)
+    public function searchServidores($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
-        $query = $instrutor->getUsuarios()->where(['servidor' => true]);
+        $query = $instrutor->getUsuarios()->where(
+            ['and', 'servidor = 1', 'espera = :espera'],
+            [':espera' => $espera]
+        );
         return $query;
     }
 
