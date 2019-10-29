@@ -353,6 +353,8 @@ class PessoaController extends Controller
         return $this->redirect(['instrutores']);
     }
 
+
+    // TODO REVISAR
     public function actionRetirarEspera($id)
     {
         $usuario = Pessoa::findOne($id);

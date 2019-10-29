@@ -62,6 +62,8 @@ $this->registerJs("
                             ],
                         ]
                     ) ?>
+
+                    <!-- TODO fazer dropdown com as opções (Excluir, Retirar Espera, etc). -->
                 </div>
             </div>
             <div class="box-body box-profile">
