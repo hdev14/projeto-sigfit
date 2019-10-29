@@ -77,7 +77,7 @@ $this->registerJsFile('@web/js/upload-usuario.js')
 
                 <?= $form->field($model, 'sexo')->dropDownList([
                     'masculino' => 'Masculino',
-                    'feminino' => 'Fasculino',
+                    'feminino' => 'Feminino',
                 ], ['prompt' => 'Selecione seu sexo']) ?>
 
                 <?= $form->field($model, 'telefone')->textInput([

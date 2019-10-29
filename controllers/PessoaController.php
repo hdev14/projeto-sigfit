@@ -141,17 +141,14 @@ class PessoaController extends Controller
     {
         $usuario = $this->findModel($id);
         $usuario_instrutor = $usuario->usuarioInstrutores;
-        $result = false;
 
         # Exclui os registros na tabela de relacionamento.
-        foreach ($usuario_instrutor as $ui) {
-            $result = $ui->delete();
-        }
+        foreach ($usuario_instrutor as $ui)
+            $ui->delete();
 
-        $result = $usuario->delete();
         $session = Yii::$app->session;
 
-        if ($result)
+        if ($usuario->delete())
             $session->addFlash('success', 'Usuário excluído com sucesso !');
         else
             $session->addFlash('error', 'Não foi possível excluir o usuário.');
