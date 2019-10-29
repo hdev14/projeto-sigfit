@@ -352,18 +352,14 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
         }
     }
 
-    protected  function verificarHorarioDisponivel()
+    protected function verificarHorarioDisponivel()
     {
         $usuarios_com_mesmo_horario = Pessoa::find()->where(
             'horario_treino = :horario_treino',
             [':horario_treino' => $this->horario_treino]
         );
 
-        Yii::debug($usuarios_com_mesmo_horario, "USUARIOS");
-
         $qtd_usuarios = $usuarios_com_mesmo_horario->count();
-
-        Yii::debug($qtd_usuarios, "QTD USUARIOS");
 
         if ($qtd_usuarios < Pessoa::QTD_FREQUENTADORES_POR_HORARIO)
             return false;
