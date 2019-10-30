@@ -60,8 +60,6 @@ $this->registerJs("
                             'title' => 'Editar usuário'
                         ]) ?>
 
-                    <!-- TODO fazer dropdown com as opções (Excluir, Retirar Espera, etc). -->
-
                     <div class="dropdown pull-right">
 
                         <?= Html::button('<i class="fa fa-bars fa-fw fa-lg"></i>', [
