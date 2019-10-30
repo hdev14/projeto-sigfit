@@ -42,7 +42,15 @@ $this->registerJs("
     <div class="col-md-3">
         <div class="box box-success">
             <div class="box-header">
-                <h3 class="box-title"></h3>
+                <h3 class="box-title">
+
+                    <?php if ($model->espera): ?>
+                        <small class="label label-default">
+                            Em espera
+                        </small>
+                    <?php endif; ?>
+
+                </h3>
                 <div class="box-tools pull-right">
                     <?= Html::a('<i class="fa fa-fw fa-pencil fa-lg"></i>', ['update', 'id' =>
                         $model->id],
