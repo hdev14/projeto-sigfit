@@ -70,18 +70,14 @@ $this->registerJs("
                                 <?= Html::a(
                                     'Carteira do Atleta',
                                     null,
-                                    [
-                                        'title' => 'Gerar Carteira do Atleta',
-                                    ]
+                                    ['title' => 'Gerar Carteira do Atleta']
                                 ) ?>
                             </li>
                             <li>
                                 <?= Html::a(
                                     'Retirar Espera',
-                                    null,
-                                    [
-                                        'title' => 'Retirar usuário da fila de espera',
-                                    ]
+                                    ['pessoa/retirar-espera', 'id' => $model->id],
+                                    ['title' => 'Retirar usuário da fila de espera']
                                 ) ?>
                             </li>
                             <li>
