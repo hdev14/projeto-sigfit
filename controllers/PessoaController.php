@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\Avaliacao;
 use app\models\UsuarioInstrutor;
 use Yii;
 use app\models\Pessoa;
 use app\models\PessoaSearch;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
+use yii\db\ActiveRecord;
 use yii\db\QueryInterface;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -250,7 +252,12 @@ class PessoaController extends Controller
             $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
             if ($usuario_model->upload() && $usuario_model->save()
                 && $this->relacionarUsuarioInstrutor($usuario_model)) {
-                $session->addFlash('success', 'Usuário registrado com sucesso !');
+
+                $mensagem = $usuario_model->espera ?
+                    'Usuário registrado, porém está na fila de espera.' :
+                    'Usuário registrado com sucesso !';
+                $session->addFlash('success', $mensagem);
+
                 return $this->redirect(['view', 'id' => $usuario_model->id]);
             } else {
                 $session->addFlash('error', 'Não foi possível registra o usuário.');
@@ -353,8 +360,6 @@ class PessoaController extends Controller
         return $this->redirect(['instrutores']);
     }
 
-
-    // TODO REVISAR
     public function actionRetirarEspera($id)
     {
         $usuario = Pessoa::findOne($id);
@@ -429,18 +434,32 @@ class PessoaController extends Controller
 
     protected function excluirRelacionamentos(Pessoa $usuario)
     {
+
         $usuario_instrutores = $usuario->usuarioInstrutores;
         $usuario_treinos = $usuario->pessoaTreinos;
-        $usuario_avalicoes = $usuario->avaliacaos;
+        $usuario_avaliacoes = $usuario->avaliacaos;
 
-        foreach ($usuario_instrutores as $ui)
-            $ui->delete();
+        $this->excluirModels($usuario_instrutores);
+        $this->excluirModels($usuario_treinos);
+        $this->excluirAvalicoes($usuario_avaliacoes);
 
-        foreach ($usuario_treinos as $ut)
-            $ut->delete();
+    }
 
-        foreach ($usuario_avalicoes as $ua)
-            $ua->delete();
+    protected function excluirAvalicoes($avaliacoes)
+    {
+        /* @var $avaliacao Avaliacao*/
+        foreach ($avaliacoes as $avaliacao) {
+            $this->excluirModels($avaliacao->imcs);
+            $this->excluirModels($avaliacao->pesos);
+            $this->excluirModels($avaliacao->percentualGorduras);
+            $avaliacao->delete();
+        }
+    }
+
+    protected function excluirModels($models)
+    {
+        foreach ($models as $model)
+            $model->delete();
     }
 
     protected function paginar(QueryInterface $query , Pagination $p)
