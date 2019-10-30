@@ -42,7 +42,15 @@ $this->registerJs("
     <div class="col-md-3">
         <div class="box box-success">
             <div class="box-header">
-                <h3 class="box-title"></h3>
+                <h3 class="box-title">
+
+                    <?php if ($model->espera): ?>
+                        <small class="label label-default">
+                            Em espera
+                        </small>
+                    <?php endif; ?>
+
+                </h3>
                 <div class="box-tools pull-right">
 
                     <?= Html::a('<i class="fa fa-fw fa-pencil fa-lg"></i>', ['update', 'id' =>
@@ -51,8 +59,6 @@ $this->registerJs("
                             'class' => 'btn btn-box-tool',
                             'title' => 'Editar usuário'
                         ]) ?>
-
-                    <!-- TODO fazer dropdown com as opções (Excluir, Retirar Espera, etc). -->
 
                     <div class="dropdown pull-right">
 
@@ -65,6 +71,7 @@ $this->registerJs("
                             'type' => 'button',
                             'title' => 'opções'
                         ]) ?>
+
                         <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
                             <li>
                                 <?= Html::a(
@@ -73,13 +80,17 @@ $this->registerJs("
                                     ['title' => 'Gerar Carteira do Atleta']
                                 ) ?>
                             </li>
-                            <li>
-                                <?= Html::a(
-                                    'Retirar Espera',
-                                    ['pessoa/retirar-espera', 'id' => $model->id],
-                                    ['title' => 'Retirar usuário da fila de espera']
-                                ) ?>
-                            </li>
+
+                            <?php if ($model->espera): ?>
+                                <li>
+                                    <?= Html::a(
+                                        'Retirar Espera',
+                                        ['pessoa/retirar-espera', 'id' => $model->id],
+                                        ['title' => 'Retirar usuário da fila de espera']
+                                    ) ?>
+                                </li>
+                            <?php endif; ?>
+
                             <li>
                                 <?= Html::a(
                                     'Abonar Falta',
