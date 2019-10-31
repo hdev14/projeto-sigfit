@@ -35,6 +35,7 @@ class PessoaController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'abonar-faltas' => ['POST']
                 ],
             ],
             'auth-suap' => [
@@ -363,7 +364,7 @@ class PessoaController extends Controller
     public function actionAbonarFaltas($id)
     {
         $usuario = $this->findModel($id);
-        $qtd_retira_faltas = Yii::$app->request->post('qtd-falta', null);
+        $qtd_retira_faltas = Yii::$app->request->post('qtd-retira-faltas', null);
         $qtd_retira_faltas = filter_var($qtd_retira_faltas, FILTER_SANITIZE_NUMBER_INT);
         $session = Yii::$app->session;
 
@@ -376,6 +377,8 @@ class PessoaController extends Controller
                 $session->addFlash('success', 'Faltas abonadas com sucesso !');
             else
                 $session->addFlash('error', 'Não foi possível abonar as faltas deste usuário.');
+        } else {
+            $session->addFlash('warning', 'Número de faltas inválido.');
         }
 
         return $this->redirect(['pessoa/view', 'id' => $usuario->id]);

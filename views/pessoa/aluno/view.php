@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\helpers\Url;
@@ -16,14 +17,24 @@ $this->title = '';
 
 $this->registerCssFile('@web/css/box-subtitle.css');
 
-$this->registerJs("
+$this->registerJs(<<<JS
     $('#tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
     });
-");
 
-$this->registerJs("
+    let abonar_falta = document.querySelector('#abonar-falta');
+    
+    abonar_falta.addEventListener('click', function(event) {
+        let id_modal = event.target.dataset.modal;
+        $('#'+id_modal).modal('show');
+    }, false);
+    
+JS
+);
+
+$this->registerJs(<<<JS
+    
     let avaliacao_op = $('#avaliacao-op')[0];
     
     if (avaliacao_op.value === 'default') {
@@ -34,11 +45,43 @@ $this->registerJs("
     avaliacao_op.onchange = function(e) {
         $('#' + e.target.value).show().siblings().hide();
     }
-", View::POS_LOAD);
+JS
+    , View::POS_LOAD);
 
 ?>
 
+
 <div class="row">
+
+    <!--MODAL ABONAR FALTAS-->
+    <?php $modal = Modal::begin([
+        'header' => '<b>Preenchar o campo corretamente</b>',
+        'footer' =>
+            Html::submitButton('Confirmar', [
+                'class' => 'btn bg-green',
+                'form' => 'form-abonar-falta'
+            ])
+        ,
+        'id' => 'modal-abonar-falta',
+    ]); ?>
+    <?= Html::beginForm(
+        ['pessoa/abonar-faltas', 'id' => $model->id],
+        'post',
+        ['id' => 'form-abonar-falta']
+    ) ?>
+
+    <div class="form-group">
+        <?= Html::input('number', 'qtd-retira-faltas', null, [
+            'class' => 'form-control',
+            'placeholder' => 'Escolha o número de faltas que deseja abonar',
+            'min' => '1', 'max' => '10'
+        ]) ?>
+    </div>
+
+    <?= Html::endForm() ?>
+    <?php Modal::end(); ?>
+    <!--MODAL ABONAR FALTAS-->
+
     <div class="col-md-3">
         <div class="box box-success">
             <div class="box-header">
@@ -91,15 +134,20 @@ $this->registerJs("
                                 </li>
                             <?php endif; ?>
 
-                            <li>
-                                <?= Html::a(
-                                    'Abonar Falta',
-                                    ['delete', 'id' => $model->id],
-                                    [
-                                        'title' => 'Abonar falta do usuário',
-                                    ]
-                                ) ?>
-                            </li>
+                            <?php if ($model->faltas > 0): ?>
+                                <li>
+                                    <?= Html::a(
+                                        'Abonar Falta',
+                                        null,
+                                        [
+                                            'id' => 'abonar-falta',
+                                            'title' => 'Abonar falta do usuário',
+                                            'data-modal' => 'modal-abonar-falta'
+                                        ]
+                                    ) ?>
+                                </li>
+                            <?php endif; ?>
+
                             <li class="divider"></li>
                             <li>
                                 <?= Html::a(
