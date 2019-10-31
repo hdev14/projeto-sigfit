@@ -205,7 +205,7 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                   <?= Html::a(
+                                    <?= Html::a(
                                         '<i class="fa fa-fw fa-plus fa-2x"></i>',
                                         [
                                             'treino/add-treino',
@@ -423,7 +423,13 @@ foreach ($treinos as $treino) {
             </div>
         </div>
         <div class="box-footer no-border">
-            <p class="text-muted text-center">Clique em um treino para ver mais informações.</p>
+            <p class="text-muted text-center">
+                <?php if (empty($treinos)): ?>
+                    Adicione um novo treino para este usuário
+                <?php else: ?>
+                    Clique em um treino para ver mais informações.
+                <?php endif; ?>
+            </p>
         </div>
     </div>
 </div>

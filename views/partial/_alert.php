@@ -14,4 +14,9 @@ use yii\bootstrap\Alert;
         'options' => ['class' => 'alert-danger alert-dismissible'],
         'body' => $error[0],
     ]) ?>
+<?php elseif ($error = Yii::$app->session->getFlash('warning')): ?>
+    <?= Alert::widget([
+        'options' => ['class' => 'alert-warning alert-dismissible'],
+        'body' => $error[0],
+    ]) ?>
 <?php endif; ?>

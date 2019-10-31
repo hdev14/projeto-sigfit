@@ -17,19 +17,13 @@ $this->title = '';
 
 $this->registerCssFile('@web/css/box-subtitle.css');
 
+$this->registerJsFile('@web/js/abonar-faltas.js');
+
 $this->registerJs(<<<JS
     $('#tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
     });
-
-    let abonar_falta = document.querySelector('#abonar-falta');
-    
-    abonar_falta.addEventListener('click', function(event) {
-        let id_modal = event.target.dataset.modal;
-        $('#'+id_modal).modal('show');
-    }, false);
-    
 JS
 );
 
@@ -71,10 +65,11 @@ JS
     ) ?>
 
     <div class="form-group">
-        <?= Html::input('number', 'qtd-retira-faltas', null, [
+        <?= Html::input('number', 'qtd-faltas-retirar',null, [
             'class' => 'form-control',
-            'placeholder' => 'Escolha o número de faltas que deseja abonar',
-            'min' => '1', 'max' => '10'
+            'placeholder' => 'Digite o número de faltas que deseja abonar',
+            'min' => '1', 'max' => '10',
+            'required' => true,
         ]) ?>
     </div>
 
@@ -142,7 +137,7 @@ JS
                                         [
                                             'id' => 'abonar-falta',
                                             'title' => 'Abonar falta do usuário',
-                                            'data-modal' => 'modal-abonar-falta'
+                                            'data-modal' => 'modal-abonar-falta',
                                         ]
                                     ) ?>
                                 </li>

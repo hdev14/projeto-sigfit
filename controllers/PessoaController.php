@@ -364,19 +364,17 @@ class PessoaController extends Controller
     public function actionAbonarFaltas($id)
     {
         $usuario = $this->findModel($id);
-        $qtd_retira_faltas = Yii::$app->request->post('qtd-retira-faltas', null);
-        $qtd_retira_faltas = filter_var($qtd_retira_faltas, FILTER_SANITIZE_NUMBER_INT);
+        $qtd_faltas_retirar = Yii::$app->request->post('qtd-faltas-retirar', null);
         $session = Yii::$app->session;
 
-        if ($qtd_retira_faltas !== null
-            && ($usuario->faltas > 0 && $qtd_retira_faltas <= $usuario->faltas)) {
+        if (!empty($qtd_faltas_retirar)) {
 
-            $usuario->faltas -= $qtd_retira_faltas;
-
-            if ($usuario->save())
+            $qtd_faltas_retirar = filter_var($qtd_faltas_retirar, FILTER_SANITIZE_NUMBER_INT);
+            if ($this->abonarFaltas($usuario, $qtd_faltas_retirar))
                 $session->addFlash('success', 'Faltas abonadas com sucesso !');
             else
                 $session->addFlash('error', 'Não foi possível abonar as faltas deste usuário.');
+
         } else {
             $session->addFlash('warning', 'Número de faltas inválido.');
         }
@@ -483,6 +481,16 @@ class PessoaController extends Controller
     {
         foreach ($models as $model)
             $model->delete();
+    }
+
+    protected function abonarFaltas($usuario, $qtd_faltas_retirar)
+    {
+        if ($usuario->faltas > 0 && $qtd_faltas_retirar <= $usuario->faltas) {
+            $usuario->faltas -= $qtd_faltas_retirar;
+            return $usuario->save();
+        }
+
+        return false;
     }
 
     protected function paginar(QueryInterface $query , Pagination $p)
