@@ -9,10 +9,10 @@ use yii\helpers\Html;
 $peso = new Peso();
 ?>
 <?php $modal = Modal::begin([
-    'header' => 'Preenchar o campo corretamente',
+    'header' => '<strong>Preenchar o campo corretamente</strong>',
     'footer' =>
         Html::submitButton('Confirmar', [
-            'class' => 'btn bg-green btn-flat btn-sm',
+            'class' => 'btn bg-green',
             'form' => 'modal-form-peso' . $avaliacao_id,
         ])
     ,
@@ -33,10 +33,11 @@ $peso = new Peso();
 
 <div class="form-group">
     <?= Html::activeLabel($peso, 'valor') ?>
-    <?= Html::activeInput('text', $peso, 'valor', [
+    <?= Html::activeInput('number', $peso, 'valor', [
         'placeholder' => 'Digite o valor do peso (Kg)',
         'class' => 'form-control',
-        'required' => 'required'
+        'required' => true,
+        'min' => 0
     ]) ?>
 </div>
 

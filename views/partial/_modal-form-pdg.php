@@ -63,16 +63,16 @@ $this->registerJs("
 ?>
 
 <?php $modal = Modal::begin([
-    'header' => 'Preenchar os campos corretamente para realizar o cálculo',
+    'header' => '<strong>Preencha os campos corretamente para realizar o cálculo</strong>',
     'footer' =>
         Html::a('Calcular Percentual', '#', [
-            'class' => 'btn bg-light-blue btn-flat btn-sm',
+            'class' => 'btn bg-light-blue',
             'role' => 'button',
             'id' => 'btn-calculo-pdg'.$avaliacao_id,
         ])
         .
         Html::submitButton('Confirmar', [
-            'class' => 'btn bg-green btn-flat btn-sm',
+            'class' => 'btn bg-green',
             'form' => 'modal-form-pdg'.$avaliacao_id,
         ])
     ,

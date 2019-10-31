@@ -4,7 +4,7 @@
 /* @var $this yii\web\View */
 /* @var $model app\models\Avaliacao */
 
-$this->title = 'Atualizar ' . $model->titulo;
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Avaliacaos', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 //$this->params['breadcrumbs'][] = 'Update';
