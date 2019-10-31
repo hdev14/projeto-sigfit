@@ -47,7 +47,7 @@ use yii\helpers\Url;
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="active">
+                    <li class="">
                         <a href="<?= Url::to(['pessoa/usuarios']) ?>">
                             <i class="fa fa-id-card"></i> Instruídos
                         </a>
@@ -57,12 +57,12 @@ use yii\helpers\Url;
                             <i class="fa fa-user"></i> Ativos
                         </a>
                     </li>
-                    <li class="active">
+                    <li class="">
                         <a href="index2.html">
                             <i class="fa fa-bed"></i> Inativos
                         </a>
                     </li>
-                    <li class="active">
+                    <li class="">
                         <a href="<?= Url::to(['pessoa/usuarios', 'espera' => true]) ?>">
                             <i class="fa fa-list "></i> Fila de Espera
                         </a>
