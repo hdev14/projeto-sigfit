@@ -21,6 +21,10 @@ $config = [
         'suap' => [
             'class' => 'app\components\Suap',
         ],
+        // Componente para PDFs (Carteirinha de Atleta e Lista de Treino)
+        'pdf' => [
+            'class' => 'kartik\mpdf\Pdf',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'TpjqD9Y3MzP0YwWKe0Q8UZgG_SNSRgNS',

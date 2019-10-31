@@ -17,6 +17,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\filters\AuthSuap;
 use yii\web\UploadedFile;
+use kartik\mpdf\Pdf;
 
 /**
  * PessoaController implements the CRUD actions for Pessoa model.
@@ -395,6 +396,20 @@ class PessoaController extends Controller
             $session->addFlash('error','Usuário não pode ser retirado da fila de espera, por que horário de treino está lotado.');
 
         $this->redirect(['pessoa/view', 'id' => $usuario->id]);
+    }
+
+    public function actionPdf()
+    {
+        $html = $this->renderPartial('/partial/_pdf-teste');
+
+        /* @var $pdf Pdf */
+        $pdf = Yii::$app->pdf;
+        $pdf->format = Pdf::FORMAT_A4;
+        $pdf->orientation = Pdf::ORIENT_PORTRAIT;
+        $pdf->destination = Pdf::DEST_BROWSER;
+        $pdf->content = $html;
+
+        return $pdf->render();
     }
 
     # ---- MÉTODOS AUXILIARES ---- #
