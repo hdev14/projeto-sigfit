@@ -8,6 +8,8 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Pessoa */
 /* @var $form yii\widgets\ActiveForm */
 
+$this->registerCssFile('@web/css/box-subtitle.css');
+
 $this->registerCss("
     div.img-preview {
         margin-top: 25px; 
@@ -19,7 +21,10 @@ $this->registerJsFile('@web/js/upload-usuario.js')
 
 <div class="box box-success pessoa-form">
     <div class="box-header with-border">
-        <h3 class="box-title">Preencha os dados corretamente</h3>
+        <h3 class="box-title">Editar usuário <?= $model->nome ?> </h3>
+        <small class="text-muted">
+            Preencha os campos corretamente
+        </small>
     </div>
     <div class="box-body">
 
@@ -100,7 +105,7 @@ $this->registerJsFile('@web/js/upload-usuario.js')
             </div>
             <div class="col-xs-12 form-group text-right">
                 <?= Html::submitButton('Confirmar', [
-                    'class' => 'btn btn-success btn-flat'
+                    'class' => 'btn bg-green'
                 ]) ?>
             </div>
         </div>

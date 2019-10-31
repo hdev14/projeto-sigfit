@@ -36,7 +36,7 @@ use yii\widgets\ActiveForm;
 
         <div class="form-group text-right">
             <?= Html::submitButton('Confirmar', [
-                'class' => 'btn btn-success btn-flat'
+                'class' => 'btn bg-green'
             ]) ?>
         </div>
 
