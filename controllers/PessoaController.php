@@ -408,6 +408,10 @@ class PessoaController extends Controller
         $pdf->orientation = Pdf::ORIENT_PORTRAIT;
         $pdf->destination = Pdf::DEST_BROWSER;
         $pdf->content = $html;
+        $pdf->cssInline = "
+            h1 { color: green }
+        ";
+
 
         return $pdf->render();
     }
