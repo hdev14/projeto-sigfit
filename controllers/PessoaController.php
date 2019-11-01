@@ -398,9 +398,13 @@ class PessoaController extends Controller
         $this->redirect(['pessoa/view', 'id' => $usuario->id]);
     }
 
-    public function actionPdf()
+    public function actionPdf($id)
     {
-        $html = $this->renderPartial('/partial/_pdf-teste');
+        $usuario = $this->findModel($id);
+
+        $html = $this->renderPartial('/layouts/documentos/_pdf-teste', [
+            'usuario' => $usuario,
+        ]);
 
         /* @var $pdf Pdf */
         $pdf = Yii::$app->pdf;
@@ -409,9 +413,32 @@ class PessoaController extends Controller
         $pdf->destination = Pdf::DEST_BROWSER;
         $pdf->content = $html;
         $pdf->cssInline = "
-            h1 { color: green }
+            
+            div.foto {
+                border: 1px solid;
+                height: 4cm;
+                width: 3cm;
+            }
+            
+            div.foto p {
+                margin-top: 1.7cm;
+                margin-left: 1cm;
+            }
+            
+            div.carteira {
+                height: 6.9cm;
+                width: 9.8cm;
+                padding: 10px;
+            }
+            
+            div.borda {
+                border: 1px dashed rgba(0, 0, 0, .5);
+            }
+            
+            span.pdf-cut {
+                font-size: 25px;        
+            }
         ";
-
 
         return $pdf->render();
     }
