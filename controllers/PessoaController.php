@@ -12,6 +12,7 @@ use yii\data\Pagination;
 use yii\db\ActiveRecord;
 use yii\db\QueryInterface;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -402,6 +403,7 @@ class PessoaController extends Controller
     {
         $usuario = $this->findModel($id);
 
+
         $html = $this->renderPartial('/layouts/documentos/_pdf-teste', [
             'usuario' => $usuario,
         ]);
@@ -414,10 +416,39 @@ class PessoaController extends Controller
         $pdf->content = $html;
         $pdf->cssInline = "
             
+            table {
+                width: 100%;
+            }
+           
+            table tr th {
+                text-align: center;
+            }
+            
+            div.header {
+                text-align: center;
+                height: 4cm;
+                width: 65%;
+                float: right;
+                margin-left: 0;
+            }
+            
+            p#hr-aula {
+                font-weight: bold;
+                padding-left: 15px;
+            }
+            
+            
+           
+            img#ifrn-logo {
+                margin-top: 10px;
+            }
+            
             div.foto {
                 border: 1px solid;
                 height: 4cm;
                 width: 3cm;
+                margin-right: 0;
+                float: left;
             }
             
             div.foto p {
@@ -434,10 +465,19 @@ class PessoaController extends Controller
             div.borda {
                 border: 1px dashed rgba(0, 0, 0, .5);
             }
-            
+           
             span.pdf-cut {
                 font-size: 25px;        
             }
+            
+            div.carteira-footer {
+                border: 1px solid;
+                margin-top: 5px;
+                padding: 5px;
+                height: 90px;
+            }
+           
+    
         ";
 
         return $pdf->render();
