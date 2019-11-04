@@ -498,7 +498,6 @@ class PessoaController extends Controller
                 border: 1px solid rgba(0, 0, 0, 0.5);
                 padding: 5px;
              }
-            
         ";
 
         return $pdf->render();
