@@ -411,10 +411,21 @@ class PessoaController extends Controller
         /* @var $pdf Pdf */
         $pdf = Yii::$app->pdf;
         $pdf->format = Pdf::FORMAT_A4;
-        $pdf->orientation = Pdf::ORIENT_PORTRAIT;
+        $pdf->orientation = Pdf::ORIENT_LANDSCAPE;
         $pdf->destination = Pdf::DEST_BROWSER;
         $pdf->content = $html;
         $pdf->cssInline = "
+            
+            #frente {
+                float: left;   
+                width: 49%; 
+            }
+            
+            #verso {
+                float: right;
+                width: 49%;    
+            }
+            
             div.borda { border: 1px dashed rgba(0, 0, 0, .5); }
             
             div.carteira {
@@ -465,6 +476,29 @@ class PessoaController extends Controller
             span.pdf-cut {
                 font-size: 25px;        
             }
+            
+            div.verso-carteira-header {
+                text-align: center;
+            }
+            
+            div.verso-content {
+                margin: 5px 0;
+            }
+            
+            .caixa {
+                margin-left: 10px;
+                margin-bottom: 1px;
+            }
+            
+            .dias {
+                text-transform: capitalize;
+            }
+            
+             div.verso-carteira-footer {
+                border: 1px solid rgba(0, 0, 0, 0.5);
+                padding: 5px;
+             }
+            
         ";
 
         return $pdf->render();

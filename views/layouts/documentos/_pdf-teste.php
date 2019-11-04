@@ -1,15 +1,11 @@
 <?php
 
-use yii\helpers\Url;
-use app\assets\AppAsset;
-use \kartik\mpdf\Pdf;
-
 /* @var $this \yii\web\View */
 /* @var $usuario \app\models\Pessoa */
 
 /*$this->registerCss(<<<CSS
     div {
-    font-
+        text-transform: ca;
     }
 CSS
 );*/
@@ -17,8 +13,8 @@ CSS
 
 
 <h1> Carteira do Atleta </h1>
-<div class="row">
-    <div class="col-md-12">
+<div>
+    <div id="frente">
         <h5>
             <strong>Frente</strong>
         </h5>
@@ -53,12 +49,48 @@ CSS
         </div>
         <span class="text-muted pdf-cut">&#9987;</span>
     </div>
-    <div class="col-md-12">
+    <div id="verso">
         <h5>
             <strong>Verso</strong>
         </h5>
         <div class="carteira borda">
-            Mussum Ipsum, cacilds vidis litro abertis. Mé faiz elementum girarzis, nisi eros vermeio. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Tá deprimidis, eu conheço uma cachacis que pode alegrar sua vidis. Praesent malesuada urna nisi, quis volutpat erat hendrerit non. Nam vulputate dapibus.
+            <div class="verso-carteira-header">
+                <strong>ATIVIDADES</strong>
+
+                <div class="verso-content">
+                    <img class="caixa"  alt="ifrn" width="20" height="20"
+                         src="<?= Yii::$app->basePath . '/web/imgs/box.png' ?>">
+                    Musculação
+                    <img class="caixa"  alt="ifrn" width="20" height="20"
+                         src="<?= Yii::$app->basePath . '/web/imgs/box.png' ?>">
+                    Hidroginástica
+                    <img class="caixa"  alt="ifrn" width="20" height="20"
+                         src="<?= Yii::$app->basePath . '/web/imgs/box.png' ?>">
+                    Outros
+                </div>
+
+                <strong>DIAS</strong>
+
+                <div class="verso-content">
+                    <p>
+                        <?php foreach ($usuario->treinos as $treino): ?>
+                            <span class="dias"><?= " | " . $treino->dia ?></span>
+                        <?php endforeach; ?>
+                    </p>
+                </div>
+
+                <strong>HORÁRIO</strong>
+
+                <div class="verso-content">
+                    <p>
+                        <?= $usuario->horario_treino ?>
+                    </p>
+                </div>
+            </div>
+            <div class="verso-carteira-footer">
+                Ass. Aluno (a): ________________________________________<br><br>
+                Ass. Direção: _________________________________________
+            </div>
         </div>
         <span class="text-muted pdf-cut">&#9987;</span>
     </div>
