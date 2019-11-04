@@ -114,7 +114,7 @@ JS
                             <li>
                                 <?= Html::a(
                                     'Carteira do Atleta',
-                                    null,
+                                    ['pessoa/gerar-carteira-pdf', 'id' => $model->id],
                                     ['title' => 'Gerar Carteira do Atleta']
                                 ) ?>
                             </li>

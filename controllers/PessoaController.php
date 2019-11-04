@@ -399,10 +399,9 @@ class PessoaController extends Controller
         $this->redirect(['pessoa/view', 'id' => $usuario->id]);
     }
 
-    public function actionPdf($id)
+    public function actionGerarCarteiraPdf($id)
     {
         $usuario = $this->findModel($id);
-
 
         $html = $this->renderPartial('/layouts/documentos/_pdf-teste', [
             'usuario' => $usuario,
