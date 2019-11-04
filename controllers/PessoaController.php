@@ -415,36 +415,16 @@ class PessoaController extends Controller
         $pdf->destination = Pdf::DEST_BROWSER;
         $pdf->content = $html;
         $pdf->cssInline = "
+            div.borda { border: 1px dashed rgba(0, 0, 0, .5); }
             
-            table {
-                width: 100%;
-            }
-           
-            table tr th {
-                text-align: center;
-            }
-            
-            div.header {
-                text-align: center;
-                height: 4cm;
-                width: 65%;
-                float: right;
-                margin-left: 0;
-            }
-            
-            p#hr-aula {
-                font-weight: bold;
-                padding-left: 15px;
-            }
-            
-            
-           
-            img#ifrn-logo {
-                margin-top: 10px;
+            div.carteira {
+                height: 6.9cm;
+                width: 9.8cm;
+                padding: 10px;
             }
             
             div.foto {
-                border: 1px solid;
+                border: 1px solid rgba(0, 0, 0, .5);
                 height: 4cm;
                 width: 3cm;
                 margin-right: 0;
@@ -456,28 +436,35 @@ class PessoaController extends Controller
                 margin-left: 1cm;
             }
             
-            div.carteira {
-                height: 6.9cm;
-                width: 9.8cm;
-                padding: 10px;
+            div.header {
+                text-align: center;
+                height: 4cm;
+                width: 65%;
+                float: right;
+                margin-left: 0;
             }
             
-            div.borda {
-                border: 1px dashed rgba(0, 0, 0, .5);
-            }
-           
-            span.pdf-cut {
-                font-size: 25px;        
-            }
+            img#ifrn-logo { margin-top: 10px; }
             
             div.carteira-footer {
-                border: 1px solid;
+                border: 1px solid rgba(0, 0, 0, .5);
                 margin-top: 5px;
                 padding: 5px;
                 height: 90px;
             }
+            
+            table { width: 100%; }
            
-    
+            table tr th { text-align: left; }
+            
+            p#hr-aula {
+                font-weight: bold;
+                padding-left: 5px;
+            }
+            
+            span.pdf-cut {
+                font-size: 25px;        
+            }
         ";
 
         return $pdf->render();

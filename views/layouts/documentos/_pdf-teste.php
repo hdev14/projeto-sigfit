@@ -42,12 +42,13 @@ CSS
                     <tr>
                         <th style="width: 100px;">Matrícula:</th>
                         <td><?= $usuario->matricula ?></td>
+
                         <th style="width: 100px;">Curso:</th>
                         <td><?= $usuario->curso ?></td>
                     </tr>
                 </table>
                 <p id="hr-aula">Horário de Aula:</p>
-                <hr style="width: 90%; margin: 10px 0 0 0; ">
+                <hr style="width: 95%; margin: 10px 0 5px 0; ">
             </div>
         </div>
         <span class="text-muted pdf-cut">&#9987;</span>
