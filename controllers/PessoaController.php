@@ -436,44 +436,7 @@ class PessoaController extends Controller
         $pdf->content = $html;
 
         /* CSS minificado do arquivo pdf-lista-treino.css*/
-        $pdf->cssInline = "
-            
-            div.header {
-                clear: both;
-            }
-            
-            div.titulo {
-                width: 49%;
-                float: left;
-            }
-            div.titulo h3 {
-                text-transform: uppercase;
-            }
-            
-            div#dias-horario {
-                text-transform: capitalize;
-                text-align: right;
-                width: 49%;
-                float: right;
-            }
-            
-            div#dias-horario p#horario {
-                margin-top: 15px;
-                text-transform: normal;
-            }
-            
-            h5.dia-treino {
-                text-transform: uppercase;
-                font-weight: bold;
-            }
-            
-            table.table-treino th {
-                border-bottom: 1px dashed;
-                padding-bottom: 10px;
-                color: #1c2529;
-            }
-            
-        ";
+        $pdf->cssInline = "div.header{clear:both}div.titulo{width:49%;float:left}div.titulo h3{text-transform:uppercase}div#dias-horario{text-transform:capitalize;text-align:right;width:49%;float:right}div#dias-horario p#horario{margin-top:15px;text-transform:normal}h5.dia-treino{text-transform:uppercase;font-weight:700}table.table-treino th{border-bottom:1px dashed;padding-bottom:10px;color:#1c2529}";
 
         return $pdf->render();
     }

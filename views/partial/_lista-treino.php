@@ -5,7 +5,7 @@
 ?>
 
 <h5 class="dia-treino">
-    <?= $treino->dia ?>
+    <?= $treino->titulo ?>
 </h5>
 <table class="table-treino">
     <tr>
