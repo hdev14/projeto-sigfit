@@ -3,12 +3,6 @@
 /* @var $this \yii\web\View */
 /* @var $usuario \app\models\Pessoa */
 
-/*$this->registerCss(<<<CSS
-    div {
-        text-transform: ca;
-    }
-CSS
-);*/
 ?>
 
 

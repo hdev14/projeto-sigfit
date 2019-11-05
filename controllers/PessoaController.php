@@ -403,7 +403,7 @@ class PessoaController extends Controller
     {
         $usuario = $this->findModel($id);
 
-        $html = $this->renderPartial('/layouts/documentos/_pdf-teste', [
+        $html = $this->renderPartial('/layouts/documentos/_pdf-carteira', [
             'usuario' => $usuario,
         ]);
 
@@ -413,91 +413,9 @@ class PessoaController extends Controller
         $pdf->orientation = Pdf::ORIENT_LANDSCAPE;
         $pdf->destination = Pdf::DEST_BROWSER;
         $pdf->content = $html;
-        $pdf->cssInline = "
-            
-            #frente {
-                float: left;   
-                width: 49%; 
-            }
-            
-            #verso {
-                float: right;
-                width: 49%;    
-            }
-            
-            div.borda { border: 1px dashed rgba(0, 0, 0, .5); }
-            
-            div.carteira {
-                height: 6.9cm;
-                width: 9.8cm;
-                padding: 10px;
-            }
-            
-            div.foto {
-                border: 1px solid rgba(0, 0, 0, .5);
-                height: 4cm;
-                width: 3cm;
-                margin-right: 0;
-                float: left;
-            }
-            
-            div.foto p {
-                margin-top: 1.7cm;
-                margin-left: 1cm;
-            }
-            
-            div.header {
-                text-align: center;
-                height: 4cm;
-                width: 65%;
-                float: right;
-                margin-left: 0;
-            }
-            
-            img#ifrn-logo { margin-top: 10px; }
-            
-            div.carteira-footer {
-                border: 1px solid rgba(0, 0, 0, .5);
-                margin-top: 5px;
-                padding: 5px;
-                height: 90px;
-            }
-            
-            table { width: 100%; }
-           
-            table tr th { text-align: left; }
-            
-            p#hr-aula {
-                font-weight: bold;
-                padding-left: 5px;
-            }
-            
-            span.pdf-cut {
-                font-size: 25px;        
-            }
-            
-            div.verso-carteira-header {
-                text-align: center;
-            }
-            
-            div.verso-content {
-                margin: 5px 0;
-            }
-            
-            .caixa {
-                margin-left: 10px;
-                margin-bottom: 1px;
-            }
-            
-            .dias {
-                text-transform: capitalize;
-            }
-            
-             div.verso-carteira-footer {
-                border: 1px solid rgba(0, 0, 0, 0.5);
-                padding: 5px;
-             }
-        ";
+
+        /* CSS minificado do arquivo pdf-carteira.css*/
+        $pdf->cssInline = "#frente{float:left;width:49%}#verso{float:right;width:49%}div.borda{border:1px dashed rgba(0,0,0,.5)}div.carteira{height:6.9cm;width:9.8cm;padding:10px}div.foto{border:1px solid rgba(0,0,0,.5);height:4cm;width:3cm;margin-right:0;float:left}div.foto p{margin-top:1.7cm;margin-left:1cm}div.header{text-align:center;height:4cm;width:65%;float:right;margin-left:0}img#ifrn-logo{margin-top:10px}div.carteira-footer{border:1px solid rgba(0,0,0,.5);margin-top:5px;padding:5px;height:90px}table{width:100%}table tr th{text-align:left}p#hr-aula{font-weight:700;padding-left:5px}span.pdf-cut{font-size:25px}div.verso-carteira-header{text-align:center}div.verso-content{margin:5px 0}.caixa{margin-left:10px;margin-bottom:1px}.dias{text-transform:capitalize}div.verso-carteira-footer{border:1px solid rgba(0,0,0,.5);padding:5px}";
 
         return $pdf->render();
     }
