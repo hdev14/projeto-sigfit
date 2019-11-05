@@ -411,11 +411,69 @@ class PessoaController extends Controller
         $pdf = Yii::$app->pdf;
         $pdf->format = Pdf::FORMAT_A4;
         $pdf->orientation = Pdf::ORIENT_LANDSCAPE;
-        $pdf->destination = Pdf::DEST_BROWSER;
+        $pdf->destination = Pdf::DEST_DOWNLOAD;
         $pdf->content = $html;
 
         /* CSS minificado do arquivo pdf-carteira.css*/
         $pdf->cssInline = "#frente{float:left;width:49%}#verso{float:right;width:49%}div.borda{border:1px dashed rgba(0,0,0,.5)}div.carteira{height:6.9cm;width:9.8cm;padding:10px}div.foto{border:1px solid rgba(0,0,0,.5);height:4cm;width:3cm;margin-right:0;float:left}div.foto p{margin-top:1.7cm;margin-left:1cm}div.header{text-align:center;height:4cm;width:65%;float:right;margin-left:0}img#ifrn-logo{margin-top:10px}div.carteira-footer{border:1px solid rgba(0,0,0,.5);margin-top:5px;padding:5px;height:90px}table{width:100%}table tr th{text-align:left}p#hr-aula{font-weight:700;padding-left:5px}span.pdf-cut{font-size:25px}div.verso-carteira-header{text-align:center}div.verso-content{margin:5px 0}.caixa{margin-left:10px;margin-bottom:1px}.dias{text-transform:capitalize}div.verso-carteira-footer{border:1px solid rgba(0,0,0,.5);padding:5px}";
+
+        return $pdf->render();
+    }
+
+    public function actionGerarListaTreinoPdf($id)
+    {
+        $usuario = $this->findModel($id);
+
+        $html = $this->renderPartial('/layouts/documentos/_pdf-lista-treino', [
+            'usuario' => $usuario,
+        ]);
+
+        /* @var $pdf Pdf */
+        $pdf = Yii::$app->pdf;
+        $pdf->format = Pdf::FORMAT_A4;
+        $pdf->orientation = Pdf::ORIENT_PORTRAIT;
+        $pdf->destination = Pdf::DEST_DOWNLOAD;
+        $pdf->content = $html;
+
+        /* CSS minificado do arquivo pdf-lista-treino.css*/
+        $pdf->cssInline = "
+            
+            div.header {
+                clear: both;
+            }
+            
+            div.titulo {
+                width: 49%;
+                float: left;
+            }
+            div.titulo h3 {
+                text-transform: uppercase;
+            }
+            
+            div#dias-horario {
+                text-transform: capitalize;
+                text-align: right;
+                width: 49%;
+                float: right;
+            }
+            
+            div#dias-horario p#horario {
+                margin-top: 15px;
+                text-transform: normal;
+            }
+            
+            h5.dia-treino {
+                text-transform: uppercase;
+                font-weight: bold;
+            }
+            
+            table.table-treino th {
+                border-bottom: 1px dashed;
+                padding-bottom: 10px;
+                color: #1c2529;
+            }
+            
+        ";
 
         return $pdf->render();
     }
