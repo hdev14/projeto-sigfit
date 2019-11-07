@@ -98,8 +98,9 @@ class SiteController extends Controller
         $this->layout = 'login';
 
         if (!Yii::$app->user->isGuest) {
-            return Yii::$app->user->can('crud-instrutor') ?
-                $this->redirect(['pessoa/instrutores']) :
+            if (Yii::$app->user->can('crud-instrutor'))
+                $this->redirect(['pessoa/instrutores']);
+            else if (Yii::$app->user->can('instrutor'))
                 $this->redirect(['pessoa/usuarios']);
         }
 

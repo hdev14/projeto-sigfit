@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Avaliacao;
+use app\models\Frequencia;
 use app\models\UsuarioInstrutor;
 use Yii;
 use app\models\Pessoa;
@@ -99,7 +100,7 @@ class PessoaController extends Controller
         $model = $this->findModel($id);
 
         if ($model->servidor) {
-            return $this->render('servidor/view', [ 'model' => $model]);
+            return $this->render('servidor/view', ['model' => $model]);
         }
 
         return $this->render('aluno/view', [
@@ -195,7 +196,7 @@ class PessoaController extends Controller
         ]);
 
         $post = Yii::$app->request->post();
-        $session =  Yii::$app->session;
+        $session = Yii::$app->session;
 
         if ($usuario_model->load($post)) {
             $usuario_model->image_file = UploadedFile::getInstance($usuario_model, 'image_file');
@@ -394,7 +395,7 @@ class PessoaController extends Controller
         if (!$usuario->espera && $usuario->save(false))
             $session->addFlash('success', 'Usuário foi retirado da fila de espera !');
         else
-            $session->addFlash('error','Usuário não pode ser retirado da fila de espera, por que horário de treino está lotado.');
+            $session->addFlash('error', 'Usuário não pode ser retirado da fila de espera, por que horário de treino está lotado.');
 
         $this->redirect(['pessoa/view', 'id' => $usuario->id]);
     }
@@ -439,6 +440,34 @@ class PessoaController extends Controller
         $pdf->cssInline = "div.header{clear:both}div.titulo{width:49%;float:left}div.titulo h3{text-transform:uppercase}div#dias-horario{text-transform:capitalize;text-align:right;width:49%;float:right}div#dias-horario p#horario{margin-top:15px;text-transform:normal}h5.dia-treino{text-transform:uppercase;font-weight:700}table.table-treino th{border-bottom:1px dashed;padding-bottom:10px;color:#1c2529}";
 
         return $pdf->render();
+    }
+
+    public function actionCheckinCheckout()
+    {
+
+        $matricula_check = Yii::$app->request->post('matricula-check', null);
+        $session = Yii::$app->session;
+
+        if (empty($matricula_check)) {
+            $session->addFlash('warning', 'Por favor informe a mátricula do usuário para efetuar o check-in ou check-out');
+        } else {
+
+            $matricula = filter_var($matricula_check, FILTER_SANITIZE_STRING);
+            $usuario = $this->findModel(['matricula' => $matricula]);
+            $registro_frequencia = $this->recuperarRegistroFrequencia([
+                'pessoa_id' => $usuario->id,
+                'data' => date('Y-m-d')
+            ]);
+
+            if ( $registro_frequencia !== null)
+                $this->realizarCheckout($registro_frequencia);
+            else
+                $this->realizarCheckin($usuario->id);
+
+
+        }
+
+        return $this->goBack(Yii::$app->homeUrl);
     }
 
     # ---- MÉTODOS AUXILIARES ---- #
@@ -512,7 +541,7 @@ class PessoaController extends Controller
 
     protected function excluirAvalicoes($avaliacoes)
     {
-        /* @var $avaliacao Avaliacao*/
+        /* @var $avaliacao Avaliacao */
         foreach ($avaliacoes as $avaliacao) {
             $this->excluirModels($avaliacao->imcs);
             $this->excluirModels($avaliacao->pesos);
@@ -537,14 +566,65 @@ class PessoaController extends Controller
         return false;
     }
 
+
+
+    protected function registrarFrequencia($dados)
+    {
+        $frequencia = new Frequencia();
+
+        if ($frequencia->load($dados) && $frequencia->save())
+            return true;
+
+        return false;
+    }
+
+    protected function realizarCheckin($usuario_id)
+    {
+        $session = Yii::$app->session;
+
+        $dados = [
+            'Frequencia' => [
+                'pessoa_id' => $usuario_id,
+                'data' => date('Y-m-d'),
+                'horario_inicio' => date('H:i:s'),
+                'horario_final' => ''
+            ]
+        ];
+
+        if ($this->registrarFrequencia($dados))
+            $session->addFlash('success', 'Check-in efetuado com sucesso !');
+        else
+            $session->addFlash('error', 'Não foi possível realizar o check-in.');
+    }
+
+    protected function realizarCheckout($registro_frequencia)
+    {
+        /* @var $registro_frequencia Frequencia */
+        $session = Yii::$app->session;
+
+        // Caso o horário de check-out já tenha sido preenchido automaticamente pelo sistema.
+        $registro_frequencia->horario_final = $registro_frequencia->horario_final !== null ?
+                                                $registro_frequencia->horario_final :
+                                                date('H:i:s');
+        if ($registro_frequencia->save())
+            $session->add('success', 'Check-out realizado com sucesso !');
+        else
+            $session->addFlash('error', 'Não foi possível realizar o check-out.');
+    }
+
+    protected function recuperarRegistroFrequencia($condicao)
+    {
+        return Frequencia::findOne($condicao);
+    }
+
     protected function paginar(QueryInterface $query , Pagination $p)
     {
         return $query->orderBy('nome')->offset($p->offset)->limit($p->limit)->all();
     }
 
-    protected function findModel($id)
+    protected function findModel($id_ou_condicao)
     {
-        if (($model = Pessoa::findOne($id)) !== null) {
+        if (($model = Pessoa::findOne($id_ou_condicao)) !== null) {
             return $model;
         }
 

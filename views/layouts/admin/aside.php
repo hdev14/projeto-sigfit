@@ -26,12 +26,12 @@ use yii\helpers\Url;
             <?php if (Yii::$app->user->can('instrutor')): ?>
                 <li class="header">CHECK-IN / CHECK-OUT</li>
                 <li>
-                    <?= Html::beginForm(null, 'post', [
+                    <?= Html::beginForm(['pessoa/checkin-checkout'], 'post', [
                         'class' => 'sidebar-form'
                     ]) ?>
 
                     <div class="div input-group">
-                        <?= Html::input('text', 'check', null, [
+                        <?= Html::input('text', 'matricula-check', null, [
                             'autofocus' => true,
                             'class' => 'form-control',
                             'placeholder' => 'Digite a matrícula',
