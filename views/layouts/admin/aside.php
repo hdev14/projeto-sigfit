@@ -1,35 +1,55 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-        <div class="user-panel">
+        <!--<div class="user-panel">
             <div class="pull-left image">
-                <img class="img-circle" alt="User Image" src="<?=
-                Yii::$app->user->identity->foto ?>" style="height: 45px;">
+                <img class="img-circle" alt="User Image" src="<?/*=
+                Yii::$app->user->identity->foto */?>" style="height: 45px;">
             </div>
             <div class="pull-left info">
                 <p>Username</p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
-        </div>
+        </div>-->
         <!-- search form -->
-        <!-- <form action="#" method="get" class="sidebar-form">
-          <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search...">
-            <span class="input-group-btn">
-                  <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </span>
-          </div>
-        </form> -->
+
+
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu tree" data-widget="tree">
+            <?php if (Yii::$app->user->can('instrutor')): ?>
+                <li class="header">CHECK-IN / CHECK-OUT</li>
+                <li>
+                    <?= Html::beginForm(null, 'post', [
+                        'class' => 'sidebar-form'
+                    ]) ?>
+
+                    <div class="div input-group">
+                        <?= Html::input('text', 'check', null, [
+                            'autofocus' => true,
+                            'class' => 'form-control',
+                            'placeholder' => 'Digite a matrícula',
+                            'title' => 'Digite a mátricual do usuário para realizar o check-in ou check-out',
+                        ]) ?>
+
+                        <span class="input-group-btn">
+                            <?= Html::submitButton('<i class="fa fa-exchange"></i>', [
+                                'class' => 'btn btn-flat',
+                            ]) ?>
+                        </span>
+                    </div>
+
+                    <?= Html::endForm(); ?>
+
+                </li>
+            <?php endif; ?>
+
             <li class="header">MENU PRINCIPAL</li>
             <?php if (Yii::$app->user->can('crud-instrutor')): ?>
                 <li class="">
