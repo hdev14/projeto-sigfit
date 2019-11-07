@@ -464,7 +464,6 @@ class PessoaController extends Controller
             else
                 $this->realizarCheckin($usuario->id);
 
-
         }
 
         return $this->goBack(Yii::$app->homeUrl);
@@ -525,7 +524,6 @@ class PessoaController extends Controller
             return true;
 
         return false;
-
     }
 
     protected function excluirRelacionamentos(Pessoa $usuario)
@@ -566,8 +564,6 @@ class PessoaController extends Controller
         return false;
     }
 
-
-
     protected function registrarFrequencia($dados)
     {
         $frequencia = new Frequencia();
@@ -603,13 +599,15 @@ class PessoaController extends Controller
         $session = Yii::$app->session;
 
         // Caso o horário de check-out já tenha sido preenchido automaticamente pelo sistema.
-        $registro_frequencia->horario_final = $registro_frequencia->horario_final !== null ?
-                                                $registro_frequencia->horario_final :
-                                                date('H:i:s');
-        if ($registro_frequencia->save())
-            $session->add('success', 'Check-out realizado com sucesso !');
-        else
-            $session->addFlash('error', 'Não foi possível realizar o check-out.');
+        if ($registro_frequencia->horario_final !== null)
+            $session->addFlash('warning', 'Check-out já realizado.');
+        else {
+            $registro_frequencia->horario_final =  date('H:i:s');
+            if ($registro_frequencia->save())
+                $session->addFlash('success', 'Check-out realizado com sucesso !');
+            else
+                $session->addFlash('error', 'Não foi possível realizar o check-out.');
+        }
     }
 
     protected function recuperarRegistroFrequencia($condicao)

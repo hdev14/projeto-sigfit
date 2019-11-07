@@ -11,6 +11,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'timeZone' => 'America/Recife',
     'language' => 'pt-BR',
     'layout' => 'admin',
     'components' => [
