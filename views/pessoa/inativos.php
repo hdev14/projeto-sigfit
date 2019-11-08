@@ -6,6 +6,7 @@ use yii\helpers\Url;
 /* @var $usuarios_inativos \yii\db\ActiveRecord[] */
 /* @var $ui \app\models\Pessoa */
 
+$this->title = '';
 $this->registerCss(<<<CSS
     
     .usuario-card {
