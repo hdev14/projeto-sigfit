@@ -364,6 +364,8 @@ class PessoaController extends Controller
         return $this->redirect(['instrutores']);
     }
 
+    #/--- INSTRUTOR ---#
+
     public function actionAbonarFaltas($id)
     {
         $usuario = $this->findModel($id);
@@ -444,7 +446,6 @@ class PessoaController extends Controller
 
     public function actionCheckinCheckout()
     {
-
         $session = Yii::$app->session;
         $matricula_check = Yii::$app->request->post('matricula-check', null);
         $matricula = filter_var($matricula_check, FILTER_SANITIZE_STRING);
@@ -454,7 +455,7 @@ class PessoaController extends Controller
             $session->addFlash('error', 'Matrícula inválida !');
         } else {
             if ($this->verificarNumeroFaltas($usuario->faltas))
-                $session->addFlash('warning', "Usuário $usuario->nome está inativo, por favor verifique o número de faltas.");
+                $session->addFlash('warning', "Usuário $usuario->nome está bloqueado, por favor verifique o número de faltas.");
             else
                 $this->realizarRegistroFrequencia($usuario->id);
         }
@@ -462,7 +463,36 @@ class PessoaController extends Controller
         return $this->goBack(Yii::$app->homeUrl);
     }
 
+    public function actionInativos()
+    {
+        $pessoa_search = new PessoaSearch();
+        $query = $pessoa_search->searchInativos(
+            Yii::$app->user->getId(),
+            $this->diaAtual()
+        );
+
+        $pagination = new Pagination([]);
+
+        return $this->goBack();
+    }
+
     # ---- MÉTODOS AUXILIARES ---- #
+
+    protected function diaAtual()
+    {
+        switch (date('D')) {
+            case 'Mon':
+                return 'segunda-feira';
+            case 'Tue':
+                return 'terça-feira';
+            case 'Wed':
+                return 'quarta-feira';
+            case 'Thu':
+                return 'quinta-feira';
+            case 'Fri':
+                return 'sexta-feira';
+        }
+    }
 
     protected function updateAluno(Pessoa $model)
     {

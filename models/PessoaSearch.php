@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 /**
  * PessoaSearch represents the model behind the search form of `app\models\Pessoa`.
@@ -111,6 +112,42 @@ class PessoaSearch extends Pessoa
         );
 
         return $query;
+    }
+
+    public function searchInativos($instrutor_id, $dia)
+    {
+        $ids_treinos_pessoas = $this->getIdsTreinosPessoas();
+        $ids_treinos_do_dia_atual = $this->getIdsTreinosDiaAtual($ids_treinos_pessoas, $dia);
+        $usuarios_com_treinos_no_dia_atual = $this->getUsuariosComTreinoDiaAtual(
+            $instrutor_id,
+            $ids_treinos_do_dia_atual
+        );
+
+        return $usuarios_com_treinos_no_dia_atual;
+
+    }
+
+    protected function getIdsTreinosPessoas()
+    {
+        return (new Query())->select('pt.treino_id')
+                            ->from('pessoa as p')
+                            ->innerJoin('pessoa_treino as pt', 'p.id = pt.pessoa_id')
+                            ->where('');
+    }
+
+    protected function getIdsTreinosDiaAtual($ids_treinos_pessoas, $dia)
+    {
+        return (new Query())->select('id')
+                            ->from('treino')
+                            ->where(['id' => $ids_treinos_pessoas])
+                            ->andWhere(['dia' => $dia]);
+    }
+
+    protected function getUsuariosComTreinoDiaAtual($instrutor_id, $ids_treinos_do_dia_atual)
+    {
+        return Pessoa::findOne($instrutor_id)->getUsuarios()
+                        ->innerJoin('pessoa_treino as pt', 'id = pt.pessoa_id')
+                        ->where(['pt.treino_id' => $ids_treinos_do_dia_atual]);
     }
 
 }
