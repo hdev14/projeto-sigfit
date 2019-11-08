@@ -471,9 +471,18 @@ class PessoaController extends Controller
             $this->diaAtual()
         );
 
-        $pagination = new Pagination([]);
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+        ]);
+        $usuarios_inativos = $query->orderBy('nome')
+                                ->offset($pagination->offset)
+                                ->limit($pagination->limit)
+                                ->all();
 
-        return $this->goBack();
+        // TODO FAZER VISÂO PARA USUÁRIO INATIVOS
+        return $this->render('inativos', [
+            'usuarios_inativos' => $usuarios_inativos
+        ]);
     }
 
     # ---- MÉTODOS AUXILIARES ---- #
