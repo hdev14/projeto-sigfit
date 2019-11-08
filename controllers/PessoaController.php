@@ -446,24 +446,25 @@ class PessoaController extends Controller
     {
 
         $matricula_check = Yii::$app->request->post('matricula-check', null);
+        $matricula = filter_var($matricula_check, FILTER_SANITIZE_STRING);
         $session = Yii::$app->session;
 
-        if (empty($matricula_check)) {
+        if (empty($matricula)) {
             $session->addFlash('warning', 'Por favor informe a mátricula do usuário para efetuar o check-in ou check-out');
-        } else {
+        } else if ( ( $usuario = Pessoa::findOne(['matricula' => $matricula]) ) !== null) {
 
-            $matricula = filter_var($matricula_check, FILTER_SANITIZE_STRING);
-            $usuario = $this->findModel(['matricula' => $matricula]);
             $registro_frequencia = $this->recuperarRegistroFrequencia([
                 'pessoa_id' => $usuario->id,
                 'data' => date('Y-m-d')
             ]);
 
-            if ( $registro_frequencia !== null)
+            if ($registro_frequencia !== null)
                 $this->realizarCheckout($registro_frequencia);
             else
                 $this->realizarCheckin($usuario->id);
 
+        } else {
+            $session->addFlash('error', 'Matrícula inválida !');
         }
 
         return $this->goBack(Yii::$app->homeUrl);
@@ -602,7 +603,7 @@ class PessoaController extends Controller
         if ($registro_frequencia->horario_final !== null)
             $session->addFlash('warning', 'Check-out já realizado.');
         else {
-            $registro_frequencia->horario_final =  date('H:i:s');
+            $registro_frequencia->horario_final = date('H:i:s');
             if ($registro_frequencia->save())
                 $session->addFlash('success', 'Check-out realizado com sucesso !');
             else
@@ -626,6 +627,6 @@ class PessoaController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app', 'Está página não existe.'));
     }
 }
