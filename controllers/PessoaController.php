@@ -445,26 +445,18 @@ class PessoaController extends Controller
     public function actionCheckinCheckout()
     {
 
+        $session = Yii::$app->session;
         $matricula_check = Yii::$app->request->post('matricula-check', null);
         $matricula = filter_var($matricula_check, FILTER_SANITIZE_STRING);
-        $session = Yii::$app->session;
+        $usuario = Pessoa::findOne(['matricula' => $matricula]);
 
-        if (empty($matricula)) {
-            $session->addFlash('warning', 'Por favor informe a mátricula do usuário para efetuar o check-in ou check-out');
-        } else if ( ( $usuario = Pessoa::findOne(['matricula' => $matricula]) ) !== null) {
-
-            $registro_frequencia = $this->recuperarRegistroFrequencia([
-                'pessoa_id' => $usuario->id,
-                'data' => date('Y-m-d')
-            ]);
-
-            if ($registro_frequencia !== null)
-                $this->realizarCheckout($registro_frequencia);
-            else
-                $this->realizarCheckin($usuario->id);
-
-        } else {
+        if (empty($matricula) || ($usuario === null)) {
             $session->addFlash('error', 'Matrícula inválida !');
+        } else {
+            if ($this->verificarNumeroFaltas($usuario->faltas))
+                $session->addFlash('warning', "Usuário $usuario->nome está inativo, por favor verifique o número de faltas.");
+            else
+                $this->realizarRegistroFrequencia($usuario->id);
         }
 
         return $this->goBack(Yii::$app->homeUrl);
@@ -555,6 +547,11 @@ class PessoaController extends Controller
             $model->delete();
     }
 
+    protected function verificarNumeroFaltas($faltas)
+    {
+        return ($faltas >= Pessoa::FALTAS_POR_MES);
+    }
+
     protected function abonarFaltas($usuario, $qtd_faltas_retirar)
     {
         if ($usuario->faltas > 0 && $qtd_faltas_retirar <= $usuario->faltas) {
@@ -573,6 +570,19 @@ class PessoaController extends Controller
             return true;
 
         return false;
+    }
+
+    protected function realizarRegistroFrequencia($usuario_id)
+    {
+        $registro_frequencia = $this->recuperarRegistroFrequencia([
+            'pessoa_id' => $usuario_id,
+            'data' => date('Y-m-d')
+        ]);
+
+        if ($registro_frequencia !== null)
+            $this->realizarCheckout($registro_frequencia);
+        else
+            $this->realizarCheckin($usuario_id);
     }
 
     protected function realizarCheckin($usuario_id)

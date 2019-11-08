@@ -42,7 +42,7 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     const SCENARIO_REGISTRO_SERVIDOR = 'registro_servidor';
     const SCENARIO_REGISTRO_INSTRUTOR = 'registro_instrutor';
     const QTD_FREQUENTADORES_POR_HORARIO = 8;
-
+    CONST FALTAS_POR_MES = 3;
 
     /** @var UploadedFile */
     public $image_file;
