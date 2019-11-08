@@ -479,7 +479,6 @@ class PessoaController extends Controller
                                 ->limit($pagination->limit)
                                 ->all();
 
-        // TODO FAZER VISÂO PARA USUÁRIO INATIVOS
         return $this->render('inativos', [
             'usuarios_inativos' => $usuarios_inativos
         ]);

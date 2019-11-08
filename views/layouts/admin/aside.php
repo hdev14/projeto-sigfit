@@ -78,7 +78,7 @@ use yii\helpers\Url;
                         </a>
                     </li>
                     <li class="">
-                        <a href="index2.html">
+                        <a href="<?= Url::to(['pessoa/inativos']) ?>">
                             <i class="fa fa-bed"></i> Inativos
                         </a>
                     </li>
