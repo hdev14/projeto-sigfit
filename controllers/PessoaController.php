@@ -468,16 +468,17 @@ class PessoaController extends Controller
         $pessoa_search = new PessoaSearch();
         $query = $pessoa_search->searchInativos(
             Yii::$app->user->getId(),
-            $this->diaAtual()
+            $this->diaAtual(),
+            $this->horarioDeTreinoAtual()
         );
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
         ]);
         $usuarios_inativos = $query->orderBy('nome')
-                                ->offset($pagination->offset)
-                                ->limit($pagination->limit)
-                                ->all();
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         return $this->render('inativos', [
             'usuarios_inativos' => $usuarios_inativos
@@ -500,6 +501,44 @@ class PessoaController extends Controller
             case 'Fri':
                 return 'sexta-feira';
         }
+    }
+
+    protected function horarioDeTreinoAtual()
+    {
+        $horario_treino_atual = $this->horarioAtual();
+
+        if ($horario_treino_atual >= 7.0 && $horario_treino_atual < 8.0)
+            return ['07:00:00', '08:00:00'];
+        else if ($horario_treino_atual >= 8.0 && $horario_treino_atual < 9.0)
+            return ['08:00:00', '09:00:00'];
+        else if ($horario_treino_atual >= 9.0 && $horario_treino_atual < 10.0)
+            return ['09:00:00', '10:00:00'];
+        else if ($horario_treino_atual >= 10.0 && $horario_treino_atual < 11.0)
+            return ['10:00:00', '11:00:00'];
+        else if ($horario_treino_atual >= 13.0 && $horario_treino_atual < 14.0)
+            return ['13:00:00', '14:00:00'];
+        else if ($horario_treino_atual >= 14.0 && $horario_treino_atual < 15.0)
+            return ['14:00:00', '15:00:00'];
+        else if ($horario_treino_atual >= 15.0 && $horario_treino_atual < 16.0)
+            return ['15:00:00', '16:00:00'];
+        else if ($horario_treino_atual >= 16.0 && $horario_treino_atual < 17.0)
+            return ['16:00:00', '17:00:00'];
+        else if ($horario_treino_atual >= 17.0 && $horario_treino_atual < 18.0)
+            return ['17:00:00', '18:00:00'];
+        else if ($horario_treino_atual >= 18.0 && $horario_treino_atual < 19.0)
+            return ['18:00:00', '19:00:00'];
+
+        return '';
+    }
+
+    protected function horarioAtual()
+    {
+        $horario = explode(':', date('H:i'));
+        $horario_formato_int = array_map(function ($v) {
+            return intval($v);
+        }, $horario);
+        $horario_formato_float = floatval(implode('.', $horario_formato_int));
+        return $horario_formato_float;
     }
 
     protected function updateAluno(Pessoa $model)

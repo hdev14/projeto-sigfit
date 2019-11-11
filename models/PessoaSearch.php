@@ -114,40 +114,75 @@ class PessoaSearch extends Pessoa
         return $query;
     }
 
-    public function searchInativos($instrutor_id, $dia)
+    public function searchInativos($instrutor_id, $dia, $horario_do_treino)
     {
         $ids_treinos_pessoas = $this->getIdsTreinosPessoas();
         $ids_treinos_do_dia_atual = $this->getIdsTreinosDiaAtual($ids_treinos_pessoas, $dia);
-        $usuarios_com_treinos_no_dia_atual = $this->getUsuariosComTreinoDiaAtual(
+        $id_usuarios_com_frequencia_registrada = $this->getFrequenciasRegistradas($horario_do_treino);
+        Yii::debug($id_usuarios_com_frequencia_registrada, "FREQUENCIA");
+        $array_ids = $id_usuarios_com_frequencia_registrada->all();
+        $ids_usuarios_inativos = array_map(function ($v) {
+            return $v['pessoa_id'];
+        }, $array_ids);
+
+        $usuarios_treino_dia_atual = $this->getUsuariosComTreinoDiaAtual(
             $instrutor_id,
             $ids_treinos_do_dia_atual
         );
 
-        return $usuarios_com_treinos_no_dia_atual;
+        $usuarios_inativos = $usuarios_treino_dia_atual->where(['not in', 'id',
+            $ids_usuarios_inativos]);
+        Yii::debug($usuarios_inativos->one(), "ASDASD");
+
+
+
+        return $usuarios_inativos;
 
     }
 
     protected function getIdsTreinosPessoas()
     {
         return (new Query())->select('pt.treino_id')
-                            ->from('pessoa as p')
-                            ->innerJoin('pessoa_treino as pt', 'p.id = pt.pessoa_id')
-                            ->where('');
+            ->from('pessoa AS p')
+            ->innerJoin('pessoa_treino AS pt', 'p.id = pt.pessoa_id');
     }
 
     protected function getIdsTreinosDiaAtual($ids_treinos_pessoas, $dia)
     {
         return (new Query())->select('id')
-                            ->from('treino')
-                            ->where(['id' => $ids_treinos_pessoas])
-                            ->andWhere(['dia' => $dia]);
+            ->from('treino')
+            ->where(['id' => $ids_treinos_pessoas])
+            ->andWhere(['dia' => $dia]);
     }
 
-    protected function getUsuariosComTreinoDiaAtual($instrutor_id, $ids_treinos_do_dia_atual)
-    {
+    protected function getUsuariosComTreinoDiaAtual(
+        $instrutor_id,
+        $ids_treinos_do_dia_atual
+    ) {
         return Pessoa::findOne($instrutor_id)->getUsuarios()
-                        ->innerJoin('pessoa_treino as pt', 'id = pt.pessoa_id')
-                        ->where(['pt.treino_id' => $ids_treinos_do_dia_atual]);
+            ->innerJoin('pessoa_treino AS pt', 'id = pt.pessoa_id')
+            ->where(['pt.treino_id' => $ids_treinos_do_dia_atual]);
     }
+
+    protected function getFrequenciasRegistradas($horario_do_treino)
+    {
+        return (new Query())->select('pessoa_id')
+            ->from('frequencia')
+            ->where([
+                'and',
+                'data = :data',
+                [
+                    'and',
+                    'TIME_TO_SEC(horario_inicio) >= TIME_TO_SEC(:horario)',
+                    'TIME_TO_SEC(horario_inicio) <= TIME_TO_SEC(:horario_fim)'
+                ]
+            ])
+            ->addParams([
+                ':data' => date('Y-m-d'),
+                ':horario' => $horario_do_treino[0],
+                ':horario_fim' => $horario_do_treino[1]
+            ]);
+    }
+
 
 }
