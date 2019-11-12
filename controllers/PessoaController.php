@@ -466,20 +466,24 @@ class PessoaController extends Controller
     public function actionInativos()
     {
         $pessoa_search = new PessoaSearch();
+        $horario_do_treino = $this->getHorarioDeTreinoAtual();
         $query = $pessoa_search->searchInativos(
             Yii::$app->user->getId(),
-            $this->diaAtual(),
-            $this->horarioDeTreinoAtual()
+            $this->getDiaAtual(),
+            $horario_do_treino,
+            $this->getHorarioEmString($horario_do_treino)
         );
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
         ]);
+
         $usuarios_inativos = $query->orderBy('nome')
             ->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
 
+        Yii::debug($usuarios_inativos, "USUARIOS INATIVOS 2");
         return $this->render('inativos', [
             'usuarios_inativos' => $usuarios_inativos
         ]);
@@ -487,7 +491,7 @@ class PessoaController extends Controller
 
     # ---- MÉTODOS AUXILIARES ---- #
 
-    protected function diaAtual()
+    protected function getDiaAtual()
     {
         switch (date('D')) {
             case 'Mon':
@@ -503,7 +507,7 @@ class PessoaController extends Controller
         }
     }
 
-    protected function horarioDeTreinoAtual()
+    protected function getHorarioDeTreinoAtual()
     {
         $horario_treino_atual = $this->horarioAtual();
 
@@ -539,6 +543,24 @@ class PessoaController extends Controller
         }, $horario);
         $horario_formato_float = floatval(implode('.', $horario_formato_int));
         return $horario_formato_float;
+    }
+
+    protected function getHorarioEmString($horario_do_treino)
+    {
+        return $this->transformarHorarioEmString($horario_do_treino);
+    }
+
+    protected function transformarHorarioEmString($horario_do_treino)
+    {
+        $hora_inicio_treino = $this->getHora($horario_do_treino[0]);
+        $hora_fim_treino = $this->getHora($horario_do_treino[1]);
+        return $hora_inicio_treino . 'h às ' . $hora_fim_treino . 'h';
+    }
+
+    protected function getHora($horario)
+    {
+        $horario_inicio_treino_em_array = explode(':', $horario);
+        return intval($horario_inicio_treino_em_array[0]);
     }
 
     protected function updateAluno(Pessoa $model)

@@ -35,6 +35,8 @@ CSS
 
 <div id="usuarios-inativos" class="row">
     <?php foreach($usuarios_inativos as $ui): ?>
+        <?php $ui = (object) $ui ?>
+
         <div class="col-md-3 usuario-card">
             <div class="row">
                 <div class="col-md-6">

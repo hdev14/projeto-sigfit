@@ -114,27 +114,31 @@ class PessoaSearch extends Pessoa
         return $query;
     }
 
-    public function searchInativos($instrutor_id, $dia, $horario_do_treino)
+    public function searchInativos($instrutor_id, $dia, $horario_do_treino, $horario_string)
     {
-        $ids_treinos_pessoas = $this->getIdsTreinosPessoas();
-        $ids_treinos_do_dia_atual = $this->getIdsTreinosDiaAtual($ids_treinos_pessoas, $dia);
-        $id_usuarios_com_frequencia_registrada = $this->getFrequenciasRegistradas($horario_do_treino);
-        Yii::debug($id_usuarios_com_frequencia_registrada, "FREQUENCIA");
-        $array_ids = $id_usuarios_com_frequencia_registrada->all();
-        $ids_usuarios_inativos = array_map(function ($v) {
-            return $v['pessoa_id'];
-        }, $array_ids);
 
-        $usuarios_treino_dia_atual = $this->getUsuariosComTreinoDiaAtual(
-            $instrutor_id,
-            $ids_treinos_do_dia_atual
+        $ids_treinos_pessoas = $this->getIdsTreinosPessoas();
+        Yii::debug($ids_treinos_pessoas->all(), 'IDS TREINOS');
+
+        $ids_treinos_pessoas_dia_atual =
+            $this->getIdsTreinosPessoasDiaAtual($ids_treinos_pessoas, $dia);
+        Yii::debug($ids_treinos_pessoas_dia_atual->all(), 'IDS TREINOS DIA ATAUL');
+
+        $id_usuarios_instruidos = $this->getUsuariosInstruidos($instrutor_id);
+        Yii::debug($id_usuarios_instruidos->all(), 'USUARIOS INSTRUIDOS');
+
+        $ids_usuarios_frequencia_dia_atual =
+            $this->getUsuariosComFrequenciaDiaAtual($horario_do_treino);
+        Yii::debug($ids_usuarios_frequencia_dia_atual->all(), 'IDS USUARIOS FREQUENCIA');
+
+        $usuarios_inativos = $this->getUsuariosInativos(
+            $ids_treinos_pessoas_dia_atual,
+            $id_usuarios_instruidos,
+            $ids_usuarios_frequencia_dia_atual,
+            $horario_string
         );
 
-        $usuarios_inativos = $usuarios_treino_dia_atual->where(['not in', 'id',
-            $ids_usuarios_inativos]);
-        Yii::debug($usuarios_inativos->one(), "ASDASD");
-
-
+        Yii::debug($usuarios_inativos->all(), 'USUARIO INATIVOS');
 
         return $usuarios_inativos;
 
@@ -142,45 +146,56 @@ class PessoaSearch extends Pessoa
 
     protected function getIdsTreinosPessoas()
     {
-        return (new Query())->select('pt.treino_id')
-            ->from('pessoa AS p')
-            ->innerJoin('pessoa_treino AS pt', 'p.id = pt.pessoa_id');
+        return (new Query())->select('pessoa_treino.treino_id')->from('pessoa')
+            ->innerJoin('pessoa_treino', 'pessoa.id = pessoa_treino.pessoa_id');
     }
 
-    protected function getIdsTreinosDiaAtual($ids_treinos_pessoas, $dia)
+    protected function getIdsTreinosPessoasDiaAtual($ids_treinos_pessoas, $dia)
     {
-        return (new Query())->select('id')
-            ->from('treino')
-            ->where(['id' => $ids_treinos_pessoas])
-            ->andWhere(['dia' => $dia]);
+        return (new Query())->select('treino.id')->from('treino')->where([
+            'and',
+            ['treino.id' =>  $ids_treinos_pessoas],
+            ['treino.dia' => $dia]
+        ]);
     }
 
-    protected function getUsuariosComTreinoDiaAtual(
-        $instrutor_id,
-        $ids_treinos_do_dia_atual
+    protected function getUsuariosInstruidos($instrutor_id)
+    {
+        return (new Query())->select('usuario_instrutor.usuario_id')->from('usuario_instrutor')
+            ->where(['usuario_instrutor.instrutor_id' => $instrutor_id]);
+    }
+
+    protected function getUsuariosComFrequenciaDiaAtual($horario_do_treino)
+    {
+        return (new Query())->select('frequencia.pessoa_id')->from('frequencia')->where([
+            'and', [
+                'data' => date('Y-m-d')
+            ], [
+                'and',
+                'time_to_sec(frequencia.horario_inicio) >= time_to_sec(:horario_inicio_treino)',
+                'time_to_sec(frequencia.horario_inicio) < time_to_sec(:horario_fim_treino)'
+            ]
+        ])->addParams([
+            'horario_inicio_treino' => $horario_do_treino[0],
+            'horario_fim_treino' => $horario_do_treino[1]
+        ]);
+    }
+
+    protected function getUsuariosInativos(
+        $ids_treinos_pessoas_dia_atual,
+        $id_usuarios_instruidos,
+        $ids_usuarios_frequencia_dia_atual,
+        $horario_string
     ) {
-        return Pessoa::findOne($instrutor_id)->getUsuarios()
-            ->innerJoin('pessoa_treino AS pt', 'id = pt.pessoa_id')
-            ->where(['pt.treino_id' => $ids_treinos_do_dia_atual]);
-    }
 
-    protected function getFrequenciasRegistradas($horario_do_treino)
-    {
-        return (new Query())->select('pessoa_id')
-            ->from('frequencia')
+        return (new Query())->select('*')->from('pessoa')
+            ->innerJoin('pessoa_treino', 'pessoa.id = pessoa_treino.pessoa_id')
             ->where([
                 'and',
-                'data = :data',
-                [
-                    'and',
-                    'TIME_TO_SEC(horario_inicio) >= TIME_TO_SEC(:horario)',
-                    'TIME_TO_SEC(horario_inicio) <= TIME_TO_SEC(:horario_fim)'
-                ]
-            ])
-            ->addParams([
-                ':data' => date('Y-m-d'),
-                ':horario' => $horario_do_treino[0],
-                ':horario_fim' => $horario_do_treino[1]
+                ['pessoa_treino.treino_id' => $ids_treinos_pessoas_dia_atual],
+                ['pessoa.id' => $id_usuarios_instruidos],
+                ['not in', 'pessoa.id', $ids_usuarios_frequencia_dia_atual],
+                ['pessoa.horario_treino' => $horario_string]
             ]);
     }
 
