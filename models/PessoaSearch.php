@@ -199,5 +199,4 @@ class PessoaSearch extends Pessoa
             ]);
     }
 
-
 }

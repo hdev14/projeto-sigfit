@@ -467,15 +467,17 @@ class PessoaController extends Controller
     {
         $pessoa_search = new PessoaSearch();
         $horario_do_treino = $this->getHorarioDeTreinoAtual();
+        $horario_do_treino_em_string = $this->getHorarioEmString($horario_do_treino);
         $query = $pessoa_search->searchInativos(
             Yii::$app->user->getId(),
             $this->getDiaAtual(),
             $horario_do_treino,
-            $this->getHorarioEmString($horario_do_treino)
+            $horario_do_treino_em_string
         );
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
+            'pageSize' => 15,
         ]);
 
         $usuarios_inativos = $query->orderBy('nome')
@@ -485,7 +487,9 @@ class PessoaController extends Controller
 
         Yii::debug($usuarios_inativos, "USUARIOS INATIVOS 2");
         return $this->render('inativos', [
-            'usuarios_inativos' => $usuarios_inativos
+            'usuarios_inativos' => $usuarios_inativos,
+            'pagination' => $pagination,
+            'horario_do_treino' => $horario_do_treino_em_string
         ]);
     }
 
