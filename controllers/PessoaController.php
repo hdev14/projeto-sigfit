@@ -504,6 +504,14 @@ class PessoaController extends Controller
             $horario_do_treino_em_string
         );
 
+        // TODO percorrer a lista de usuarios sem frequencia e adicionar faltas neles.
+
+        /*\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return [
+            'message' => 'hello world',
+            'code' => 100,
+        ];*/
+
         return;
     }
 
