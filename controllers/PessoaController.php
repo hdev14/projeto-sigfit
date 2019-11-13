@@ -493,9 +493,18 @@ class PessoaController extends Controller
         ]);
     }
 
-    public function actionFaltas($instrutor_id)
+    public function actionFaltas()
     {
+        $pessoa_search = new PessoaSearch();
+        $horario_do_treino = $this->getHorarioDeTreinoAtual();
+        $horario_do_treino_em_string = $this->getHorarioEmString($horario_do_treino);
+        $usuarios_sem_frequencia =  $pessoa_search->searchUsuariosFaltosos(
+            Yii::$app->user->getId(),
+            $this->getDiaAtual(),
+            $horario_do_treino_em_string
+        );
 
+        return;
     }
 
     # ---- MÉTODOS AUXILIARES ---- #

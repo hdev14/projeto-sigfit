@@ -138,20 +138,31 @@ class PessoaSearch extends Pessoa
 
     }
 
-    public function searchUsuariosFaltos($instrutor_id, $dia, $horario_do_treino)
+    public function searchUsuariosFaltosos($instrutor_id, $dia, $horario_do_treino)
     {
         $ids_usuarios_instruidos = $this->getUsuariosInstruidos($instrutor_id);
 
-        $ids_pessoas_com_treino_dia_atual = (new Query())->select('pessoa_treino.pessoa_id')
-            ->from('treino')
-            ->innerJoin('pessoa_treino', 'treino.id = pessoa_treino.treino_id')
-            ->where(['treino.dia' => $dia]);
+        $ids_pessoas_com_treino_dia_atual = $this->getPessoasComTreinoDiaAtual($dia);
 
-        $ids_pessoas_com_frequencia_data_atual = (new Query())->select('frequencia.pessoa_id')
-            ->from('frequencia')
-            ->where(['frequencia.data' => date('Y-m-d')]);
+        $ids_pessoas_com_frequencia_data_atual = $this->getPessoasComFrequenciaDataAtual();
 
-        $pessoas_sem_frequencia = (new Query())->select('*')
+        $pessoas_sem_frequencia = $this->getPessoasSemFrequencia(
+            $ids_usuarios_instruidos,
+            $ids_pessoas_com_treino_dia_atual,
+            $horario_do_treino,
+            $ids_pessoas_com_frequencia_data_atual
+        );
+
+        return $pessoas_sem_frequencia;
+    }
+
+    protected function getPessoasSemFrequencia(
+        $ids_usuarios_instruidos,
+        $ids_pessoas_com_treino_dia_atual,
+        $horario_do_treino,
+        $ids_pessoas_com_frequencia_data_atual
+    ) {
+        return (new Query())->select('*')
             ->from('pessoa')
             ->where([
                 'and', [
@@ -166,6 +177,19 @@ class PessoaSearch extends Pessoa
                     $ids_pessoas_com_frequencia_data_atual
                 ]
             ]);
+    }
+
+    protected function getPessoasComFrequenciaDataAtual()
+    {
+        return (new Query())->select('frequencia.pessoa_id')->from('frequencia')
+            ->where(['frequencia.data' => date('Y-m-d')]);
+    }
+
+    protected function getPessoasComTreinoDiaAtual($dia)
+    {
+        return (new Query())->select('pessoa_treino.pessoa_id')->from('treino')
+            ->innerJoin('pessoa_treino', 'treino.id = pessoa_treino.treino_id')
+            ->where(['treino.dia' => $dia]);
     }
 
     protected function getIdsTreinosPessoas()
