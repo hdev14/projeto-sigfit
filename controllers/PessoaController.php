@@ -493,6 +493,11 @@ class PessoaController extends Controller
         ]);
     }
 
+    public function actionFaltas($instrutor_id)
+    {
+
+    }
+
     # ---- MÉTODOS AUXILIARES ---- #
 
     protected function getDiaAtual()

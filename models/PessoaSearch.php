@@ -118,18 +118,14 @@ class PessoaSearch extends Pessoa
     {
 
         $ids_treinos_pessoas = $this->getIdsTreinosPessoas();
-        Yii::debug($ids_treinos_pessoas->all(), 'IDS TREINOS');
 
         $ids_treinos_pessoas_dia_atual =
             $this->getIdsTreinosPessoasDiaAtual($ids_treinos_pessoas, $dia);
-        Yii::debug($ids_treinos_pessoas_dia_atual->all(), 'IDS TREINOS DIA ATAUL');
 
         $id_usuarios_instruidos = $this->getUsuariosInstruidos($instrutor_id);
-        Yii::debug($id_usuarios_instruidos->all(), 'USUARIOS INSTRUIDOS');
 
         $ids_usuarios_frequencia_dia_atual =
             $this->getUsuariosComFrequenciaDiaAtual($horario_do_treino);
-        Yii::debug($ids_usuarios_frequencia_dia_atual->all(), 'IDS USUARIOS FREQUENCIA');
 
         $usuarios_inativos = $this->getUsuariosInativos(
             $ids_treinos_pessoas_dia_atual,
@@ -138,10 +134,38 @@ class PessoaSearch extends Pessoa
             $horario_string
         );
 
-        Yii::debug($usuarios_inativos->all(), 'USUARIO INATIVOS');
-
         return $usuarios_inativos;
 
+    }
+
+    public function searchUsuariosFaltos($instrutor_id, $dia, $horario_do_treino)
+    {
+        $ids_usuarios_instruidos = $this->getUsuariosInstruidos($instrutor_id);
+
+        $ids_pessoas_com_treino_dia_atual = (new Query())->select('pessoa_treino.pessoa_id')
+            ->from('treino')
+            ->innerJoin('pessoa_treino', 'treino.id = pessoa_treino.treino_id')
+            ->where(['treino.dia' => $dia]);
+
+        $ids_pessoas_com_frequencia_data_atual = (new Query())->select('frequencia.pessoa_id')
+            ->from('frequencia')
+            ->where(['frequencia.data' => date('Y-m-d')]);
+
+        $pessoas_sem_frequencia = (new Query())->select('*')
+            ->from('pessoa')
+            ->where([
+                'and', [
+                    'pessoa.id' => $ids_usuarios_instruidos
+                ], [
+                    'pessoa.id' => $ids_pessoas_com_treino_dia_atual
+                ], [
+                    'pessoa.horario_treino' => $horario_do_treino
+                ], [
+                    'not in',
+                    'pessoa.id',
+                    $ids_pessoas_com_frequencia_data_atual
+                ]
+            ]);
     }
 
     protected function getIdsTreinosPessoas()
