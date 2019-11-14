@@ -26,6 +26,10 @@ $config = [
         'pdf' => [
             'class' => 'kartik\mpdf\Pdf',
         ],
+        // Componente para funções de data e hora
+        'dataHora' => [
+            'class' => 'app\components\DataHora',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'TpjqD9Y3MzP0YwWKe0Q8UZgG_SNSRgNS',

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\DataHora;
 use app\models\Avaliacao;
 use app\models\Frequencia;
 use app\models\UsuarioInstrutor;
@@ -10,10 +11,8 @@ use app\models\Pessoa;
 use app\models\PessoaSearch;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
-use yii\db\ActiveRecord;
 use yii\db\QueryInterface;
 use yii\filters\AccessControl;
-use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -106,7 +105,6 @@ class PessoaController extends Controller
         return $this->render('aluno/view', [
             'model' => $model,
         ]);
-
     }
 
     public function actionCreate()
@@ -233,8 +231,6 @@ class PessoaController extends Controller
 
         $servidores = $this->paginar($query, $pagination);
 
-        Yii::debug($servidores);
-
         return $this->render('servidor/servidores', [
             'servidores' => $servidores,
             'pagination' => $pagination,
@@ -358,7 +354,6 @@ class PessoaController extends Controller
         foreach ($instrutor_usuarios as $iu)
             $iu->delete();
 
-
         $instrutor_model->delete();
 
         return $this->redirect(['instrutores']);
@@ -416,7 +411,6 @@ class PessoaController extends Controller
         $pdf->orientation = Pdf::ORIENT_LANDSCAPE;
         $pdf->destination = Pdf::DEST_DOWNLOAD;
         $pdf->content = $html;
-
         /* CSS minificado do arquivo pdf-carteira.css*/
         $pdf->cssInline = "#frente{float:left;width:49%}#verso{float:right;width:49%}div.borda{border:1px dashed rgba(0,0,0,.5)}div.carteira{height:6.9cm;width:9.8cm;padding:10px}div.foto{border:1px solid rgba(0,0,0,.5);height:4cm;width:3cm;margin-right:0;float:left}div.foto p{margin-top:1.7cm;margin-left:1cm}div.header{text-align:center;height:4cm;width:65%;float:right;margin-left:0}img#ifrn-logo{margin-top:10px}div.carteira-footer{border:1px solid rgba(0,0,0,.5);margin-top:5px;padding:5px;height:90px}table{width:100%}table tr th{text-align:left}p#hr-aula{font-weight:700;padding-left:5px}span.pdf-cut{font-size:25px}div.verso-carteira-header{text-align:center}div.verso-content{margin:5px 0}.caixa{margin-left:10px;margin-bottom:1px}.dias{text-transform:capitalize}div.verso-carteira-footer{border:1px solid rgba(0,0,0,.5);padding:5px}";
 
@@ -437,7 +431,6 @@ class PessoaController extends Controller
         $pdf->orientation = Pdf::ORIENT_PORTRAIT;
         $pdf->destination = Pdf::DEST_DOWNLOAD;
         $pdf->content = $html;
-
         /* CSS minificado do arquivo pdf-lista-treino.css*/
         $pdf->cssInline = "div.header{clear:both}div.titulo{width:49%;float:left}div.titulo h3{text-transform:uppercase}div#dias-horario{text-transform:capitalize;text-align:right;width:49%;float:right}div#dias-horario p#horario{margin-top:15px;text-transform:normal}h5.dia-treino{text-transform:uppercase;font-weight:700}table.table-treino th{border-bottom:1px dashed;padding-bottom:10px;color:#1c2529}";
 
@@ -466,11 +459,15 @@ class PessoaController extends Controller
     public function actionInativos()
     {
         $pessoa_search = new PessoaSearch();
-        $horario_do_treino = $this->getHorarioDeTreinoAtual();
-        $horario_do_treino_em_string = $this->getHorarioEmString($horario_do_treino);
+
+        /* @var $data_hora DataHora */
+        $data_hora = Yii::$app->dataHora;
+        $horario_do_treino = $data_hora->getHorarioDeTreinoAtual();
+        $horario_do_treino_em_string = $data_hora->getHorarioEmString($horario_do_treino);
+
         $query = $pessoa_search->searchInativos(
             Yii::$app->user->getId(),
-            $this->getDiaAtual(),
+            $data_hora->getDiaAtual(),
             $horario_do_treino,
             $horario_do_treino_em_string
         );
@@ -485,7 +482,6 @@ class PessoaController extends Controller
             ->limit($pagination->limit)
             ->all();
 
-        Yii::debug($usuarios_inativos, "USUARIOS INATIVOS 2");
         return $this->render('inativos', [
             'usuarios_inativos' => $usuarios_inativos,
             'pagination' => $pagination,
@@ -493,101 +489,9 @@ class PessoaController extends Controller
         ]);
     }
 
-    public function actionFaltas()
-    {
-        $pessoa_search = new PessoaSearch();
-        $horario_do_treino = $this->getHorarioDeTreinoAtual();
-        $horario_do_treino_em_string = $this->getHorarioEmString($horario_do_treino);
-        $usuarios_sem_frequencia =  $pessoa_search->searchUsuariosFaltosos(
-            Yii::$app->user->getId(),
-            $this->getDiaAtual(),
-            $horario_do_treino_em_string
-        );
 
-        // TODO percorrer a lista de usuarios sem frequencia e adicionar faltas neles.
-
-        /*\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        return [
-            'message' => 'hello world',
-            'code' => 100,
-        ];*/
-
-        return;
-    }
 
     # ---- MÉTODOS AUXILIARES ---- #
-
-    protected function getDiaAtual()
-    {
-        switch (date('D')) {
-            case 'Mon':
-                return 'segunda-feira';
-            case 'Tue':
-                return 'terça-feira';
-            case 'Wed':
-                return 'quarta-feira';
-            case 'Thu':
-                return 'quinta-feira';
-            case 'Fri':
-                return 'sexta-feira';
-        }
-    }
-
-    protected function getHorarioDeTreinoAtual()
-    {
-        $horario_treino_atual = $this->horarioAtual();
-
-        if ($horario_treino_atual >= 7.0 && $horario_treino_atual < 8.0)
-            return ['07:00:00', '08:00:00'];
-        else if ($horario_treino_atual >= 8.0 && $horario_treino_atual < 9.0)
-            return ['08:00:00', '09:00:00'];
-        else if ($horario_treino_atual >= 9.0 && $horario_treino_atual < 10.0)
-            return ['09:00:00', '10:00:00'];
-        else if ($horario_treino_atual >= 10.0 && $horario_treino_atual < 11.0)
-            return ['10:00:00', '11:00:00'];
-        else if ($horario_treino_atual >= 13.0 && $horario_treino_atual < 14.0)
-            return ['13:00:00', '14:00:00'];
-        else if ($horario_treino_atual >= 14.0 && $horario_treino_atual < 15.0)
-            return ['14:00:00', '15:00:00'];
-        else if ($horario_treino_atual >= 15.0 && $horario_treino_atual < 16.0)
-            return ['15:00:00', '16:00:00'];
-        else if ($horario_treino_atual >= 16.0 && $horario_treino_atual < 17.0)
-            return ['16:00:00', '17:00:00'];
-        else if ($horario_treino_atual >= 17.0 && $horario_treino_atual < 18.0)
-            return ['17:00:00', '18:00:00'];
-        else if ($horario_treino_atual >= 18.0 && $horario_treino_atual < 19.0)
-            return ['18:00:00', '19:00:00'];
-
-        return '';
-    }
-
-    protected function horarioAtual()
-    {
-        $horario = explode(':', date('H:i'));
-        $horario_formato_int = array_map(function ($v) {
-            return intval($v);
-        }, $horario);
-        $horario_formato_float = floatval(implode('.', $horario_formato_int));
-        return $horario_formato_float;
-    }
-
-    protected function getHorarioEmString($horario_do_treino)
-    {
-        return $this->transformarHorarioEmString($horario_do_treino);
-    }
-
-    protected function transformarHorarioEmString($horario_do_treino)
-    {
-        $hora_inicio_treino = $this->getHora($horario_do_treino[0]);
-        $hora_fim_treino = $this->getHora($horario_do_treino[1]);
-        return $hora_inicio_treino . 'h às ' . $hora_fim_treino . 'h';
-    }
-
-    protected function getHora($horario)
-    {
-        $horario_inicio_treino_em_array = explode(':', $horario);
-        return intval($horario_inicio_treino_em_array[0]);
-    }
 
     protected function updateAluno(Pessoa $model)
     {

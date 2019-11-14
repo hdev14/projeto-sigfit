@@ -138,16 +138,11 @@ class PessoaSearch extends Pessoa
 
     }
 
-    public function searchUsuariosFaltosos($instrutor_id, $dia, $horario_do_treino)
+    public function searchUsuariosFaltosos($dia, $horario_do_treino)
     {
-        $ids_usuarios_instruidos = $this->getUsuariosInstruidos($instrutor_id);
-
         $ids_pessoas_com_treino_dia_atual = $this->getPessoasComTreinoDiaAtual($dia);
-
         $ids_pessoas_com_frequencia_data_atual = $this->getPessoasComFrequenciaDataAtual();
-
         $pessoas_sem_frequencia = $this->getPessoasSemFrequencia(
-            $ids_usuarios_instruidos,
             $ids_pessoas_com_treino_dia_atual,
             $horario_do_treino,
             $ids_pessoas_com_frequencia_data_atual
@@ -157,17 +152,13 @@ class PessoaSearch extends Pessoa
     }
 
     protected function getPessoasSemFrequencia(
-        $ids_usuarios_instruidos,
         $ids_pessoas_com_treino_dia_atual,
         $horario_do_treino,
         $ids_pessoas_com_frequencia_data_atual
     ) {
-        return (new Query())->select('*')
-            ->from('pessoa')
+        return Pessoa::find()
             ->where([
                 'and', [
-                    'pessoa.id' => $ids_usuarios_instruidos
-                ], [
                     'pessoa.id' => $ids_pessoas_com_treino_dia_atual
                 ], [
                     'pessoa.horario_treino' => $horario_do_treino

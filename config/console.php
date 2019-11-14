@@ -13,7 +13,13 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
     ],
+    'timeZone' => 'America/Recife',
+    'language' => 'pt-BR',
     'components' => [
+        // Componente para funções de data e hora
+        'dataHora' => [
+            'class' => 'app\components\DataHora',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
