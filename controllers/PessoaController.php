@@ -17,6 +17,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\filters\AuthSuap;
+use yii\web\Response;
 use yii\web\UploadedFile;
 use kartik\mpdf\Pdf;
 
@@ -43,9 +44,11 @@ class PessoaController extends Controller
             'auth-suap' => [
                 /* VERIFICA SE O USUÁRIO ESTÀ AUTENTICADO */
                 'class' => AuthSuap::className(),
+                'except' => ['verificar-checkouts'],
             ],
             'access' => [
                 'class' => AccessControl::className(),
+                'except' => ['verificar-checkouts'],
                 'rules' => [
                     [   #REGRA PARA O USUÁRIO QUE TEM PERMISSÃO DE INSTRUTOR
                         'allow' => true,
@@ -456,6 +459,56 @@ class PessoaController extends Controller
         return $this->goBack(Yii::$app->homeUrl);
     }
 
+    public function actionVerificarCheckouts()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $pessoa_search = new PessoaSearch();
+
+        /* @var $data_hora DataHora */
+        $data_hora = Yii::$app->dataHora;
+        $query = $pessoa_search->searchUsuariosSemCheckout(
+            $data_hora->getHorarioEmString($data_hora->getHorarioDeTreinoAtual())
+        );
+
+        if (!empty($query))
+            return ['checkouts' => true];
+
+        return ['checkouts' => false];
+    }
+
+    public function actionAtivos()
+    {
+        $pessoa_search = new PessoaSearch();
+
+        /* @var $data_hora DataHora */
+        $data_hora = Yii::$app->dataHora;
+        $horario_do_treino = $data_hora->getHorarioDeTreinoAtual();
+        $horario_do_treino_em_string = $data_hora->getHorarioEmString($horario_do_treino);
+
+        $query = $pessoa_search->searchAtivos(
+            Yii::$app->user->getId(),
+            $data_hora->getDiaAtual(),
+            $horario_do_treino,
+            $horario_do_treino_em_string
+        );
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => 8
+        ]);
+
+        $usuarios_ativos = $query->orderBy('nome')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('ativos', [
+            'usuarios_ativos' => $usuarios_ativos,
+            'pagination' => $pagination,
+            'horario_do_treino' => $horario_do_treino_em_string
+        ]);
+    }
+
     public function actionInativos()
     {
         $pessoa_search = new PessoaSearch();
@@ -474,7 +527,7 @@ class PessoaController extends Controller
 
         $pagination = new Pagination([
             'totalCount' => $query->count(),
-            'pageSize' => 15,
+            'pageSize' => 8,
         ]);
 
         $usuarios_inativos = $query->orderBy('nome')

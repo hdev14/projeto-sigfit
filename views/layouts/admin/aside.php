@@ -73,7 +73,7 @@ use yii\helpers\Url;
                         </a>
                     </li>
                     <li>
-                        <a href="index.html">
+                        <a href="<?= Url::to(['pessoa/ativos']) ?>">
                             <i class="fa fa-user"></i> Ativos
                         </a>
                     </li>
