@@ -470,7 +470,7 @@ class PessoaController extends Controller
             $data_hora->getHorarioEmString($data_hora->getHorarioDeTreinoAtual())
         );
 
-        if (!empty($query))
+        if ($query->count() != 0)
             return ['checkouts' => true];
 
         return ['checkouts' => false];
