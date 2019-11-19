@@ -76,7 +76,6 @@ class PessoaController extends Controller
                         ],
                         'roles' => ['crud-instrutor'],
                     ],
-
                     [   #REGRA PARA USUÁRIO QUE TEM PERMISSÃO DE SUPER-ADMIN
                         'allow' => true,
                         'roles' => ['super'],
