@@ -12,6 +12,7 @@ const horario_de_final_de_treino = [
     '17:58',
     '18:58'
 ];
+
 function verificarCheckouts()
 {
     if (verificarHorario()) {

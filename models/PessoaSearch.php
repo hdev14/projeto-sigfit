@@ -174,12 +174,12 @@ class PessoaSearch extends Pessoa
     public function searchUsuariosSemCheckout($horario_de_treino)
     {
         $ids_pessoas_sem_registor_de_checkouts = (new Query())->select('frequencia.pessoa_id')
-                                                    ->from('frequencia')
-                                                    ->where([
-                                                        'and',
-                                                        ['data' => date('Y-m-d')],
-                                                        ['horario_final' => null]
-                                                    ]);
+            ->from('frequencia')
+            ->where([
+                'and',
+                ['data' => date('Y-m-d')],
+                ['horario_final' => null]
+            ]);
 
         $usuarios_sem_checkouts =  Pessoa::find()->where([
             'and',
@@ -245,18 +245,9 @@ class PessoaSearch extends Pessoa
 
     protected function getUsuariosComFrequenciaDiaAtual($horario_do_treino)
     {
-        return (new Query())->select('frequencia.pessoa_id')->from('frequencia')->where([
-            'and', [
-                'data' => date('Y-m-d')
-            ], [
-                'and',
-                'time_to_sec(frequencia.horario_inicio) >= time_to_sec(:horario_inicio_treino)',
-                'time_to_sec(frequencia.horario_inicio) < time_to_sec(:horario_fim_treino)'
-            ]
-        ])->addParams([
-            'horario_inicio_treino' => $horario_do_treino[0],
-            'horario_fim_treino' => $horario_do_treino[1]
-        ]);
+        return (new Query())->select('frequencia.pessoa_id')
+            ->from('frequencia')
+            ->where(['data' => date('Y-m-d')]);
     }
 
     protected function getUsuariosAtivos(
