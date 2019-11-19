@@ -31,7 +31,7 @@ use yii\helpers\Url;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?= Yii::$app->user->identity->foto ?>" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Username</span>
+                        <span class="hidden-xs"><?= Yii::$app->user->identity->nome ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -41,8 +41,8 @@ use yii\helpers\Url;
                                  alt="">
 
                             <p>
-                                Username
-                                <small>username@email.com</small>
+                                <?= Yii::$app->user->identity->nome ?>
+                                <small><?= Yii::$app->user->identity->email ?></small>
                             </p>
                         </li>
                         <!-- Menu Footer-->

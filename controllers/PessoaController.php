@@ -502,6 +502,8 @@ class PessoaController extends Controller
             ->limit($pagination->limit)
             ->all();
 
+        Yii::debug($usuarios_ativos);
+
         return $this->render('ativos', [
             'usuarios_ativos' => $usuarios_ativos,
             'pagination' => $pagination,
