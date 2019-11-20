@@ -59,7 +59,7 @@ use yii\helpers\Url;
                     </a>
                 </li>
             <?php endif; ?>
-            <li class="active treeview menu-open">
+            <li class="treeview menu-open">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Usuários</span>
                     <span class="pull-right-container">
