@@ -10,7 +10,7 @@ use yii\widgets\ListView;
 
 $f = Yii::$app->formatter;
 
-$this->title = 'Perfil do Instrutor';
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -96,7 +96,7 @@ $this->title = 'Perfil do Instrutor';
                         {summary}
                     </div>
                 </div>
-                <div class=\"box-body table-responsive no-padding\">
+                <div class=\"box-body table-responsive\">
                     <table class=\"table table-hover\">
                         <tbody>
                             <tr>
