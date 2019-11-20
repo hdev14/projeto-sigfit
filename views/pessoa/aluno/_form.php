@@ -95,6 +95,12 @@ $this->registerJsFile('@web/js/upload-usuario.js')
                     '8h às 9h' => '8h às 9h',
                     '9h às 10h' => '9h às 10h',
                     '10h às 11h' => '10h às 11h',
+                    '13h às 14h' => '13h às 14h',
+                    '14h às 15h' => '14h às 15h',
+                    '15h às 16h' => '15h às 16h',
+                    '16h às 17h' => '16h às 17h',
+                    '17h às 18h' => '17h às 18h',
+                    '18h às 19h' => '18h às 19h',
                 ], ['prompt' => 'Selecione o horário de treino']) ?>
 
                 <?= $form->field($model, 'problema_saude')->textarea([
