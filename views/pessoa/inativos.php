@@ -29,27 +29,34 @@ CSS
         </h4>
         <small class="text-muted">
             Usuários que ainda não realizaram o check-in no treino das <strong><?=
-            $horario_do_treino ?></strong>
+                $horario_do_treino ?></strong>
         </small>
     </div>
     <div class="box-body">
         <div id="usuarios-inativos" class="row">
-            <?php foreach($usuarios_inativos as $ui): ?>
-                <div class="col-md-2 col-sm-4 col-xs-12 minicard">
-                    <div class="row">
-                        <div class="col-xl-5 col-md-5 col-sm-5 col-xs-5 minicard-header">
-                            <a href="<?= Url::to(['pessoa/view', 'id' => $ui->id]) ?>">
-                                <img class="minicard-img" src="<?= Url::to('@web' . $ui->foto) ?>"
-                                     alt="Perfil do Usuário" height="100" width="100%">
-                            </a>
-                        </div>
-                        <div class="col-xl-7 col-md-7 col-sm-7 col-xs-7 minicard-body">
-                            <strong><?= $ui->nome ?></strong><br>
-                            <small class="text-muted"><?= $ui->matricula ?></small>
+            <?php if (!empty($usuarios_inativos)): ?>
+                <?php foreach($usuarios_inativos as $ui): ?>
+                    <div class="col-md-2 col-sm-4 col-xs-12 minicard">
+                        <div class="row">
+                            <div class="col-xl-5 col-md-5 col-sm-5 col-xs-5 minicard-header">
+                                <a href="<?= Url::to(['pessoa/view', 'id' => $ui->id]) ?>">
+                                    <img class="minicard-img" src="<?= Url::to('@web' . $ui->foto) ?>"
+                                         alt="Perfil do Usuário" height="100" width="100%">
+                                </a>
+                            </div>
+                            <div class="col-xl-7 col-md-7 col-sm-7 col-xs-7 minicard-body">
+                                <strong><?= $ui->nome ?></strong><br>
+                                <small class="text-muted"><?= $ui->matricula ?></small>
+                            </div>
                         </div>
                     </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="callout callout-info">
+                    <h4>Sem usuários inativos</h4>
+                    <p>Todos os usuários deste horário de treino realizaram check-in.</p>
                 </div>
-            <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
     <div class="box-footer clearfix no-border">
