@@ -63,6 +63,7 @@ class PessoaController extends Controller
                             'create-aluno',
                             'servidores',
                             'create-servidor',
+                            'update-instrutor'
                         ],
                         'roles' => ['crud-all'],
                     ],
@@ -71,7 +72,6 @@ class PessoaController extends Controller
                         'actions' => [
                             'instrutores',
                             'create-instrutor',
-                            'update-instrutor',
                             'view-instrutor',
                         ],
                         'roles' => ['crud-instrutor'],
@@ -315,13 +315,21 @@ class PessoaController extends Controller
         $model = $this->findModel($id);
         $model->scenario = Pessoa::SCENARIO_REGISTRO_INSTRUTOR;
         $post = Yii::$app->request->post();
+        $session = Yii::$app->session;
 
         if ($model->load($post)) {
             $model->image_file = UploadedFile::getInstance($model, 'image_file');
 
-            if ($model->upload() && $model->save())
-                return $this->redirect(['view-instrutor', 'id' => $model->id]);
+            if ($model->upload() && $model->save()) {
+                $session->addFlash('success', 'Instrutor atualizado com sucesso !');
 
+                if (Yii::$app->user->can('instrutor'))
+                    return $this->redirect(['usuarios']);
+                else
+                    return $this->redirect(['view-instrutor', 'id' => $model->id]);
+            } else {
+                $session->addFlash('error', 'Não foi possível atualizar o instrutor.');
+            }
         }
 
         return $this->render('instrutor/update', [
