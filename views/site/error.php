@@ -10,7 +10,7 @@ use yii\helpers\Url;
 $this->title = $name;
 $this->registerCss(<<<CSS
     div#error-page {     
-        margin-top: 40vh;
+        margin-top: 30vh;
     }
 CSS
 );
