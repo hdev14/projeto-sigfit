@@ -1,27 +1,31 @@
 <?php
 
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $message string */
-/* @var $exception Exception */
-
-use yii\helpers\Html;
+/* @var $exception \yii\web\HttpException */
 
 $this->title = $name;
+$this->registerCss(<<<CSS
+    div#error-page {     
+        margin-top: 40vh;
+    }
+CSS
+);
 ?>
-<div class="site-error">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
-    </div>
-
+<div id="error-page" class="callout bg-gray-light">
+    <h1><?= $exception->statusCode . " " . $exception->getName() ?></h1>
     <p>
-        The above error occurred while the Web server was processing your request.
+        Por favor, volte para a página principal
     </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
-
+    <a type="button" href="<?= Url::home() ?>" class="btn bg-blue">
+        <i class="fa fa-fw fa-arrow-left"></i> Voltar
+    </a>
 </div>
+
+
+
+
+

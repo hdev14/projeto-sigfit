@@ -7,6 +7,8 @@ use app\filters\AuthSuap;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -48,9 +50,6 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
@@ -68,31 +67,6 @@ class SiteController extends Controller
         return $this->redirect(['login']);
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-//    public function actionLogin()
-//    {
-//        $this->layout = 'login';
-//
-//        if (!Yii::$app->user->isGuest) {
-//            return $this->goHome();
-//        }
-//
-//        $model = new LoginSuapForm();
-//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-//            return $this->goBack();
-//        }
-//
-//        //$model->password = '';
-//        $model->senha = '';
-//        return $this->render('login', [
-//            'model' => $model,
-//        ]);
-//    }
-
     public function actionLogin()
     {
         $this->layout = 'login';
@@ -103,7 +77,6 @@ class SiteController extends Controller
             else if (Yii::$app->user->can('instrutor'))
                 $this->redirect(['pessoa/usuarios']);
         }
-
 
         $post = Yii::$app->request->post();
         $session = Yii::$app->session;
@@ -175,6 +148,14 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionError()
+    {
+        $this->layout = "error";
+        $exception = Yii::$app->errorHandler->exception;
+        if ($exception !== null)
+            return $this->render('error', ['exception' => $exception]);
     }
 
     protected function salvarToken($token, $matricula)
