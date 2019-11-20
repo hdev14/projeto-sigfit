@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\helpers\Url;
@@ -16,14 +17,18 @@ $this->title = '';
 
 $this->registerCssFile('@web/css/box-subtitle.css');
 
-$this->registerJs("
+$this->registerJsFile('@web/js/abonar-faltas.js');
+
+$this->registerJs(<<<JS
     $('#tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
     });
-");
+JS
+);
 
-$this->registerJs("
+$this->registerJs(<<<JS
+    
     let avaliacao_op = $('#avaliacao-op')[0];
     
     if (avaliacao_op.value === 'default') {
@@ -34,34 +39,127 @@ $this->registerJs("
     avaliacao_op.onchange = function(e) {
         $('#' + e.target.value).show().siblings().hide();
     }
-", View::POS_LOAD);
+JS
+    , View::POS_LOAD);
 
 ?>
 
+
 <div class="row">
+
+    <!--MODAL ABONAR FALTAS-->
+    <?php $modal = Modal::begin([
+        'header' => '<b>Preenchar o campo corretamente</b>',
+        'footer' =>
+            Html::submitButton('Confirmar', [
+                'class' => 'btn bg-green',
+                'form' => 'form-abonar-falta'
+            ])
+        ,
+        'id' => 'modal-abonar-falta',
+    ]); ?>
+    <?= Html::beginForm(
+        ['pessoa/abonar-faltas', 'id' => $model->id],
+        'post',
+        ['id' => 'form-abonar-falta']
+    ) ?>
+
+    <div class="form-group">
+        <?= Html::input('number', 'qtd-faltas-retirar',null, [
+            'class' => 'form-control',
+            'placeholder' => 'Digite o número de faltas que deseja abonar',
+            'min' => '1', 'max' => '10',
+            'required' => true,
+        ]) ?>
+    </div>
+
+    <?= Html::endForm() ?>
+    <?php Modal::end(); ?>
+    <!--MODAL ABONAR FALTAS-->
+
     <div class="col-md-3">
         <div class="box box-success">
             <div class="box-header">
-                <h3 class="box-title"></h3>
+                <h3 class="box-title">
+
+                    <?php if ($model->espera): ?>
+                        <small class="label label-default">
+                            Em espera
+                        </small>
+                    <?php endif; ?>
+
+                </h3>
                 <div class="box-tools pull-right">
+
                     <?= Html::a('<i class="fa fa-fw fa-pencil fa-lg"></i>', ['update', 'id' =>
                         $model->id],
                         [
                             'class' => 'btn btn-box-tool',
                             'title' => 'Editar usuário'
                         ]) ?>
-                    <?= Html::a(
-                        '<i class="fa fa-fw fa-user-times fa-lg"></i>',
-                        ['delete', 'id' => $model->id],
-                        [
-                            'class' => 'btn btn-box-tool',
-                            'title' => 'Excluir usuário',
-                            'data' => [
-                                'confirm' => 'Tem certeza de que deseja excluir este exercício?',
-                                'method' => 'post',
-                            ],
-                        ]
-                    ) ?>
+
+                    <div class="dropdown pull-right">
+
+                        <?= Html::button('<i class="fa fa-bars fa-fw fa-lg"></i>', [
+                            'class' => 'btn btn-box-tool dropdown-toggle',
+                            'id' => 'dropdown-exercicio',
+                            'data-toggle' => 'dropdown',
+                            'aria-haspopup' => true,
+                            'aria-expanded' => true,
+                            'type' => 'button',
+                            'title' => 'opções'
+                        ]) ?>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
+                            <li>
+                                <?= Html::a(
+                                    'Carteira do Atleta',
+                                    ['pessoa/gerar-carteira-pdf', 'id' => $model->id],
+                                    ['title' => 'Gerar Carteira do Atleta']
+                                ) ?>
+                            </li>
+
+                            <?php if ($model->espera): ?>
+                                <li>
+                                    <?= Html::a(
+                                        'Retirar Espera',
+                                        ['pessoa/retirar-espera', 'id' => $model->id],
+                                        ['title' => 'Retirar usuário da fila de espera']
+                                    ) ?>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if ($model->faltas > 0): ?>
+                                <li>
+                                    <?= Html::a(
+                                        'Abonar Falta',
+                                        null,
+                                        [
+                                            'id' => 'abonar-falta',
+                                            'title' => 'Abonar falta do usuário',
+                                            'data-modal' => 'modal-abonar-falta',
+                                        ]
+                                    ) ?>
+                                </li>
+                            <?php endif; ?>
+
+                            <li class="divider"></li>
+                            <li>
+                                <?= Html::a(
+                                    'Excluir Usuário',
+                                    ['delete', 'id' => $model->id],
+                                    [
+                                        'title' => 'Excluir usuário',
+                                        'data' => [
+                                            'confirm' => 'Tem certeza de que deseja excluir este exercício?',
+                                            'method' => 'post',
+                                        ],
+                                    ]
+                                ) ?>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
             <div class="box-body box-profile">

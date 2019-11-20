@@ -81,11 +81,11 @@ CSS
                             'usuario_id' => $usuario_id,
                             'dia' => $dia,
                         ],
-                        ['class' => 'btn btn-flat bg-gray']
+                        ['class' => 'btn bg-gray']
                     ) ?>
                     <?= Html::submitButton('Confirmar', [
                         'form' => 'form-add-treino',
-                        'class' => 'btn btn-flat bg-green'
+                        'class' => 'btn bg-green'
                     ]) ?>
                 </div>
             </div>

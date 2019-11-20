@@ -72,6 +72,27 @@ foreach ($treinos as $treino) {
                     horário de treino
                 </small>
             </h4>
+            <div class="box-tools pull-right">
+                <?php if (empty($treinos)): ?>
+                     <?= Html::a(
+                        '<i class=" fa fa-lg fa-file-text-o"></i>',
+                        null,
+                        [
+                            'class' => 'btn btn-sm bg-light-blue disabled',
+                            'title' => 'Adicione algum treino'
+                        ]
+                    ) ?>
+                <?php else: ?>
+                    <?= Html::a(
+                        '<i class=" fa fa-lg fa-file-text-o"></i>',
+                        ['pessoa/gerar-lista-treino-pdf', 'id' => $usuario_id],
+                        [
+                            'class' => 'btn btn-sm bg-light-blue',
+                            'title' => 'Imprimir lista de treinos'
+                        ]
+                    ) ?>
+                <?php endif; ?>
+            </div>
         </div>
         <div class="box-body">
             <div class="row">
@@ -124,19 +145,6 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                    <!--TODO Fazer modal para adicionar treino escolhendo primeiro
-                                    os treinos genericos, depois tendo a opção para treinos
-                                    personalizados.-->
-
-                                    <!--$modal = Modal::begin([
-                                        'header' => "<h4>Escolha um treino ou adi</h4>",
-                                        'toggleButton' => [
-                                            'label' => '<i class="fa fa-fw fa-plus fa-2x"></i>',
-                                            'class' => 'add-treino-link'
-                                        ],
-                                    ]);
-
-                                    Modal::end();-->
 
                                     <?= Html::a(
                                         '<i class="fa fa-fw fa-plus fa-2x"></i>',
@@ -205,7 +213,7 @@ foreach ($treinos as $treino) {
                         <div class="small-box bg-gray-light">
                             <div class="inner">
                                 <h5 class="text-center">
-                                   <?= Html::a(
+                                    <?= Html::a(
                                         '<i class="fa fa-fw fa-plus fa-2x"></i>',
                                         [
                                             'treino/add-treino',
@@ -423,7 +431,13 @@ foreach ($treinos as $treino) {
             </div>
         </div>
         <div class="box-footer no-border">
-            <p class="text-muted text-center">Clique em um treino para ver mais informações.</p>
+            <p class="text-muted text-center">
+                <?php if (empty($treinos)): ?>
+                    Adicione um novo treino para este usuário
+                <?php else: ?>
+                    Clique em um treino para ver mais informações.
+                <?php endif; ?>
+            </p>
         </div>
     </div>
 </div>

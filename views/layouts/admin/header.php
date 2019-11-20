@@ -31,7 +31,7 @@ use yii\helpers\Url;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?= Yii::$app->user->identity->foto ?>" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Username</span>
+                        <span class="hidden-xs"><?= Yii::$app->user->identity->nome ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -41,14 +41,19 @@ use yii\helpers\Url;
                                  alt="">
 
                             <p>
-                                Username
-                                <small>username@email.com</small>
+                                <?= Yii::$app->user->identity->nome ?>
+                                <small><?= Yii::$app->user->identity->email ?></small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <!-- <a href="#" class="btn btn-default btn-flat">Profile</a> -->
+                                 <a href="<?= Url::to([
+                                         'pessoa/update-instrutor',
+                                     'id' => Yii::$app->user->id
+                                 ]) ?>" class="btn btn-default btn-flat">
+                                     Editar perfil
+                                 </a>
                             </div>
                             <?=
                             Html::beginForm(['/site/logout'], 'post', ['class'=>'pull-right'])
@@ -56,7 +61,9 @@ use yii\helpers\Url;
                                 'Sair',
                                 ['class' => 'btn btn-default btn-flat']
                             )
-                            . Html::endForm() ?>
+                            . Html::endForm()
+                            ?>
+
                         </li>
                     </ul>
                 </li>

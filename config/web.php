@@ -11,6 +11,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'timeZone' => 'America/Recife',
     'language' => 'pt-BR',
     'layout' => 'admin',
     'components' => [
@@ -20,6 +21,14 @@ $config = [
         // Componente para autenticação com SUAP
         'suap' => [
             'class' => 'app\components\Suap',
+        ],
+        // Componente para PDFs (Carteirinha de Atleta e Lista de Treino)
+        'pdf' => [
+            'class' => 'kartik\mpdf\Pdf',
+        ],
+        // Componente para funções de data e hora
+        'dataHora' => [
+            'class' => 'app\components\DataHora',
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation

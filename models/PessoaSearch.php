@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 /**
  * PessoaSearch represents the model behind the search form of `app\models\Pessoa`.
@@ -75,45 +76,33 @@ class PessoaSearch extends Pessoa
         return $dataProvider;
     }
 
-    /**
-     * @param $instrutor_id
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function searchUsuarios($instrutor_id)
+    public function searchUsuarios($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
-        $query = $instrutor->getUsuarios();
+        $query = $instrutor->getUsuarios()->where('espera = :espera', [':espera' => $espera]);
         return $query;
     }
 
-    /**
-     * @param $instrutor_id
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function searchAlunos($instrutor_id)
+    public function searchAlunos($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
-        $query = $instrutor->getUsuarios()->where(['servidor' => false]);
+        $query = $instrutor->getUsuarios()->where(
+            ['and', 'servidor = 0', 'espera = :espera'],
+            [':espera' => $espera]
+        );
         return $query;
     }
 
-    /**
-     * @param $instrutor_id
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function searchServidores($instrutor_id)
+    public function searchServidores($instrutor_id, $espera)
     {
         $instrutor = Pessoa::findOne($instrutor_id);
-        $query = $instrutor->getUsuarios()->where(['servidor' => true]);
+        $query = $instrutor->getUsuarios()->where(
+            ['and', 'servidor = 1', 'espera = :espera'],
+            [':espera' => $espera]
+        );
         return $query;
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function searchInstrutores() {
 
         $query = Pessoa::find()->join(
@@ -125,4 +114,173 @@ class PessoaSearch extends Pessoa
         return $query;
     }
 
+    public function searchAtivos($instrutor_id, $dia, $horario_do_treino, $horario_string)
+    {
+        $ids_treinos_pessoas = $this->getIdsTreinosPessoas();
+
+        $ids_treinos_pessoas_dia_atual =
+            $this->getIdsTreinosPessoasDiaAtual($ids_treinos_pessoas, $dia);
+
+        $ids_usuarios_instruidos = $this->getIdsUsuariosInstruidos($instrutor_id);
+
+        $ids_usuarios_frequencia_dia_atual =
+            $this->getUsuariosComFrequenciaDiaAtual($horario_do_treino);
+
+        $query_usuarios_ativos = $this->getUsuariosAtivos(
+            $ids_treinos_pessoas_dia_atual,
+            $ids_usuarios_instruidos,
+            $ids_usuarios_frequencia_dia_atual,
+            $horario_string
+        );
+
+        return $query_usuarios_ativos;
+    }
+
+    public function searchInativos($instrutor_id, $dia, $horario_do_treino, $horario_string)
+    {
+        $ids_treinos_pessoas = $this->getIdsTreinosPessoas();
+
+        $ids_treinos_pessoas_dia_atual =
+            $this->getIdsTreinosPessoasDiaAtual($ids_treinos_pessoas, $dia);
+
+        $ids_usuarios_instruidos = $this->getIdsUsuariosInstruidos($instrutor_id);
+
+        $ids_usuarios_frequencia_dia_atual =
+            $this->getUsuariosComFrequenciaDiaAtual($horario_do_treino);
+
+        $usuarios_inativos = $this->getUsuariosInativos(
+            $ids_treinos_pessoas_dia_atual,
+            $ids_usuarios_instruidos,
+            $ids_usuarios_frequencia_dia_atual,
+            $horario_string
+        );
+
+        return $usuarios_inativos;
+    }
+
+    public function searchUsuariosFaltosos($dia, $horario_do_treino)
+    {
+        $ids_pessoas_com_treino_dia_atual = $this->getPessoasComTreinoDiaAtual($dia);
+        $ids_pessoas_com_frequencia_data_atual = $this->getPessoasComFrequenciaDataAtual();
+        $pessoas_sem_frequencia = $this->getPessoasSemFrequencia(
+            $ids_pessoas_com_treino_dia_atual,
+            $horario_do_treino,
+            $ids_pessoas_com_frequencia_data_atual
+        );
+
+        return $pessoas_sem_frequencia;
+    }
+
+    public function searchUsuariosSemCheckout($horario_de_treino)
+    {
+        $ids_pessoas_sem_registor_de_checkouts = (new Query())->select('frequencia.pessoa_id')
+            ->from('frequencia')
+            ->where([
+                'and',
+                ['data' => date('Y-m-d')],
+                ['horario_final' => null]
+            ]);
+
+        $usuarios_sem_checkouts =  Pessoa::find()->where([
+            'and',
+            ['pessoa.id' => $ids_pessoas_sem_registor_de_checkouts],
+            ['pessoa.horario_treino' => $horario_de_treino]
+        ]);
+
+        return $usuarios_sem_checkouts;
+    }
+
+    protected function getPessoasSemFrequencia(
+        $ids_pessoas_com_treino_dia_atual,
+        $horario_do_treino,
+        $ids_pessoas_com_frequencia_data_atual
+    ) {
+        return Pessoa::find()
+            ->where([
+                'and', [
+                    'pessoa.id' => $ids_pessoas_com_treino_dia_atual
+                ], [
+                    'pessoa.horario_treino' => $horario_do_treino
+                ], [
+                    'not in',
+                    'pessoa.id',
+                    $ids_pessoas_com_frequencia_data_atual
+                ]
+            ]);
+    }
+
+    protected function getPessoasComFrequenciaDataAtual()
+    {
+        return (new Query())->select('frequencia.pessoa_id')->from('frequencia')
+            ->where(['frequencia.data' => date('Y-m-d')]);
+    }
+
+    protected function getPessoasComTreinoDiaAtual($dia)
+    {
+        return (new Query())->select('pessoa_treino.pessoa_id')->from('treino')
+            ->innerJoin('pessoa_treino', 'treino.id = pessoa_treino.treino_id')
+            ->where(['treino.dia' => $dia]);
+    }
+
+    protected function getIdsTreinosPessoas()
+    {
+        return (new Query())->select('pessoa_treino.treino_id')->from('pessoa')
+            ->innerJoin('pessoa_treino', 'pessoa.id = pessoa_treino.pessoa_id');
+    }
+
+    protected function getIdsTreinosPessoasDiaAtual($ids_treinos_pessoas, $dia)
+    {
+        return (new Query())->select('treino.id')->from('treino')->where([
+            'and',
+            ['treino.id' =>  $ids_treinos_pessoas],
+            ['treino.dia' => $dia]
+        ]);
+    }
+
+    protected function getIdsUsuariosInstruidos($instrutor_id)
+    {
+        return (new Query())->select('usuario_instrutor.usuario_id')->from('usuario_instrutor')
+            ->where(['usuario_instrutor.instrutor_id' => $instrutor_id]);
+    }
+
+    protected function getUsuariosComFrequenciaDiaAtual($horario_do_treino)
+    {
+        return (new Query())->select('frequencia.pessoa_id')
+            ->from('frequencia')
+            ->where(['data' => date('Y-m-d')]);
+    }
+
+    protected function getUsuariosAtivos(
+        $ids_treinos_pessoas_dia_atual,
+        $id_usuarios_instruidos,
+        $ids_usuarios_frequencia_dia_atual,
+        $horario_string
+    ) {
+        return Pessoa::find()
+            ->innerJoin('pessoa_treino', 'pessoa.id = pessoa_treino.pessoa_id')
+            ->where([
+                'and',
+                ['pessoa_treino.treino_id' => $ids_treinos_pessoas_dia_atual],
+                ['pessoa.id' => $id_usuarios_instruidos],
+                ['in', 'pessoa.id', $ids_usuarios_frequencia_dia_atual],
+                ['pessoa.horario_treino' => $horario_string]
+            ]);
+    }
+
+    protected function getUsuariosInativos(
+        $ids_treinos_pessoas_dia_atual,
+        $id_usuarios_instruidos,
+        $ids_usuarios_frequencia_dia_atual,
+        $horario_string
+    ) {
+        return Pessoa::find()
+            ->innerJoin('pessoa_treino', 'pessoa.id = pessoa_treino.pessoa_id')
+            ->where([
+                'and',
+                ['pessoa_treino.treino_id' => $ids_treinos_pessoas_dia_atual],
+                ['pessoa.id' => $id_usuarios_instruidos],
+                ['not in', 'pessoa.id', $ids_usuarios_frequencia_dia_atual],
+                ['pessoa.horario_treino' => $horario_string]
+            ]);
+    }
 }

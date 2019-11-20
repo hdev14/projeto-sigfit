@@ -6,13 +6,18 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Avaliacao */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->registerCssFile('@web/css/box-subtitle.css');
 ?>
 
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <div class="box box-success">
             <div class="box-header">
-                <h3 class="box-title">Preencha os campos corretamente</h3>
+                <h3 class="box-title">Editar <?= $model->titulo ?></h3>
+                <small class="text-muted">
+                    Preencha os campos corretamente
+                </small>
             </div>
             <div class="box-body">
                 <?php $form = ActiveForm::begin(); ?>
@@ -31,13 +36,13 @@ use yii\widgets\ActiveForm;
 
                 <div class="form-group">
                     <?= Html::submitButton('Confirmar', [
-                        'class' => 'btn bg-green btn-flat pull-right'
+                        'class' => 'btn bg-green pull-right'
                     ]) ?>
                     <?= Html::a('Voltar', [
                         'pessoa/view' ,
                         'id' => $model->pessoa_id
                     ], [
-                        'class' => 'btn bg-gray btn-flat'
+                        'class' => 'btn bg-gray'
                     ]) ?>
                 </div>
 

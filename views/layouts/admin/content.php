@@ -1,7 +1,9 @@
 <?php
 
 /* @var $this \yii\web\View*/
+/* @var $content string*/
 
+use yii\bootstrap\Alert;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Inflector;
 
@@ -31,6 +33,14 @@ use yii\helpers\Inflector;
     <section class="content">
         <div class="row">
             <div class="col-md-12">
+                <?= Alert::widget([
+                    'options' => [
+                        'id' => 'alert-checkout',
+                        'class' => 'alert-warning alert-dismissible',
+                        'style' => 'display: none'
+                    ],
+                    'body' => 'Existem usuários que não realizaram check-out, por favor verifique os usuários ativos neste momento.',
+                ]) ?>
                 <?= $this->render('../../partial/_alert') ?>
             </div>
         </div>

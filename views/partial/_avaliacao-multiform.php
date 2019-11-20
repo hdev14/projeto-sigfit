@@ -12,9 +12,11 @@ use yii\widgets\ActiveForm;
 /* @var $usuario_id int */
 /* @var $sexo string */
 
+$this->registerCssFile('@web/css/avaliacao.css');
+$this->registerCssFile('@web/css/box-subtitle.css');
+
 $this->registerJsFile('@web/js/calculos-dobras.js');
 $this->registerJsFile('@web/js/avaliacao.js');
-$this->registerCssFile('@web/css/avaliacao.css');
 ?>
 
 <p id="sexo" style="display: none"><?= $sexo ?></p>
@@ -22,7 +24,12 @@ $this->registerCssFile('@web/css/avaliacao.css');
     <div class="col-md-6 col-md-offset-3">
         <div class="box box-success">
             <div class="box-header">
-                <h3 class="box-title">Preencha os campos corretamente</h3>
+                <h3 class="box-title">
+                    Registrar Avaliação Física
+                </h3>
+                <small class="text-muted">
+                    Preencha os campos corretamente
+                </small>
                 <div class="box-tools pull-right">
                     <p class="text-danger" id="alertar" style="display: none;"></p>
                 </div>
@@ -54,7 +61,7 @@ $this->registerCssFile('@web/css/avaliacao.css');
                         <div class="form-group">
                             <?= Html::a('Próximo','#', [
                                 'id' => 'btn-proximo1',
-                                'class' => 'btn bg-green btn-flat pull-right'
+                                'class' => 'btn bg-green pull-right'
                             ])?>
                         </div>
 
@@ -143,12 +150,12 @@ $this->registerCssFile('@web/css/avaliacao.css');
                         <div class="form-group">
                             <?= Html::a('Voltar', '#', [
                                 'id' => 'btn-volta1',
-                                'class' => 'btn bg-gray btn-flat'
+                                'class' => 'btn bg-gray'
                             ]) ?>
 
                             <?= Html::a('Próximo', '#', [
                                 'id' => 'btn-proximo2',
-                                'class' => 'btn bg-green btn-flat pull-right'
+                                'class' => 'btn bg-green pull-right'
                             ]) ?>
                         </div>
                     </div>
@@ -183,10 +190,10 @@ $this->registerCssFile('@web/css/avaliacao.css');
                         <div class="form-group">
                             <?= Html::a('Voltar', '#', [
                                 'id' => 'btn-volta2',
-                                'class' => 'btn bg-gray btn-flat'
+                                'class' => 'btn bg-gray'
                             ]) ?>
                             <?= Html::submitButton('Confirmar', [
-                                'class' => 'btn bg-green btn-flat pull-right'
+                                'class' => 'btn bg-green pull-right'
                             ]) ?>
                         </div>
 

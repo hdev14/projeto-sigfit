@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $model app\models\Pessoa */
 
-$this->title = 'Registrar Instrutor';
+$this->title = '';
 //$this->params['breadcrumbs'][] = ['label' => 'Pessoas', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>

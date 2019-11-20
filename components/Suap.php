@@ -3,7 +3,6 @@
 
 namespace app\components;
 
-
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use yii\base\Component;
@@ -31,9 +30,7 @@ class Suap extends Component
 
     public function autenticar($matricula, $senha)
     {
-
         try {
-
             $resposta = $this->client->post('autenticacao/token/', [
                 'json' => [
                     'username' => $matricula,
@@ -45,15 +42,11 @@ class Suap extends Component
                 $dados = Json::decode($resposta->getBody());
                 return $dados['token'];
             }
-
         } catch (ClientException $e) {
             return false;
         } catch (ConnectException $e) {
-            # Procurar uma Exception para simbolizar falta de conexão com o
-            # sevidor.
             throw new NotFoundHttpException("Suap CAIU");
         }
-
     }
 
     /**
@@ -68,7 +61,6 @@ class Suap extends Component
                     'token' => $token
                 ]
             ]);
-
             if ($resposta->getStatusCode() == 200) {
                 $dados = Json::decode($resposta->getBody());
                 return $dados['token'];

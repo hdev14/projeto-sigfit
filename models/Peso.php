@@ -58,7 +58,7 @@ class Peso extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'valor' => 'Peso do Usuário',
+            'valor' => 'Peso',
         ];
     }
 

@@ -42,7 +42,15 @@ $this->registerJs("
     <div class="col-md-3">
         <div class="box box-success">
             <div class="box-header">
-                <h3 class="box-title"></h3>
+                <h3 class="box-title">
+
+                    <?php if ($model->espera): ?>
+                        <small class="label label-default">
+                            Em espera
+                        </small>
+                    <?php endif; ?>
+
+                </h3>
                 <div class="box-tools pull-right">
                     <?= Html::a('<i class="fa fa-fw fa-pencil fa-lg"></i>', ['update', 'id' =>
                         $model->id],
@@ -50,15 +58,65 @@ $this->registerJs("
                             'class' => 'btn btn-box-tool',
                             'title' => 'Editar usuário'
                         ]) ?>
-                    <?= Html::a('<i class="fa fa-fw fa-user-times fa-lg"></i>', ['delete', 'id' =>
-                        $model->id], [
-                        'class' => 'btn btn-box-tool',
-                        'title' => 'Excluir usuário',
-                        'data' => [
-                            'confirm' => 'Tem certeza de que deseja excluir este servidor?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
+
+                    <div class="dropdown pull-right">
+
+                        <?= Html::button('<i class="fa fa-bars fa-fw fa-lg"></i>', [
+                            'class' => 'btn btn-box-tool dropdown-toggle',
+                            'id' => 'dropdown-exercicio',
+                            'data-toggle' => 'dropdown',
+                            'aria-haspopup' => true,
+                            'aria-expanded' => true,
+                            'type' => 'button',
+                            'title' => 'opções'
+                        ]) ?>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdown-exercicio">
+                            <li>
+                                <?= Html::a(
+                                    'Carteira do Atleta',
+                                    null,
+                                    ['title' => 'Gerar Carteira do Atleta']
+                                ) ?>
+                            </li>
+
+                            <?php if ($model->espera): ?>
+                                <li>
+                                    <?= Html::a(
+                                        'Retirar Espera',
+                                        ['pessoa/retirar-espera', 'id' => $model->id],
+                                        ['title' => 'Retirar usuário da fila de espera']
+                                    ) ?>
+                                </li>
+                            <?php endif; ?>
+
+                            <li>
+                                <?= Html::a(
+                                    'Abonar Falta',
+                                    ['delete', 'id' => $model->id],
+                                    [
+                                        'title' => 'Abonar falta do usuário',
+                                    ]
+                                ) ?>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <?= Html::a(
+                                    'Excluir Usuário',
+                                    ['delete', 'id' => $model->id],
+                                    [
+                                        'title' => 'Excluir usuário',
+                                        'data' => [
+                                            'confirm' => 'Tem certeza de que deseja excluir este exercício?',
+                                            'method' => 'post',
+                                        ],
+                                    ]
+                                ) ?>
+                            </li>
+                        </ul>
+
+                    </div>
+
                 </div>
             </div>
             <div class="box-body box-profile">

@@ -20,7 +20,7 @@ use yii\web\UploadedFile;
  * @property string $horario_treino
  * @property string $problema_saude
  * @property int $faltas
- * @property int $espera
+ * @property bool $espera
  * @property string $telefone
  * @property string $foto
  * @property bool $servidor
@@ -41,7 +41,8 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     const SCENARIO_REGISTRO_USUARIO = 'registro_aluno';
     const SCENARIO_REGISTRO_SERVIDOR = 'registro_servidor';
     const SCENARIO_REGISTRO_INSTRUTOR = 'registro_instrutor';
-
+    const QTD_FREQUENTADORES_POR_HORARIO = 8;
+    CONST FALTAS_POR_MES = 3;
 
     /** @var UploadedFile */
     public $image_file;
@@ -74,7 +75,6 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
                 'boolean',
                 'trueValue' => true,
                 'falseValue' => false,
-                'strict' => true
             ],
             [['telefone'], 'string', 'max' => 20],
             [
@@ -185,20 +185,15 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function beforeSave($insert)
     {
+        if ($this->isNewRecord)
+            $this->espera = $this->verificarHorarioDisponivel();
+
         return parent::beforeSave($insert);
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        $auth = Yii::$app->authManager;
-
-        if (!key_exists('instrutor', $auth->getRolesByUser($this->id))
-            && $this->scenario === Pessoa::SCENARIO_REGISTRO_INSTRUTOR) {
-
-            $instrutor_role =  $auth->getRole('instrutor');
-            $auth->assign($instrutor_role, $this->id);
-            Yii::debug("ADD ROLE");
-        }
+        $this->adicionarRoleInstrutor();
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -344,6 +339,33 @@ class Pessoa extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(Pessoa::className(), ['id' => 'instrutor_id'])
             ->viaTable('usuario_instrutor', ['usuario_id' => 'id']);
+    }
+
+    public function verificarHorarioDisponivel()
+    {
+        $usuarios_com_mesmo_horario = Pessoa::find()->where(
+            'horario_treino = :horario_treino',
+            [':horario_treino' => $this->horario_treino]
+        );
+
+        $qtd_usuarios = $usuarios_com_mesmo_horario->count();
+
+        if ($qtd_usuarios < Pessoa::QTD_FREQUENTADORES_POR_HORARIO)
+            return false;
+
+        return true;
+    }
+
+    protected function adicionarRoleInstrutor()
+    {
+        $auth = Yii::$app->authManager;
+
+        if (!key_exists('instrutor', $auth->getRolesByUser($this->id))
+            && $this->scenario === Pessoa::SCENARIO_REGISTRO_INSTRUTOR) {
+
+            $instrutor_role = $auth->getRole('instrutor');
+            $auth->assign($instrutor_role, $this->id);
+        }
     }
 
 

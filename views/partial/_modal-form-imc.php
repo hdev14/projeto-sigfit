@@ -1,11 +1,11 @@
 <?php
 
-/* @var $this yii\web\View; */
-/* @var $avaliacao_id int */
-
 use app\models\Imc;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
+
+/* @var $this yii\web\View; */
+/* @var $avaliacao_id int */
 
 $this->registerJs("
     const altura_elt".$avaliacao_id." = 
@@ -23,16 +23,16 @@ $this->registerJs("
 ");
 ?>
 <?php $modal = Modal::begin([
-    'header' => 'Preenchar os campos corretamente',
+    'header' => '<strong>Preencha os campos corretamente</strong>',
     'footer' =>
         Html::a('Calcular Peso', '#', [
-            'class' => 'btn bg-light-blue btn-flat btn-sm',
+            'class' => 'btn bg-light-blue ',
             'role' => 'button',
             'id' => 'calcular-imc'.$avaliacao_id,
         ])
         .
         Html::submitButton('Confirmar', [
-            'class' => 'btn bg-green btn-flat btn-sm',
+            'class' => 'btn bg-green',
             'form' => 'modal-form-imc' . $avaliacao_id,
         ])
     ,
@@ -53,20 +53,28 @@ $this->registerJs("
 
 <div class="form-group row">
     <div class="col-md-6">
-        <label for="<?= 'altura-imc' . $avaliacao_id ?>">
-            Altura
-        </label>
-        <input type="text" class="form-control"
-               id="<?= 'altura-imc' . $avaliacao_id ?>"
-               placeholder="Digite a altura (cm)">
+
+        <?= Html::label('Altura', 'altura-imc' . $avaliacao_id) ?>
+        <?= Html::input('number', null, null, [
+            'class' => 'form-control',
+            'id' => 'altura-imc' . $avaliacao_id,
+            'placeholder' => 'Digite a altura (cm)',
+            'required' => true,
+            'min' => 0,
+        ]) ?>
+
     </div>
     <div class="col-md-6">
-        <label for="<?= 'peso-imc' . $avaliacao_id ?>">
-            Peso
-        </label>
-        <input type="text" class="form-control"
-               id="<?= 'peso-imc' . $avaliacao_id ?>"
-               placeholder="Digite o peso (Kg)">
+
+        <?= Html::label('Peso', 'peso-imc' . $avaliacao_id) ?>
+        <?= Html::input('number', null, null, [
+            'class' => 'form-control',
+            'id' => 'peso-imc' . $avaliacao_id,
+            'placeholder' => 'Digite o peso (Kg)',
+            'required' => true,
+            'min' => 0
+        ]) ?>
+
     </div>
 </div>
 <div class="form-group row">
