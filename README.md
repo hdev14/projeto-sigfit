@@ -29,3 +29,7 @@ Há treinos específicos para homens e mulheres.
 - **Fila dos Excluídos:** Fila dos excluídos é onde fica os usuários que ultrapassaram o máximo de faltas. O usuário que estiver na fila dos excluídos, deve esperar abrir novas vagas na fila de espera.
 - **Administrador:** O administrador do sistema, poderá fazer o gerenciamento dos instrutores da academia(CRUD).
 - **Abonação de Faltas:** O instrutor poderá abonar as faltas de um usuário, caso este tenha uma justificativa.
+
+
+### Banco de dados
+<img src="./docs/imgs/bd.png" width="500">
