@@ -3,7 +3,8 @@
 >Projeto de pesquisa para auxiliar os instrutores da academia do **IFRN - RN Campus Currais Novos**
 
 ### Screens shorts
-
+ Outras screens shorts podem ser vistos [aqui.]('./docs/imgs')
+ 
 <img src="./docs/imgs/login.png" width="200">
 <img src="./docs/imgs/perfil-instrutor.png" width="200">
 <img src="./docs/imgs/perfil-aluno.png" width="200">
